@@ -18,7 +18,7 @@ from scipy.stats import (
 
 import statsmodels.formula.api as smf
 from statsmodels.stats.multitest import multipletests
-from patsy import build_design_matrices
+from statsmodels.formula._manager import FormulaManager
 
 
 # ============================================================
@@ -26,7 +26,7 @@ from patsy import build_design_matrices
 # ============================================================
 
 DATA_ROOT = Path(
-    r"C:\Users\au662213\repos\biocal3d\data\02-09-2026-Data collected"
+    r"C:\Users\johan\repos\biocal3d\data\02-09-2026-Data collected"
 )
 
 RAW_ANALYSIS_ROOT = DATA_ROOT / "_raw_color_analysis"
@@ -1084,13 +1084,18 @@ for variable, label in METRICS.items():
     #
     # Because each sample gets its own fixed intercept,
     # these are sample-adjusted scanner means.
+    #
+    # statsmodels >= 0.15 stores the formula specification
+    # as model_spec rather than relying on Patsy design_info.
     # ========================================================
 
-    design_info = (
+    formula_manager = FormulaManager()
+
+    model_spec = (
         base_model
         .model
         .data
-        .design_info
+        .model_spec
     )
 
     unique_sample_ids = (
@@ -1122,28 +1127,46 @@ for variable, label in METRICS.items():
         })
 
 
+        # Build the new design matrix using the EXACT
+        # formula specification used for the fitted model.
+        #
+        # This is the statsmodels >= 0.15 replacement for
+        # Patsy's build_design_matrices(design_info, ...).
+
         X_new = (
-            build_design_matrices(
-                [design_info],
+            formula_manager
+            .get_matrices(
+                model_spec,
                 prediction_df,
-                return_type="dataframe",
-            )[0]
-        )
-
-
-        X_new = (
-            X_new
-            .reindex(
-                columns=parameter_names,
-                fill_value=0,
+                pandas=False,
             )
-            .to_numpy()
         )
+
+        X_new = np.asarray(
+            X_new,
+            dtype=float,
+        )
+
+
+        # Safety check: new design matrix must contain
+        # exactly the same coefficients as the fitted model.
+
+        if X_new.shape[1] != len(parameter_names):
+
+            raise RuntimeError(
+                f"Prediction design matrix has "
+                f"{X_new.shape[1]} columns, but fitted model "
+                f"has {len(parameter_names)} parameters."
+            )
 
 
         # Mean design vector:
         #
-        # gives equal weight to each sample/timepoint ID.
+        # Gives equal weight to each sample/timepoint ID.
+        #
+        # The adjusted scanner mean is therefore the mean
+        # predicted value if every exact sample/timepoint
+        # had been measured by this scanner.
 
         x_bar = (
             X_new.mean(
@@ -1158,6 +1181,9 @@ for variable, label in METRICS.items():
         )
 
 
+        # Variance of the adjusted mean using the
+        # cluster-robust covariance matrix.
+
         variance = float(
             x_bar
             @ covariance.to_numpy()
@@ -1168,6 +1194,7 @@ for variable, label in METRICS.items():
             variance,
             0.0,
         )
+
 
         standard_error = (
             np.sqrt(
@@ -1212,7 +1239,6 @@ for variable, label in METRICS.items():
             * standard_error,
 
         })
-
 
     # ========================================================
     # MODEL DIAGNOSTICS

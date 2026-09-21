@@ -17,7 +17,7 @@ from scipy.spatial import ConvexHull, QhullError
 # ============================================================
 
 DATA_ROOT = Path(
-    r"C:\Users\au662213\repos\biocad3d\data"
+    r"C:\Users\johan\repos\biocal3d\data"
     r"\02-09-2026-Data collected"
 )
 
