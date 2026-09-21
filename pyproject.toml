@@ -3,7 +3,7 @@ requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "biocad3d"
+name = "biocal3d"
 version = "0.1.0"
 description = "Processing and analysis of intraoral scanner 3D data for dental plaque quantification"
 requires-python = ">=3.11"
@@ -17,8 +17,10 @@ dependencies = [
     "scikit-image",
     "open3d",
     "notebook",
-    
-]
+    "pyvista",
+    "statsmodels",
+    "openpyxl",
+        ]
 
-[tool.setuptools.packages.find]
-include = ["biocand3d"]
+[tool.setuptools]
+packages = []

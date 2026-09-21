@@ -19,7 +19,7 @@ from skimage.color import deltaE_ciede2000
 # ============================================================
 
 DATA_ROOT = Path(
-    r"C:\Users\au662213\repos\biocal3d\data\02-09-2026-Data collected"
+    r"C:\Users\johan\repos\biocal3d\data\02-09-2026-Data collected"
 )
 
 RAW_ANALYSIS_ROOT = DATA_ROOT / "_raw_color_analysis"

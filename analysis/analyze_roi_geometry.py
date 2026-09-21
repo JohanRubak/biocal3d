@@ -118,7 +118,7 @@ except ImportError:  # VTK fallback below keeps geometry analysis usable.
 # ============================================================================
 
 DEFAULT_DATA_ROOT = Path(
-    r"C:\Users\au662213\repos\biocal3d\data\02-09-2026-Data collected"
+    r"C:\Users\johan\repos\biocal3d\data\02-09-2026-Data collected"
 )
 
 SCANNER_ORDER = [

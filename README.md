@@ -49,6 +49,6 @@ Raw research data are not stored in this repository.
 Create the Conda environment:
 
 ```bash
-conda create -n biocad3d python=3.11
-conda activate biocad3d
+conda create -n biocal3d python=3.11
+conda activate biocal3d
 pip install -e .
