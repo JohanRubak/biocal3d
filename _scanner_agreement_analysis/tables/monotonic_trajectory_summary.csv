@@ -1,0 +1,21 @@
+﻿feature,feature_label,role,scanner,n_complete_trajectories,fraction_expected_baseline_to_partial,fraction_expected_partial_to_clean,fraction_expected_baseline_to_clean,fraction_fully_monotonic
+color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,ALL_SCANNERS_MEDIAN,16,1.0,1.0,1.0,1.0
+color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,LABscanner,16,0.625,1.0,0.9375,0.625
+color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,TRIOS3,16,1.0,1.0,1.0,1.0
+color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,TRIOS5,15,1.0,1.0,1.0,1.0
+color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,iTERO,16,1.0,1.0,1.0,1.0
+lab_L_mean,Mean L* (lightness),SECONDARY,ALL_SCANNERS_MEDIAN,16,1.0,0.9375,1.0,0.9375
+lab_L_mean,Mean L* (lightness),SECONDARY,LABscanner,16,0.0625,1.0,0.4375,0.0625
+lab_L_mean,Mean L* (lightness),SECONDARY,TRIOS3,16,0.9375,1.0,1.0,0.9375
+lab_L_mean,Mean L* (lightness),SECONDARY,TRIOS5,15,1.0,1.0,1.0,1.0
+lab_L_mean,Mean L* (lightness),SECONDARY,iTERO,16,1.0,0.8125,1.0,0.8125
+lab_a_mean,Mean a* (redness),PRIMARY,ALL_SCANNERS_MEDIAN,16,1.0,1.0,1.0,1.0
+lab_a_mean,Mean a* (redness),PRIMARY,LABscanner,16,0.5625,0.875,1.0,0.4375
+lab_a_mean,Mean a* (redness),PRIMARY,TRIOS3,16,1.0,1.0,1.0,1.0
+lab_a_mean,Mean a* (redness),PRIMARY,TRIOS5,15,1.0,1.0,1.0,1.0
+lab_a_mean,Mean a* (redness),PRIMARY,iTERO,16,1.0,0.9375,1.0,0.9375
+lab_chroma_mean,Mean C*ab (chroma),PRIMARY,ALL_SCANNERS_MEDIAN,16,1.0,1.0,1.0,1.0
+lab_chroma_mean,Mean C*ab (chroma),PRIMARY,LABscanner,16,0.5625,0.8125,1.0,0.375
+lab_chroma_mean,Mean C*ab (chroma),PRIMARY,TRIOS3,16,1.0,1.0,1.0,1.0
+lab_chroma_mean,Mean C*ab (chroma),PRIMARY,TRIOS5,15,1.0,1.0,1.0,1.0
+lab_chroma_mean,Mean C*ab (chroma),PRIMARY,iTERO,16,1.0,0.9375,1.0,0.9375

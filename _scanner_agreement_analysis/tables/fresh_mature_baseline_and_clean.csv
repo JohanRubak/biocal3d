@@ -1,0 +1,9 @@
+﻿feature,feature_label,stage,n_fresh_samples,n_mature_samples,median_fresh,median_mature,median_difference_mature_minus_fresh,mann_whitney_p,note,mann_whitney_p_holm
+lab_a_mean,Mean a* (redness),Baseline,16,16,41.98192085978386,43.26973916820066,1.2878183084167958,0.003090599405991815,"Unadjusted physical-sample medians, exploratory; group and session may be confounded",0.01854359643595089
+lab_a_mean,Mean a* (redness),Clean,16,16,32.628317372144686,32.48280140673903,-0.14551596540565725,1.0,"Unadjusted physical-sample medians, exploratory; group and session may be confounded",1.0
+lab_chroma_mean,Mean C*ab (chroma),Baseline,16,16,47.493911539049904,47.6220553060039,0.12814376695399687,0.8653246192630564,"Unadjusted physical-sample medians, exploratory; group and session may be confounded",1.0
+lab_chroma_mean,Mean C*ab (chroma),Clean,16,16,39.68857577981956,37.63734987931541,-2.05122590050415,0.0364622319614922,"Unadjusted physical-sample medians, exploratory; group and session may be confounded",0.18231115980746102
+color_cluster_1_fraction,Reddest-cluster fraction,Baseline,16,16,0.4336815775494408,0.7120722085373522,0.2783906309879114,0.00011195068382782738,"Unadjusted physical-sample medians, exploratory; group and session may be confounded",0.0008956054706226191
+color_cluster_1_fraction,Reddest-cluster fraction,Clean,16,16,0.0,0.0,0.0,0.34850142376108484,"Unadjusted physical-sample medians, exploratory; group and session may be confounded",1.0
+lab_L_mean,Mean L* (lightness),Baseline,16,16,50.3279409483066,49.02064925572185,-1.307291692584748,0.00064761400221939,"Unadjusted physical-sample medians, exploratory; group and session may be confounded",0.00453329801553573
+lab_L_mean,Mean L* (lightness),Clean,16,16,55.73876116620358,55.378087766398586,-0.3606733998049947,0.8064734910574618,"Unadjusted physical-sample medians, exploratory; group and session may be confounded",1.0

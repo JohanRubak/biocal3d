@@ -1,0 +1,317 @@
+﻿physical_sample_id,scanner,feature,feature_label,role,expected_direction,baseline,partial,clean,expected_baseline_to_partial,expected_partial_to_clean,expected_baseline_to_clean,fully_monotonic
+BCG3-1,LABscanner,lab_a_mean,Mean a* (redness),PRIMARY,decrease,34.760935313161816,32.50960654451993,30.15792593757208,True,True,True,True
+BCG3-1,TRIOS3,lab_a_mean,Mean a* (redness),PRIMARY,decrease,48.4958945964547,42.45209834928147,38.36594641021581,True,True,True,True
+BCG3-1,TRIOS5,lab_a_mean,Mean a* (redness),PRIMARY,decrease,40.52784631623146,34.08099811989661,28.027213307194693,True,True,True,True
+BCG3-1,iTERO,lab_a_mean,Mean a* (redness),PRIMARY,decrease,55.70636393352476,46.090959124190526,41.797436222373925,True,True,True,True
+BCG3-2,LABscanner,lab_a_mean,Mean a* (redness),PRIMARY,decrease,38.17024567327385,34.49619799366984,32.9351088524685,True,True,True,True
+BCG3-2,TRIOS3,lab_a_mean,Mean a* (redness),PRIMARY,decrease,47.00711696709815,43.32275917972227,38.34438567273778,True,True,True,True
+BCG3-2,TRIOS5,lab_a_mean,Mean a* (redness),PRIMARY,decrease,39.48501363770608,35.04034891160269,27.73271916540019,True,True,True,True
+BCG3-2,iTERO,lab_a_mean,Mean a* (redness),PRIMARY,decrease,50.54215385115292,45.91835219969849,40.41301323588603,True,True,True,True
+BCG3-3,LABscanner,lab_a_mean,Mean a* (redness),PRIMARY,decrease,34.92656448153354,31.13882730197501,29.240354526799223,True,True,True,True
+BCG3-3,TRIOS3,lab_a_mean,Mean a* (redness),PRIMARY,decrease,45.51755083105596,42.68540166283467,37.22928270977444,True,True,True,True
+BCG3-3,TRIOS5,lab_a_mean,Mean a* (redness),PRIMARY,decrease,39.77185138714556,34.09915237171917,28.72244220822035,True,True,True,True
+BCG3-3,iTERO,lab_a_mean,Mean a* (redness),PRIMARY,decrease,51.54303880820778,43.75545457001674,41.67941472090825,True,True,True,True
+BCG3-4,LABscanner,lab_a_mean,Mean a* (redness),PRIMARY,decrease,34.29557898646743,33.503803132503094,28.468115882306066,True,True,True,True
+BCG3-4,TRIOS3,lab_a_mean,Mean a* (redness),PRIMARY,decrease,44.55611567751488,44.5506304937126,36.44602615383717,True,True,True,True
+BCG3-4,TRIOS5,lab_a_mean,Mean a* (redness),PRIMARY,decrease,39.39971616440198,35.7387058928052,27.920250570464244,True,True,True,True
+BCG3-4,iTERO,lab_a_mean,Mean a* (redness),PRIMARY,decrease,51.6423403387826,48.91196673436283,40.72439713744614,True,True,True,True
+BCG3-5,LABscanner,lab_a_mean,Mean a* (redness),PRIMARY,decrease,36.4811657954511,29.342164951280207,30.252445851434103,True,False,True,False
+BCG3-5,TRIOS3,lab_a_mean,Mean a* (redness),PRIMARY,decrease,43.328145252425806,41.09863385294635,36.99755997354348,True,True,True,True
+BCG3-5,TRIOS5,lab_a_mean,Mean a* (redness),PRIMARY,decrease,39.36673524901602,32.352921993081026,28.751046918615668,True,True,True,True
+BCG3-5,iTERO,lab_a_mean,Mean a* (redness),PRIMARY,decrease,50.3103617055221,46.36813444607444,41.66485634281212,True,True,True,True
+BCG3-6,LABscanner,lab_a_mean,Mean a* (redness),PRIMARY,decrease,34.458148279921446,28.976640565338297,27.930058109230394,True,True,True,True
+BCG3-6,TRIOS3,lab_a_mean,Mean a* (redness),PRIMARY,decrease,44.28065506438982,38.13543925341784,36.686014603017696,True,True,True,True
+BCG3-6,TRIOS5,lab_a_mean,Mean a* (redness),PRIMARY,decrease,40.007648932976,28.860163726181234,28.331048987795185,True,True,True,True
+BCG3-6,iTERO,lab_a_mean,Mean a* (redness),PRIMARY,decrease,50.70098665966429,42.78181739159549,41.019809736216814,True,True,True,True
+BCG3-7,LABscanner,lab_a_mean,Mean a* (redness),PRIMARY,decrease,35.472945622944515,29.54819089745394,31.216869051116003,True,False,True,False
+BCG3-7,TRIOS3,lab_a_mean,Mean a* (redness),PRIMARY,decrease,45.00733194978173,40.46536305962412,36.56275993540826,True,True,True,True
+BCG3-7,TRIOS5,lab_a_mean,Mean a* (redness),PRIMARY,decrease,38.78199412193584,31.05662774971844,29.28169228252207,True,True,True,True
+BCG3-7,iTERO,lab_a_mean,Mean a* (redness),PRIMARY,decrease,49.52441947209276,44.0328336593481,39.77914761107184,True,True,True,True
+BCG3-8,LABscanner,lab_a_mean,Mean a* (redness),PRIMARY,decrease,35.554034436354144,30.36114261187772,30.211643367933803,True,True,True,True
+BCG3-8,TRIOS3,lab_a_mean,Mean a* (redness),PRIMARY,decrease,43.82194745023343,42.2094535353086,38.70725995579443,True,True,True,True
+BCG3-8,TRIOS5,lab_a_mean,Mean a* (redness),PRIMARY,decrease,41.259951558434025,32.23327806745064,30.144211978762623,True,True,True,True
+BCG3-8,iTERO,lab_a_mean,Mean a* (redness),PRIMARY,decrease,50.04723022629347,45.21435672681407,41.90451077806394,True,True,True,True
+BCG4-1,LABscanner,lab_a_mean,Mean a* (redness),PRIMARY,decrease,31.18601942553443,34.066427570220206,20.017373384537528,False,True,True,False
+BCG4-1,TRIOS3,lab_a_mean,Mean a* (redness),PRIMARY,decrease,49.50490394089844,43.32438427070708,35.0777125605996,True,True,True,True
+BCG4-1,TRIOS5,lab_a_mean,Mean a* (redness),PRIMARY,decrease,42.493622346259805,36.186327041430935,26.151269860082323,True,True,True,True
+BCG4-1,iTERO,lab_a_mean,Mean a* (redness),PRIMARY,decrease,59.31043941017909,47.37019947674158,41.29152995233838,True,True,True,True
+BCG4-2,LABscanner,lab_a_mean,Mean a* (redness),PRIMARY,decrease,31.03158027111779,30.548509850105493,23.22328140111516,True,True,True,True
+BCG4-2,TRIOS3,lab_a_mean,Mean a* (redness),PRIMARY,decrease,47.45616370083978,38.97568708547113,35.452890995679894,True,True,True,True
+BCG4-2,iTERO,lab_a_mean,Mean a* (redness),PRIMARY,decrease,57.449008752167735,40.30319374450498,40.81063525321812,True,False,True,False
+BCG4-3,LABscanner,lab_a_mean,Mean a* (redness),PRIMARY,decrease,30.4988304000667,30.57535146965365,24.88085750189946,False,True,True,False
+BCG4-3,TRIOS3,lab_a_mean,Mean a* (redness),PRIMARY,decrease,46.65343206494879,39.15184919106522,34.73299420945194,True,True,True,True
+BCG4-3,TRIOS5,lab_a_mean,Mean a* (redness),PRIMARY,decrease,42.15707758171459,30.98573132615653,26.9276793695864,True,True,True,True
+BCG4-3,iTERO,lab_a_mean,Mean a* (redness),PRIMARY,decrease,55.97677446404669,43.7375697844308,39.07396001540774,True,True,True,True
+BCG4-4,LABscanner,lab_a_mean,Mean a* (redness),PRIMARY,decrease,28.35467235800628,32.82813458891943,23.645661027688213,False,True,True,False
+BCG4-4,TRIOS3,lab_a_mean,Mean a* (redness),PRIMARY,decrease,48.0321926920686,43.43097947820856,35.686340741439594,True,True,True,True
+BCG4-4,TRIOS5,lab_a_mean,Mean a* (redness),PRIMARY,decrease,42.48938749981864,35.74512655150903,26.12077251431569,True,True,True,True
+BCG4-4,iTERO,lab_a_mean,Mean a* (redness),PRIMARY,decrease,57.35970037198119,47.850448546464726,41.03052832397228,True,True,True,True
+BCG4-5,LABscanner,lab_a_mean,Mean a* (redness),PRIMARY,decrease,30.509580257414864,34.12340079905208,24.121074865998025,False,True,True,False
+BCG4-5,TRIOS3,lab_a_mean,Mean a* (redness),PRIMARY,decrease,45.698736638972,42.27227268741117,36.38208378546906,True,True,True,True
+BCG4-5,TRIOS5,lab_a_mean,Mean a* (redness),PRIMARY,decrease,39.83527387332792,34.49727278349507,27.14147711711714,True,True,True,True
+BCG4-5,iTERO,lab_a_mean,Mean a* (redness),PRIMARY,decrease,57.26986815398946,48.54363339715776,41.5015304056523,True,True,True,True
+BCG4-6,LABscanner,lab_a_mean,Mean a* (redness),PRIMARY,decrease,27.3289700549626,35.27816885264887,21.45749786637069,False,True,True,False
+BCG4-6,TRIOS3,lab_a_mean,Mean a* (redness),PRIMARY,decrease,46.793097297718525,44.89485297866668,35.31838951823795,True,True,True,True
+BCG4-6,TRIOS5,lab_a_mean,Mean a* (redness),PRIMARY,decrease,43.61836845580995,37.05200812529269,27.24167494271589,True,True,True,True
+BCG4-6,iTERO,lab_a_mean,Mean a* (redness),PRIMARY,decrease,54.27220373575207,50.731909002515074,39.31551067525521,True,True,True,True
+BCG4-7,LABscanner,lab_a_mean,Mean a* (redness),PRIMARY,decrease,28.1496864041246,32.80375014756729,24.540464378809787,False,True,True,False
+BCG4-7,TRIOS3,lab_a_mean,Mean a* (redness),PRIMARY,decrease,45.94146038133622,43.868050925568014,35.248967913359834,True,True,True,True
+BCG4-7,TRIOS5,lab_a_mean,Mean a* (redness),PRIMARY,decrease,42.163772575814,34.97970039276829,27.644432174261528,True,True,True,True
+BCG4-7,iTERO,lab_a_mean,Mean a* (redness),PRIMARY,decrease,59.22562393592244,49.6186265948552,42.9482441835932,True,True,True,True
+BCG4-8,LABscanner,lab_a_mean,Mean a* (redness),PRIMARY,decrease,28.644634454788417,34.201542547355345,23.91252200066845,False,True,True,False
+BCG4-8,TRIOS3,lab_a_mean,Mean a* (redness),PRIMARY,decrease,46.31587880602031,45.50573311993096,37.5955335295679,True,True,True,True
+BCG4-8,TRIOS5,lab_a_mean,Mean a* (redness),PRIMARY,decrease,40.91342311208472,37.49078742017564,28.636021264772573,True,True,True,True
+BCG4-8,iTERO,lab_a_mean,Mean a* (redness),PRIMARY,decrease,55.7275577922268,51.45028634283118,43.71140246342106,True,True,True,True
+BCG3-1,ALL_SCANNERS_MEDIAN,lab_a_mean,Mean a* (redness),PRIMARY,decrease,44.511870456343075,38.26654823458904,34.26193617389394,True,True,True,True
+BCG3-2,ALL_SCANNERS_MEDIAN,lab_a_mean,Mean a* (redness),PRIMARY,decrease,43.246065302402116,39.18155404566248,35.63974726260314,True,True,True,True
+BCG3-3,ALL_SCANNERS_MEDIAN,lab_a_mean,Mean a* (redness),PRIMARY,decrease,42.64470110910076,38.392277017276925,33.23481861828683,True,True,True,True
+BCG3-4,ALL_SCANNERS_MEDIAN,lab_a_mean,Mean a* (redness),PRIMARY,decrease,41.97791592095843,40.1446681932589,32.457071018071616,True,True,True,True
+BCG3-5,ALL_SCANNERS_MEDIAN,lab_a_mean,Mean a* (redness),PRIMARY,decrease,41.34744025072091,36.72577792301369,33.625002912488796,True,True,True,True
+BCG3-6,ALL_SCANNERS_MEDIAN,lab_a_mean,Mean a* (redness),PRIMARY,decrease,42.14415199868291,33.55603990937807,32.50853179540644,True,True,True,True
+BCG3-7,ALL_SCANNERS_MEDIAN,lab_a_mean,Mean a* (redness),PRIMARY,decrease,41.894663035858784,35.76099540467128,33.88981449326213,True,True,True,True
+BCG3-8,ALL_SCANNERS_MEDIAN,lab_a_mean,Mean a* (redness),PRIMARY,decrease,42.540949504333724,37.22136580137962,34.459451661864115,True,True,True,True
+BCG4-1,ALL_SCANNERS_MEDIAN,lab_a_mean,Mean a* (redness),PRIMARY,decrease,45.99926314357912,39.75535565606901,30.61449121034096,True,True,True,True
+BCG4-2,ALL_SCANNERS_MEDIAN,lab_a_mean,Mean a* (redness),PRIMARY,decrease,43.2934130339992,38.97568708547113,31.29733615531839,True,True,True,True
+BCG4-3,ALL_SCANNERS_MEDIAN,lab_a_mean,Mean a* (redness),PRIMARY,decrease,44.40525482333169,35.068790258610875,30.83033678951917,True,True,True,True
+BCG4-4,ALL_SCANNERS_MEDIAN,lab_a_mean,Mean a* (redness),PRIMARY,decrease,45.26079009594362,39.5880530148588,30.90355662787764,True,True,True,True
+BCG4-5,ALL_SCANNERS_MEDIAN,lab_a_mean,Mean a* (redness),PRIMARY,decrease,42.76700525614996,38.38477273545312,31.7617804512931,True,True,True,True
+BCG4-6,ALL_SCANNERS_MEDIAN,lab_a_mean,Mean a* (redness),PRIMARY,decrease,45.20573287676424,40.97343055197968,31.28003223047692,True,True,True,True
+BCG4-7,ALL_SCANNERS_MEDIAN,lab_a_mean,Mean a* (redness),PRIMARY,decrease,44.05261647857511,39.42387565916815,31.44670004381068,True,True,True,True
+BCG4-8,ALL_SCANNERS_MEDIAN,lab_a_mean,Mean a* (redness),PRIMARY,decrease,43.61465095905251,41.4982602700533,33.115777397170234,True,True,True,True
+BCG3-1,LABscanner,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,42.47056550064395,40.105079119180566,38.26485955106737,True,True,True,True
+BCG3-1,TRIOS3,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,54.34727155720616,46.30933349906871,42.26415042921884,True,True,True,True
+BCG3-1,TRIOS5,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,43.161435866574045,36.0289784763578,29.762123079819165,True,True,True,True
+BCG3-1,iTERO,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,57.7620456214623,47.563975327385975,43.15466982866426,True,True,True,True
+BCG3-2,LABscanner,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,47.56918821298019,42.93506889526114,42.16933364670292,True,True,True,True
+BCG3-2,TRIOS3,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,51.70186842670981,47.18644433966168,42.20830916829086,True,True,True,True
+BCG3-2,TRIOS5,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,41.43770758268685,36.86766611342794,29.46055597480201,True,True,True,True
+BCG3-2,iTERO,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,52.31229552633056,47.54149842954936,41.6580536786066,True,True,True,True
+BCG3-3,LABscanner,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,44.55683984644326,38.35463483909124,37.50999642808081,True,True,True,True
+BCG3-3,TRIOS3,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,51.147973064319686,46.77833749478827,41.617034678755445,True,True,True,True
+BCG3-3,TRIOS5,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,42.68436425380985,35.77410660779695,30.79340506260657,True,True,True,True
+BCG3-3,iTERO,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,54.53500198442544,45.34684335909992,43.24680538072646,True,True,True,True
+BCG3-4,LABscanner,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,43.73424379801752,40.3312413926008,36.47869924857471,True,True,True,True
+BCG3-4,TRIOS3,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,49.46741989966534,48.52818933954355,40.56902934033409,True,True,True,True
+BCG3-4,TRIOS5,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,41.8417060469048,37.52539454277121,29.85163336768537,True,True,True,True
+BCG3-4,iTERO,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,53.86876101418888,50.632418960636905,42.28713521113506,True,True,True,True
+BCG3-5,LABscanner,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,46.66178917005515,36.75527808671207,38.3089838457149,True,False,True,False
+BCG3-5,TRIOS3,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,48.5346858120551,45.07972108713078,40.789472114438944,True,True,True,True
+BCG3-5,TRIOS5,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,41.78386784558192,34.28821321478935,30.642384809773937,True,True,True,True
+BCG3-5,iTERO,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,52.73693431004591,47.88642135746337,43.14312731858529,True,True,True,True
+BCG3-6,LABscanner,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,44.03223370044244,36.891654977860846,36.21706898540174,True,True,True,True
+BCG3-6,TRIOS3,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,49.044584517069566,41.92817504007282,40.84127513770898,True,True,True,True
+BCG3-6,TRIOS5,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,42.53544071517434,30.61817022133073,30.02150966704468,True,True,True,True
+BCG3-6,iTERO,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,52.65704257111715,44.32198343720886,42.77087396177679,True,True,True,True
+BCG3-7,LABscanner,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,44.38465651131283,37.18241252868828,40.22819176132153,True,False,True,False
+BCG3-7,TRIOS3,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,49.73628247404709,44.5735146820561,40.4447232970649,True,True,True,True
+BCG3-7,TRIOS5,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,41.06564321231493,32.82974958867548,31.21933551982809,True,True,True,True
+BCG3-7,iTERO,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,51.45848810140564,45.47416438398156,41.28748296035336,True,True,True,True
+BCG3-8,LABscanner,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,46.4469776446127,38.1206433190871,38.27216469802624,True,False,True,False
+BCG3-8,TRIOS3,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,49.50261437668859,46.4196258592379,42.41968482674985,True,True,True,True
+BCG3-8,TRIOS5,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,44.63176389438238,33.823229176032015,31.965052255431367,True,True,True,True
+BCG3-8,iTERO,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,52.95498132463342,46.79380973449484,43.27880999086432,True,True,True,True
+BCG4-1,LABscanner,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,39.71814242588432,41.51727205891054,29.187333912508425,False,True,True,False
+BCG4-1,TRIOS3,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,52.89122817449625,46.81265483070716,39.30341404105236,True,True,True,True
+BCG4-1,TRIOS5,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,43.79217938433717,37.730163345980486,28.27718652229581,True,True,True,True
+BCG4-1,iTERO,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,60.48561782636045,48.38228264977254,43.08479165135015,True,True,True,True
+BCG4-2,LABscanner,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,39.36937550926484,39.627218272349324,32.29958955388548,False,True,True,False
+BCG4-2,TRIOS3,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,51.069184957528414,43.31341084424346,40.019072522762286,True,True,True,True
+BCG4-2,iTERO,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,58.8707406211729,42.242633623735614,42.80349243953047,True,False,True,False
+BCG4-3,LABscanner,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,40.51592731803051,38.90012711941034,34.441406952806425,True,True,True,True
+BCG4-3,TRIOS3,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,50.68775315458945,43.46700224580234,39.020296216850205,True,True,True,True
+BCG4-3,TRIOS5,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,44.60399308731588,33.30052380551857,29.301481272290864,True,True,True,True
+BCG4-3,iTERO,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,57.99075301579754,45.8404045550051,40.72224540786362,True,True,True,True
+BCG4-4,LABscanner,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,38.98047493043568,40.35434795347152,31.766906903803463,False,True,True,False
+BCG4-4,TRIOS3,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,52.90573906033207,47.553644060494776,39.90253948881739,True,True,True,True
+BCG4-4,TRIOS5,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,44.6280539648593,37.58360948166972,28.09564548788061,True,True,True,True
+BCG4-4,iTERO,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,59.28935660910528,49.51906782009412,42.68977039797519,True,True,True,True
+BCG4-5,LABscanner,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,38.7811343544162,42.35675925752231,32.67705915801893,False,True,True,False
+BCG4-5,TRIOS3,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,49.12564008300425,46.073102550923664,40.82461177033392,True,True,True,True
+BCG4-5,TRIOS5,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,41.71146586968949,36.34865377018783,29.57815471495673,True,True,True,True
+BCG4-5,iTERO,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,58.74370840948076,50.00714129195062,43.78307849455018,True,True,True,True
+BCG4-6,LABscanner,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,39.8259092661913,43.0767138120524,29.094123398245223,False,True,True,False
+BCG4-6,TRIOS3,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,53.00208823052485,49.049565849042,38.78943451552551,True,True,True,True
+BCG4-6,TRIOS5,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,46.85453969279745,38.8831640498691,28.995791143486034,True,True,True,True
+BCG4-6,iTERO,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,57.5849044239156,52.27478817871649,40.91960204790099,True,True,True,True
+BCG4-7,LABscanner,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,37.163056721927845,40.88875583594201,33.46220561687745,False,True,True,False
+BCG4-7,TRIOS3,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,49.76191930350206,47.702266989634616,39.67482895190439,True,True,True,True
+BCG4-7,TRIOS5,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,43.9220647179758,36.59057267582797,30.03044179933812,True,True,True,True
+BCG4-7,iTERO,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,61.18290608107437,51.07259885455076,45.67236830004544,True,True,True,True
+BCG4-8,LABscanner,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,39.425392144295,41.25653935042708,30.87348508666883,False,True,True,False
+BCG4-8,TRIOS3,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,50.35184327316273,50.16229497189405,41.49288982143453,True,True,True,True
+BCG4-8,TRIOS5,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,43.12096253304193,39.59249710379138,30.549750909630383,True,True,True,True
+BCG4-8,iTERO,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,57.86034202697534,53.4180773458775,45.56663157412203,True,True,True,True
+BCG3-1,ALL_SCANNERS_MEDIAN,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,48.754353711890104,43.207206309124636,40.2645049901431,True,True,True,True
+BCG3-2,ALL_SCANNERS_MEDIAN,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,49.635528319844994,45.06075661746141,41.91369366265476,True,True,True,True
+BCG3-3,ALL_SCANNERS_MEDIAN,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,47.85240645538147,41.85073909909558,39.56351555341813,True,True,True,True
+BCG3-4,ALL_SCANNERS_MEDIAN,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,46.60083184884143,44.42971536607217,38.5238642944544,True,True,True,True
+BCG3-5,ALL_SCANNERS_MEDIAN,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,47.59823749105513,40.91749958692142,39.54922798007692,True,True,True,True
+BCG3-6,ALL_SCANNERS_MEDIAN,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,46.538409108756,39.409915008966834,38.52917206155536,True,True,True,True
+BCG3-7,ALL_SCANNERS_MEDIAN,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,47.06046949267996,40.87796360537219,40.33645752919321,True,True,True,True
+BCG3-8,ALL_SCANNERS_MEDIAN,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,47.97479601065065,42.270134589162495,40.345924762388044,True,True,True,True
+BCG4-1,ALL_SCANNERS_MEDIAN,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,48.341703779416704,44.16496344480885,34.24537397678039,True,True,True,True
+BCG4-2,ALL_SCANNERS_MEDIAN,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,46.21802916069825,42.242633623735614,36.159331038323884,True,True,True,True
+BCG4-3,ALL_SCANNERS_MEDIAN,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,47.645873120952665,41.183564682606345,36.730851584828315,True,True,True,True
+BCG4-4,ALL_SCANNERS_MEDIAN,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,48.76689651259568,43.95399600698315,35.83472319631043,True,True,True,True
+BCG4-5,ALL_SCANNERS_MEDIAN,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,45.418552976346874,44.21493090422299,36.75083546417642,True,True,True,True
+BCG4-6,ALL_SCANNERS_MEDIAN,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,49.928313961661146,46.0631398305472,33.941778956885365,True,True,True,True
+BCG4-7,ALL_SCANNERS_MEDIAN,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,46.841992010738934,44.295511412788315,36.56851728439092,True,True,True,True
+BCG4-8,ALL_SCANNERS_MEDIAN,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,46.73640290310233,45.709417161160566,36.18318745405168,True,True,True,True
+BCG3-1,LABscanner,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.3683284101485048,0.1853962310228336,0.0013480294980572,True,True,True,True
+BCG3-1,TRIOS3,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.9883254593175852,0.0704918388138642,0.0,True,True,True,True
+BCG3-1,TRIOS5,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.8711376034711544,0.049289501590668,0.0,True,True,True,True
+BCG3-1,iTERO,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.8374544481274835,0.0668088130774697,0.0,True,True,True,True
+BCG3-2,LABscanner,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.8587869107588975,0.4768838433695294,0.2280548727301562,True,True,True,True
+BCG3-2,TRIOS3,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.6635291746447647,0.1514419632805944,0.0,True,True,True,True
+BCG3-2,TRIOS5,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.7729034129763558,0.1886760823100456,0.0,True,True,True,True
+BCG3-2,iTERO,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.2583055786844296,0.1348917223234163,0.0,True,True,True,True
+BCG3-3,LABscanner,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.5745336061828225,0.0570759812747569,0.0,True,True,True,True
+BCG3-3,TRIOS3,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.8494334188943843,0.0840107219909778,0.0,True,True,True,True
+BCG3-3,TRIOS5,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.8373226403454658,0.1117486338797814,0.0,True,True,True,True
+BCG3-3,iTERO,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.2972342066320682,0.0319901820413172,0.0,True,True,True,True
+BCG3-4,LABscanner,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.5278562777553493,0.1958897141113033,0.0,True,True,True,True
+BCG3-4,TRIOS3,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.3430011313380643,0.2369022982245942,0.0,True,True,True,True
+BCG3-4,TRIOS5,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.6827941299091137,0.2321639486935079,0.0,True,True,True,True
+BCG3-4,iTERO,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.3875341010849872,0.193004061878835,0.0,True,True,True,True
+BCG3-5,LABscanner,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.7949880620372786,0.0765916997006714,0.0159811473948947,True,True,True,True
+BCG3-5,TRIOS3,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.7002239499704217,0.0836355290337388,0.0,True,True,True,True
+BCG3-5,TRIOS5,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.879923110674662,0.0850154099926205,0.0,True,True,True,True
+BCG3-5,iTERO,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.1097819010416666,0.0899818359647897,0.0,True,True,True,True
+BCG3-6,LABscanner,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.5241849734175945,0.0081801247266542,0.0,True,True,True,True
+BCG3-6,TRIOS3,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.1973626465486614,0.0001696424784766,0.0,True,True,True,True
+BCG3-6,TRIOS5,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.5721502804354999,0.0001882175795219,0.0,True,True,True,True
+BCG3-6,iTERO,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.427331256490135,0.0044126340680685,0.0,True,True,True,True
+BCG3-7,LABscanner,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.574676103646833,0.0218058056473474,0.0208189032475114,True,True,True,True
+BCG3-7,TRIOS3,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.3949524476100292,0.0043395101083849,0.0,True,True,True,True
+BCG3-7,TRIOS5,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.4790446712397523,0.0026378647834666,0.0,True,True,True,True
+BCG3-7,iTERO,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.1021644500611823,0.0061632322729253,0.0,True,True,True,True
+BCG3-8,LABscanner,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.7378220611916264,0.1146698219057916,0.0007203457659676,True,True,True,True
+BCG3-8,TRIOS3,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.3125606157528734,0.0803441399861089,0.0,True,True,True,True
+BCG3-8,TRIOS5,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.7757965013098961,0.0614900584294672,0.0,True,True,True,True
+BCG3-8,iTERO,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.0800726807210257,0.0437863260150746,0.0,True,True,True,True
+BCG4-1,LABscanner,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.0614597178963239,0.3587557463699143,0.0,False,True,True,False
+BCG4-1,TRIOS3,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.9999794162446995,0.0895425367676931,0.0,True,True,True,True
+BCG4-1,TRIOS5,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.9826430379746836,0.2012677967474735,0.0,True,True,True,True
+BCG4-1,iTERO,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.9965771293803352,0.0946988676220062,0.0,True,True,True,True
+BCG4-2,LABscanner,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.079063666633034,0.0161047107786959,0.0,True,True,True,True
+BCG4-2,TRIOS3,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.4916932371203222,0.0276778300581234,0.0,True,True,True,True
+BCG4-2,iTERO,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.9543750916057706,0.0090071219103477,0.0,True,True,True,True
+BCG4-3,LABscanner,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.1110095934216537,0.1085036174704351,0.0,True,True,True,True
+BCG4-3,TRIOS3,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.5829651349614395,0.0679082298103444,0.0,True,True,True,True
+BCG4-3,TRIOS5,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.9851661763785442,0.0786798871556588,0.0,True,True,True,True
+BCG4-3,iTERO,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.9559492554662604,0.059589737207807,0.0,True,True,True,True
+BCG4-4,LABscanner,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.0015271216810555,0.2064154743422984,0.0,False,True,True,False
+BCG4-4,TRIOS3,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.9905849570412276,0.2322408026755852,0.0,True,True,True,True
+BCG4-4,TRIOS5,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.999414470932664,0.2830892541195028,0.0,True,True,True,True
+BCG4-4,iTERO,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.970037153929128,0.214115748308469,0.0,True,True,True,True
+BCG4-5,LABscanner,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.000913427382523,0.4663204122967092,0.0,False,True,True,False
+BCG4-5,TRIOS3,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.0459656778416481,0.0266849581802894,0.0,True,True,True,True
+BCG4-5,TRIOS5,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.6007057047869628,0.1136511552229092,0.0,True,True,True,True
+BCG4-5,iTERO,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.9662399070345216,0.1182477828540714,0.0,True,True,True,True
+BCG4-6,LABscanner,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.000518775689373,0.4693344655556735,0.0,False,True,True,False
+BCG4-6,TRIOS3,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.9457953394123608,0.2700505243493398,0.0,True,True,True,True
+BCG4-6,TRIOS5,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.999851193639591,0.3307616264076334,0.0,True,True,True,True
+BCG4-6,iTERO,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.7479398138657701,0.3061388849739263,0.0,True,True,True,True
+BCG4-7,LABscanner,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.0,0.2385033822437222,0.0,False,True,False,False
+BCG4-7,TRIOS3,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.2480781089414183,0.1735699779996615,0.0,True,True,True,True
+BCG4-7,TRIOS5,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.9832198244030524,0.1672668902928405,0.0,True,True,True,True
+BCG4-7,iTERO,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.9945091818680984,0.2017085324926268,0.0,True,True,True,True
+BCG4-8,LABscanner,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.0004431017119838,0.261010153269094,0.0,False,True,True,False
+BCG4-8,TRIOS3,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.6828522351166786,0.4354684926757389,0.0,True,True,True,True
+BCG4-8,TRIOS5,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.9181210036507904,0.4082481225338368,0.0,True,True,True,True
+BCG4-8,iTERO,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.9537597578461048,0.3843865236339255,0.0,True,True,True,True
+BCG3-1,ALL_SCANNERS_MEDIAN,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.854296025799319,0.06865032594566695,0.0,True,True,True,True
+BCG3-2,ALL_SCANNERS_MEDIAN,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.7182162938105603,0.17005902279531998,0.0,True,True,True,True
+BCG3-3,ALL_SCANNERS_MEDIAN,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.7059281232641441,0.07054335163286735,0.0,True,True,True,True
+BCG3-4,ALL_SCANNERS_MEDIAN,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.45769518942016824,0.21402683140240558,0.0,True,True,True,True
+BCG3-5,ALL_SCANNERS_MEDIAN,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.7476060060038501,0.08432546951317965,0.0,True,True,True,True
+BCG3-6,ALL_SCANNERS_MEDIAN,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.4757581149538648,0.0023004258237952,0.0,True,True,True,True
+BCG3-7,ALL_SCANNERS_MEDIAN,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.43699855942489074,0.0052513711906551006,0.0,True,True,True,True
+BCG3-8,ALL_SCANNERS_MEDIAN,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.52519133847225,0.07091709920778805,0.0,True,True,True,True
+BCG4-1,ALL_SCANNERS_MEDIAN,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.9896100836775094,0.14798333218473986,0.0,True,True,True,True
+BCG4-2,ALL_SCANNERS_MEDIAN,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.5585729932720478,0.0161047107786959,0.0,True,True,True,True
+BCG4-3,ALL_SCANNERS_MEDIAN,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.76945719521385,0.0732940584830016,0.0,True,True,True,True
+BCG4-4,ALL_SCANNERS_MEDIAN,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.9803110554851778,0.2231782754920271,0.0,True,True,True,True
+BCG4-5,ALL_SCANNERS_MEDIAN,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.32333569131430545,0.1159494690384903,0.0,True,True,True,True
+BCG4-6,ALL_SCANNERS_MEDIAN,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.8468675766390654,0.31845025569077984,0.0,True,True,True,True
+BCG4-7,ALL_SCANNERS_MEDIAN,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.6156489666722353,0.18763925524614417,0.0,True,True,True,True
+BCG4-8,ALL_SCANNERS_MEDIAN,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.8004866193837346,0.3963173230838811,0.0,True,True,True,True
+BCG3-1,LABscanner,lab_L_mean,Mean L* (lightness),SECONDARY,increase,53.49922443927445,54.135724809453706,54.88844528351633,True,True,True,True
+BCG3-1,TRIOS3,lab_L_mean,Mean L* (lightness),SECONDARY,increase,46.011223325382936,52.74357079352836,55.30552934413466,True,True,True,True
+BCG3-1,TRIOS5,lab_L_mean,Mean L* (lightness),SECONDARY,increase,49.29560772910097,55.61388035921817,56.889650994425,True,True,True,True
+BCG3-1,iTERO,lab_L_mean,Mean L* (lightness),SECONDARY,increase,46.58082892625435,53.31804121672606,55.6663930881025,True,True,True,True
+BCG3-2,LABscanner,lab_L_mean,Mean L* (lightness),SECONDARY,increase,55.545845806609904,55.5163315912917,56.3080146835374,False,True,True,False
+BCG3-2,TRIOS3,lab_L_mean,Mean L* (lightness),SECONDARY,increase,48.32898712342292,52.51822190148167,54.68317811080277,True,True,True,True
+BCG3-2,TRIOS5,lab_L_mean,Mean L* (lightness),SECONDARY,increase,47.78101404874441,53.92686292399819,55.857250522554416,True,True,True,True
+BCG3-2,iTERO,lab_L_mean,Mean L* (lightness),SECONDARY,increase,47.81171811715949,50.64969465100071,51.97919822016248,True,True,True,True
+BCG3-3,LABscanner,lab_L_mean,Mean L* (lightness),SECONDARY,increase,55.42219856901265,53.31061142665372,54.78050021877481,False,True,False,False
+BCG3-3,TRIOS3,lab_L_mean,Mean L* (lightness),SECONDARY,increase,47.53098283800139,51.87623368227322,54.28633466417867,True,True,True,True
+BCG3-3,TRIOS5,lab_L_mean,Mean L* (lightness),SECONDARY,increase,49.39142994404288,53.24486929195935,56.98540068980155,True,True,True,True
+BCG3-3,iTERO,lab_L_mean,Mean L* (lightness),SECONDARY,increase,48.02579983376673,49.12975981430522,56.80438142120776,True,True,True,True
+BCG3-4,LABscanner,lab_L_mean,Mean L* (lightness),SECONDARY,increase,55.35484545879002,53.36059364767063,54.67875619257046,False,True,False,False
+BCG3-4,TRIOS3,lab_L_mean,Mean L* (lightness),SECONDARY,increase,49.09387293450896,50.34661416426321,55.06339062982341,True,True,True,True
+BCG3-4,TRIOS5,lab_L_mean,Mean L* (lightness),SECONDARY,increase,50.45523303588783,52.293662431889935,55.60534428642536,True,True,True,True
+BCG3-4,iTERO,lab_L_mean,Mean L* (lightness),SECONDARY,increase,49.18437493287507,52.38183853020345,54.349759215841424,True,True,True,True
+BCG3-5,LABscanner,lab_L_mean,Mean L* (lightness),SECONDARY,increase,56.56325976187494,53.71123240326573,54.48361583624707,False,True,False,False
+BCG3-5,TRIOS3,lab_L_mean,Mean L* (lightness),SECONDARY,increase,46.55769023560174,52.14881409890398,53.253533851152326,True,True,True,True
+BCG3-5,TRIOS5,lab_L_mean,Mean L* (lightness),SECONDARY,increase,48.715216423213775,54.33017085795908,55.03257897201904,True,True,True,True
+BCG3-5,iTERO,lab_L_mean,Mean L* (lightness),SECONDARY,increase,51.576256666960525,55.78065432547137,53.4395284327849,True,False,True,False
+BCG3-6,LABscanner,lab_L_mean,Mean L* (lightness),SECONDARY,increase,55.72152821303534,54.74596733713603,55.079855596910846,False,True,False,False
+BCG3-6,TRIOS3,lab_L_mean,Mean L* (lightness),SECONDARY,increase,49.53069200758966,53.22641734468934,53.59670675103015,True,True,True,True
+BCG3-6,TRIOS5,lab_L_mean,Mean L* (lightness),SECONDARY,increase,51.93883414404211,55.2541023690893,55.439476520610384,True,True,True,True
+BCG3-6,iTERO,lab_L_mean,Mean L* (lightness),SECONDARY,increase,46.66780012948856,53.665035565151214,55.52723494072045,True,True,True,True
+BCG3-7,LABscanner,lab_L_mean,Mean L* (lightness),SECONDARY,increase,55.25435858632191,54.13519636758927,56.0675823074144,False,True,True,False
+BCG3-7,TRIOS3,lab_L_mean,Mean L* (lightness),SECONDARY,increase,48.6925900068458,53.38038775992488,54.087517847960434,True,True,True,True
+BCG3-7,TRIOS5,lab_L_mean,Mean L* (lightness),SECONDARY,increase,51.38738436727637,54.98425619534133,56.038800818714506,True,True,True,True
+BCG3-7,iTERO,lab_L_mean,Mean L* (lightness),SECONDARY,increase,47.79281542286648,53.557910484897015,53.05695443750832,True,False,True,False
+BCG3-8,LABscanner,lab_L_mean,Mean L* (lightness),SECONDARY,increase,57.038123898030406,54.38823397885084,54.75349845109309,False,True,False,False
+BCG3-8,TRIOS3,lab_L_mean,Mean L* (lightness),SECONDARY,increase,49.08699612320637,52.690603454572944,53.85696192022281,True,True,True,True
+BCG3-8,TRIOS5,lab_L_mean,Mean L* (lightness),SECONDARY,increase,49.08232937235348,54.134415881221344,55.28203305567117,True,True,True,True
+BCG3-8,iTERO,lab_L_mean,Mean L* (lightness),SECONDARY,increase,46.9129890720217,54.35088848573427,52.52952639897343,True,False,True,False
+BCG4-1,LABscanner,lab_L_mean,Mean L* (lightness),SECONDARY,increase,59.190951938141765,53.87495077003442,63.62110303420052,False,True,True,False
+BCG4-1,TRIOS3,lab_L_mean,Mean L* (lightness),SECONDARY,increase,44.72354271349205,51.254912145484106,56.02089837212596,True,True,True,True
+BCG4-1,TRIOS5,lab_L_mean,Mean L* (lightness),SECONDARY,increase,45.80010331439378,52.74258759776465,57.6605791580907,True,True,True,True
+BCG4-1,iTERO,lab_L_mean,Mean L* (lightness),SECONDARY,increase,46.57515119400234,50.70127145996402,57.92257123941636,True,True,True,True
+BCG4-2,LABscanner,lab_L_mean,Mean L* (lightness),SECONDARY,increase,60.293707860859854,54.986492078548594,62.677181904827336,False,True,True,False
+BCG4-2,TRIOS3,lab_L_mean,Mean L* (lightness),SECONDARY,increase,48.85603331175847,53.42502154210607,54.51158978653682,True,True,True,True
+BCG4-2,iTERO,lab_L_mean,Mean L* (lightness),SECONDARY,increase,44.82202611794936,48.82871974016063,53.612455516114046,True,True,True,True
+BCG4-3,LABscanner,lab_L_mean,Mean L* (lightness),SECONDARY,increase,61.91335023428361,54.2067239985143,63.50818110672107,False,True,True,False
+BCG4-3,TRIOS3,lab_L_mean,Mean L* (lightness),SECONDARY,increase,48.166533021023554,51.55792044007133,53.99443757382282,True,True,True,True
+BCG4-3,TRIOS5,lab_L_mean,Mean L* (lightness),SECONDARY,increase,45.95692579241776,53.43707974678944,56.1089798819817,True,True,True,True
+BCG4-3,iTERO,lab_L_mean,Mean L* (lightness),SECONDARY,increase,49.746738506303984,52.59091326145779,52.98299154001457,True,True,True,True
+BCG4-4,LABscanner,lab_L_mean,Mean L* (lightness),SECONDARY,increase,63.75996913183786,53.775191743439095,61.77425131283486,False,True,False,False
+BCG4-4,TRIOS3,lab_L_mean,Mean L* (lightness),SECONDARY,increase,44.83263793368428,50.03492582757567,55.87256700738589,True,True,True,True
+BCG4-4,TRIOS5,lab_L_mean,Mean L* (lightness),SECONDARY,increase,46.294601776360814,50.82012171268092,55.72061987578512,True,True,True,True
+BCG4-4,iTERO,lab_L_mean,Mean L* (lightness),SECONDARY,increase,49.508834804479655,49.52735613466197,55.39007360115655,True,True,True,True
+BCG4-5,LABscanner,lab_L_mean,Mean L* (lightness),SECONDARY,increase,62.41014806397879,54.85746515260284,62.18089578326977,False,True,False,False
+BCG4-5,TRIOS3,lab_L_mean,Mean L* (lightness),SECONDARY,increase,51.00145294965439,50.6928224234903,54.33594374417186,False,True,True,False
+BCG4-5,TRIOS5,lab_L_mean,Mean L* (lightness),SECONDARY,increase,50.61012731598769,52.77652797556296,56.40218921861766,True,True,True,True
+BCG4-5,iTERO,lab_L_mean,Mean L* (lightness),SECONDARY,increase,49.41874755683697,53.60040492609193,55.122087573588125,True,True,True,True
+BCG4-6,LABscanner,lab_L_mean,Mean L* (lightness),SECONDARY,increase,63.43710073844624,54.05817474149381,62.48829830523867,False,True,False,False
+BCG4-6,TRIOS3,lab_L_mean,Mean L* (lightness),SECONDARY,increase,46.448103996434256,53.066841569683234,55.62955882885659,True,True,True,True
+BCG4-6,TRIOS5,lab_L_mean,Mean L* (lightness),SECONDARY,increase,43.439304118634176,51.95313669031094,57.74026373971329,True,True,True,True
+BCG4-6,iTERO,lab_L_mean,Mean L* (lightness),SECONDARY,increase,46.20432053066429,51.43080980860225,54.084648942646375,True,True,True,True
+BCG4-7,LABscanner,lab_L_mean,Mean L* (lightness),SECONDARY,increase,61.80161849350314,54.38360509625421,62.17444737052466,False,True,True,False
+BCG4-7,TRIOS3,lab_L_mean,Mean L* (lightness),SECONDARY,increase,49.72968226040795,50.70622516184149,53.90607370382547,True,True,True,True
+BCG4-7,TRIOS5,lab_L_mean,Mean L* (lightness),SECONDARY,increase,46.11601027057327,51.89753579863492,56.76847803621144,True,True,True,True
+BCG4-7,iTERO,lab_L_mean,Mean L* (lightness),SECONDARY,increase,49.64995745872712,50.82974668207202,59.72002076210399,True,True,True,True
+BCG4-8,LABscanner,lab_L_mean,Mean L* (lightness),SECONDARY,increase,64.24159822112782,53.306589122938256,60.41879141504592,False,True,False,False
+BCG4-8,TRIOS3,lab_L_mean,Mean L* (lightness),SECONDARY,increase,47.35254310874133,48.99597079132318,54.74730742814869,True,True,True,True
+BCG4-8,TRIOS5,lab_L_mean,Mean L* (lightness),SECONDARY,increase,47.855141816585245,51.21710064175808,56.47188491914594,True,True,True,True
+BCG4-8,iTERO,lab_L_mean,Mean L* (lightness),SECONDARY,increase,46.61656934714673,50.87129629822749,55.05185568096682,True,True,True,True
+BCG3-1,ALL_SCANNERS_MEDIAN,lab_L_mean,Mean L* (lightness),SECONDARY,increase,47.93821832767766,53.72688301308988,55.48596121611858,True,True,True,True
+BCG3-2,ALL_SCANNERS_MEDIAN,lab_L_mean,Mean L* (lightness),SECONDARY,increase,48.0703526202912,53.22254241273993,55.27021431667859,True,True,True,True
+BCG3-3,ALL_SCANNERS_MEDIAN,lab_L_mean,Mean L* (lightness),SECONDARY,increase,48.708614888904805,52.560551487116285,55.792440819991285,True,True,True,True
+BCG3-4,ALL_SCANNERS_MEDIAN,lab_L_mean,Mean L* (lightness),SECONDARY,increase,49.81980398438145,52.3377504810467,54.87107341119693,True,True,True,True
+BCG3-5,ALL_SCANNERS_MEDIAN,lab_L_mean,Mean L* (lightness),SECONDARY,increase,50.145736545087146,54.02070163061241,53.96157213451598,True,False,True,False
+BCG3-6,ALL_SCANNERS_MEDIAN,lab_L_mean,Mean L* (lightness),SECONDARY,increase,50.734763075815884,54.20550145114362,55.259666058760615,True,True,True,True
+BCG3-7,ALL_SCANNERS_MEDIAN,lab_L_mean,Mean L* (lightness),SECONDARY,increase,50.03998718706109,53.84655342624315,55.06315933333747,True,True,True,True
+BCG3-8,ALL_SCANNERS_MEDIAN,lab_L_mean,Mean L* (lightness),SECONDARY,increase,49.08466274777992,54.2426521834778,54.30523018565795,True,True,True,True
+BCG4-1,ALL_SCANNERS_MEDIAN,lab_L_mean,Mean L* (lightness),SECONDARY,increase,46.18762725419806,51.998749871624376,57.79157519875353,True,True,True,True
+BCG4-2,ALL_SCANNERS_MEDIAN,lab_L_mean,Mean L* (lightness),SECONDARY,increase,49.43949656284896,53.42502154210607,55.0368121545185,True,True,True,True
+BCG4-3,ALL_SCANNERS_MEDIAN,lab_L_mean,Mean L* (lightness),SECONDARY,increase,48.95663576366377,53.01399650412362,55.051708727902266,True,True,True,True
+BCG4-4,ALL_SCANNERS_MEDIAN,lab_L_mean,Mean L* (lightness),SECONDARY,increase,47.901718290420234,50.427523770128296,55.7965934415855,True,True,True,True
+BCG4-5,ALL_SCANNERS_MEDIAN,lab_L_mean,Mean L* (lightness),SECONDARY,increase,50.805790132821045,53.18846645082745,55.76213839610289,True,True,True,True
+BCG4-6,ALL_SCANNERS_MEDIAN,lab_L_mean,Mean L* (lightness),SECONDARY,increase,46.32621226354927,52.50998912999709,56.68491128428494,True,True,True,True
+BCG4-7,ALL_SCANNERS_MEDIAN,lab_L_mean,Mean L* (lightness),SECONDARY,increase,49.689819859567535,51.36364124035347,58.24424939915772,True,True,True,True
+BCG4-8,ALL_SCANNERS_MEDIAN,lab_L_mean,Mean L* (lightness),SECONDARY,increase,47.60384246266329,51.044198469992786,55.76187030005638,True,True,True,True

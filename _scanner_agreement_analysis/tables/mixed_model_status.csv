@@ -1,0 +1,9 @@
+﻿feature,feature_label,model,fit_succeeded,converged,fit_method,error
+lab_a_mean,Mean a* (redness),fixed_stage_scanner_interaction,True,True,powell,
+lab_a_mean,Mean a* (redness),crossed_variance_components,True,True,lbfgs,
+lab_chroma_mean,Mean C*ab (chroma),fixed_stage_scanner_interaction,True,True,powell,
+lab_chroma_mean,Mean C*ab (chroma),crossed_variance_components,True,True,lbfgs,
+color_cluster_1_fraction,Reddest-cluster fraction,fixed_stage_scanner_interaction,True,True,powell,
+color_cluster_1_fraction,Reddest-cluster fraction,crossed_variance_components,True,False,lbfgs,
+lab_L_mean,Mean L* (lightness),fixed_stage_scanner_interaction,True,True,lbfgs,
+lab_L_mean,Mean L* (lightness),crossed_variance_components,True,True,lbfgs,
