@@ -1,0 +1,9 @@
+﻿feature,analysis,formula,n_rows,n_physical_samples,coefficient,ci95_low,ci95_high,p_value,status,p_value_holm
+lab_a_mean,baseline_severity_adjusted_for_scanner,"Q(""Baseline"") ~ C(growth_class) + C(scanner)",128,32,1.2416889286257122,0.6141900610171316,1.8691877962342929,0.00010516365707214651,ok,0.0007361455995050256
+lab_a_mean,clean_residual_adjusted_for_baseline_and_scanner,"Q(""Clean"") ~ Q(""Baseline"") + C(growth_class) + C(scanner)",128,32,-0.37189963785817254,-1.351259809787634,0.6074605340712889,0.45671221985955246,ok,1.0
+lab_chroma_mean,baseline_severity_adjusted_for_scanner,"Q(""Baseline"") ~ C(growth_class) + C(scanner)",128,32,0.5131897301031941,-0.05205495829365747,1.0784344185000458,0.07516348601229154,ok,0.45098091607374924
+lab_chroma_mean,clean_residual_adjusted_for_baseline_and_scanner,"Q(""Clean"") ~ Q(""Baseline"") + C(growth_class) + C(scanner)",128,32,-0.7418189517239072,-1.6349237081003665,0.15128580465255193,0.10353346040116342,ok,0.5176673020058171
+color_cluster_1_fraction,baseline_severity_adjusted_for_scanner,"Q(""Baseline"") ~ C(growth_class) + C(scanner)",128,32,0.17883898395274334,0.10296169893025527,0.2547162689752314,3.845962701405864e-06,ok,3.076770161124691e-05
+color_cluster_1_fraction,clean_residual_adjusted_for_baseline_and_scanner,"Q(""Clean"") ~ Q(""Baseline"") + C(growth_class) + C(scanner)",128,32,-0.0028330585235428842,-0.01179583796453638,0.006129720917450612,0.5355685930275186,ok,1.0
+lab_L_mean,baseline_severity_adjusted_for_scanner,"Q(""Baseline"") ~ C(growth_class) + C(scanner)",128,32,-0.26634258804402716,-0.9205839079622651,0.3878987318742107,0.42492610086284954,ok,1.0
+lab_L_mean,clean_residual_adjusted_for_baseline_and_scanner,"Q(""Clean"") ~ Q(""Baseline"") + C(growth_class) + C(scanner)",128,32,0.5738238919255731,-0.18966979150342278,1.337317575354569,0.14073409642197068,ok,0.5629363856878827

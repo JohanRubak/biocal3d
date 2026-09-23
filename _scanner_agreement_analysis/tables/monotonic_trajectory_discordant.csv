@@ -1,0 +1,48 @@
+﻿physical_sample_id,scanner,feature,feature_label,role,expected_direction,baseline,partial,clean,expected_baseline_to_partial,expected_partial_to_clean,expected_baseline_to_clean,fully_monotonic
+BCG3-5,LABscanner,lab_a_mean,Mean a* (redness),PRIMARY,decrease,36.4811657954511,29.342164951280207,30.252445851434103,True,False,True,False
+BCG3-7,LABscanner,lab_a_mean,Mean a* (redness),PRIMARY,decrease,35.472945622944515,29.54819089745394,31.216869051116003,True,False,True,False
+BCG4-1,LABscanner,lab_a_mean,Mean a* (redness),PRIMARY,decrease,31.18601942553443,34.066427570220206,20.017373384537528,False,True,True,False
+BCG4-2,iTERO,lab_a_mean,Mean a* (redness),PRIMARY,decrease,57.449008752167735,40.30319374450498,40.81063525321812,True,False,True,False
+BCG4-3,LABscanner,lab_a_mean,Mean a* (redness),PRIMARY,decrease,30.4988304000667,30.57535146965365,24.88085750189946,False,True,True,False
+BCG4-4,LABscanner,lab_a_mean,Mean a* (redness),PRIMARY,decrease,28.35467235800628,32.82813458891943,23.645661027688213,False,True,True,False
+BCG4-5,LABscanner,lab_a_mean,Mean a* (redness),PRIMARY,decrease,30.509580257414864,34.12340079905208,24.121074865998025,False,True,True,False
+BCG4-6,LABscanner,lab_a_mean,Mean a* (redness),PRIMARY,decrease,27.3289700549626,35.27816885264887,21.45749786637069,False,True,True,False
+BCG4-7,LABscanner,lab_a_mean,Mean a* (redness),PRIMARY,decrease,28.1496864041246,32.80375014756729,24.540464378809787,False,True,True,False
+BCG4-8,LABscanner,lab_a_mean,Mean a* (redness),PRIMARY,decrease,28.644634454788417,34.201542547355345,23.91252200066845,False,True,True,False
+BCG3-5,LABscanner,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,46.66178917005515,36.75527808671207,38.3089838457149,True,False,True,False
+BCG3-7,LABscanner,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,44.38465651131283,37.18241252868828,40.22819176132153,True,False,True,False
+BCG3-8,LABscanner,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,46.4469776446127,38.1206433190871,38.27216469802624,True,False,True,False
+BCG4-1,LABscanner,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,39.71814242588432,41.51727205891054,29.187333912508425,False,True,True,False
+BCG4-2,LABscanner,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,39.36937550926484,39.627218272349324,32.29958955388548,False,True,True,False
+BCG4-2,iTERO,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,58.8707406211729,42.242633623735614,42.80349243953047,True,False,True,False
+BCG4-4,LABscanner,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,38.98047493043568,40.35434795347152,31.766906903803463,False,True,True,False
+BCG4-5,LABscanner,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,38.7811343544162,42.35675925752231,32.67705915801893,False,True,True,False
+BCG4-6,LABscanner,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,39.8259092661913,43.0767138120524,29.094123398245223,False,True,True,False
+BCG4-7,LABscanner,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,37.163056721927845,40.88875583594201,33.46220561687745,False,True,True,False
+BCG4-8,LABscanner,lab_chroma_mean,Mean C*ab (chroma),PRIMARY,decrease,39.425392144295,41.25653935042708,30.87348508666883,False,True,True,False
+BCG4-1,LABscanner,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.0614597178963239,0.3587557463699143,0.0,False,True,True,False
+BCG4-4,LABscanner,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.0015271216810555,0.2064154743422984,0.0,False,True,True,False
+BCG4-5,LABscanner,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.000913427382523,0.4663204122967092,0.0,False,True,True,False
+BCG4-6,LABscanner,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.000518775689373,0.4693344655556735,0.0,False,True,True,False
+BCG4-7,LABscanner,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.0,0.2385033822437222,0.0,False,True,False,False
+BCG4-8,LABscanner,color_cluster_1_fraction,Reddest-cluster fraction,SECONDARY,decrease,0.0004431017119838,0.261010153269094,0.0,False,True,True,False
+BCG3-2,LABscanner,lab_L_mean,Mean L* (lightness),SECONDARY,increase,55.545845806609904,55.5163315912917,56.3080146835374,False,True,True,False
+BCG3-3,LABscanner,lab_L_mean,Mean L* (lightness),SECONDARY,increase,55.42219856901265,53.31061142665372,54.78050021877481,False,True,False,False
+BCG3-4,LABscanner,lab_L_mean,Mean L* (lightness),SECONDARY,increase,55.35484545879002,53.36059364767063,54.67875619257046,False,True,False,False
+BCG3-5,LABscanner,lab_L_mean,Mean L* (lightness),SECONDARY,increase,56.56325976187494,53.71123240326573,54.48361583624707,False,True,False,False
+BCG3-5,iTERO,lab_L_mean,Mean L* (lightness),SECONDARY,increase,51.576256666960525,55.78065432547137,53.4395284327849,True,False,True,False
+BCG3-6,LABscanner,lab_L_mean,Mean L* (lightness),SECONDARY,increase,55.72152821303534,54.74596733713603,55.079855596910846,False,True,False,False
+BCG3-7,LABscanner,lab_L_mean,Mean L* (lightness),SECONDARY,increase,55.25435858632191,54.13519636758927,56.0675823074144,False,True,True,False
+BCG3-7,iTERO,lab_L_mean,Mean L* (lightness),SECONDARY,increase,47.79281542286648,53.557910484897015,53.05695443750832,True,False,True,False
+BCG3-8,LABscanner,lab_L_mean,Mean L* (lightness),SECONDARY,increase,57.038123898030406,54.38823397885084,54.75349845109309,False,True,False,False
+BCG3-8,iTERO,lab_L_mean,Mean L* (lightness),SECONDARY,increase,46.9129890720217,54.35088848573427,52.52952639897343,True,False,True,False
+BCG4-1,LABscanner,lab_L_mean,Mean L* (lightness),SECONDARY,increase,59.190951938141765,53.87495077003442,63.62110303420052,False,True,True,False
+BCG4-2,LABscanner,lab_L_mean,Mean L* (lightness),SECONDARY,increase,60.293707860859854,54.986492078548594,62.677181904827336,False,True,True,False
+BCG4-3,LABscanner,lab_L_mean,Mean L* (lightness),SECONDARY,increase,61.91335023428361,54.2067239985143,63.50818110672107,False,True,True,False
+BCG4-4,LABscanner,lab_L_mean,Mean L* (lightness),SECONDARY,increase,63.75996913183786,53.775191743439095,61.77425131283486,False,True,False,False
+BCG4-5,LABscanner,lab_L_mean,Mean L* (lightness),SECONDARY,increase,62.41014806397879,54.85746515260284,62.18089578326977,False,True,False,False
+BCG4-5,TRIOS3,lab_L_mean,Mean L* (lightness),SECONDARY,increase,51.00145294965439,50.6928224234903,54.33594374417186,False,True,True,False
+BCG4-6,LABscanner,lab_L_mean,Mean L* (lightness),SECONDARY,increase,63.43710073844624,54.05817474149381,62.48829830523867,False,True,False,False
+BCG4-7,LABscanner,lab_L_mean,Mean L* (lightness),SECONDARY,increase,61.80161849350314,54.38360509625421,62.17444737052466,False,True,True,False
+BCG4-8,LABscanner,lab_L_mean,Mean L* (lightness),SECONDARY,increase,64.24159822112782,53.306589122938256,60.41879141504592,False,True,False,False
+BCG3-5,ALL_SCANNERS_MEDIAN,lab_L_mean,Mean L* (lightness),SECONDARY,increase,50.145736545087146,54.02070163061241,53.96157213451598,True,False,True,False

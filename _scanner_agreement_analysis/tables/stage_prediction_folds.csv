@@ -1,0 +1,10 @@
+﻿validation,fold,n_train,n_test,n_test_samples,held_out_scanner,accuracy,balanced_accuracy,status
+held_out_physical_samples,1,144,47,4,,0.5957446808510638,0.5986111111111111,ok
+held_out_physical_samples,2,155,36,3,,0.5833333333333334,0.5833333333333334,ok
+held_out_physical_samples,3,155,36,3,,0.6111111111111112,0.6111111111111112,ok
+held_out_physical_samples,4,155,36,3,,0.4722222222222222,0.47222222222222215,ok
+held_out_physical_samples,5,155,36,3,,0.6944444444444444,0.6944444444444445,ok
+held_out_scanner_same_samples_elsewhere,1,143,48,16,LABscanner,0.3333333333333333,0.3333333333333333,ok
+held_out_scanner_same_samples_elsewhere,2,143,48,16,TRIOS3,0.4583333333333333,0.4583333333333333,ok
+held_out_scanner_same_samples_elsewhere,3,144,47,16,TRIOS5,0.3404255319148936,0.3333333333333333,ok
+held_out_scanner_same_samples_elsewhere,4,143,48,16,iTERO,0.375,0.375,ok
