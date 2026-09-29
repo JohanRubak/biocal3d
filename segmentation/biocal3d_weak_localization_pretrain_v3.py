@@ -1,0 +1,1491 @@
+"""BioCal3D weak-localization pretraining with frozen multi-layer DINOv2 features.
+
+Goal
+----
+Turn the current stage-classification experiment into a more segmentation-oriented
+pretraining stage without pretending that stage labels are pixel plaque labels.
+
+Architecture
+------------
+Prepared ROI -> frozen DINOv2 ViT-S/14 intermediate blocks (default 3,6,9,12)
+             -> per-block 1x1 projection 384 -> 64
+             -> concatenate + 1x1 fusion -> 128
+             -> residual 3x3 spatial adapter blocks
+             -> shared 37x37x128 spatial representation
+                  |-> attention-pooled 3-class stage head
+                  |-> 1-channel candidate plaque/burden map
+
+Weak supervision
+----------------
+1) Stage cross-entropy: baseline / partial / clean.
+2) Temporal burden ranking within the SAME physical specimen + scanner:
+       baseline > partial > clean
+   (or baseline > clean for two-stage groups).
+3) Cross-scanner burden consistency for the SAME physical specimen + stage.
+4) Optional cross-scanner feature consistency for the pooled shared representation.
+5) Optional VERIFIED patch-level pseudo-label BCE supervision for the plaque map.
+
+Important
+---------
+The 1-channel map is NOT a validated plaque segmentation. Before using it as a
+segmentation target, validate spatial correspondence (manual partial-sample
+annotations / perturbation testing). Verified/corrected patch pseudo-labels from
+the companion editor can then be used as direct spatial supervision.
+
+The script can initialize the final-block 384->64 projection from your existing
+stage-classification checkpoint (StageHead.spatial.0), so the learned 64-channel
+projection is not discarded.
+
+Typical use
+-----------
+python biocal3d_weak_localization_pretrain.py
+
+If intermediate DINO caches already exist:
+python biocal3d_weak_localization_pretrain.py --skip-feature-preparation
+
+Do not reuse the old stage projection:
+python biocal3d_weak_localization_pretrain.py --no-init-stage-head
+"""
+
+from __future__ import annotations
+
+from pathlib import Path
+from collections import defaultdict
+import argparse
+import copy
+import hashlib
+import json
+import math
+import os
+import random
+import re
+import gc
+
+import numpy as np
+import pandas as pd
+import torch
+from torch import nn
+from torch.utils.data import Dataset, DataLoader
+
+import matplotlib.pyplot as plt
+from matplotlib import colormaps
+from PIL import Image, ImageDraw, ImageFont
+
+from sklearn.metrics import accuracy_score, balanced_accuracy_score, confusion_matrix
+
+from biocal3d_prepare_dino import DATA_ROOT
+
+
+CLASSES = ["baseline", "partial", "clean"]
+CLASS_TO_IDX = {c: i for i, c in enumerate(CLASSES)}
+STAGE_RANK = {"baseline": 2, "partial": 1, "clean": 0}
+
+RGB_SINGLE_FEATURE_FILE = "dino_features.npz"
+
+
+# ============================================================================
+# UTILITIES
+# ============================================================================
+
+def set_seed(seed: int):
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(seed)
+
+
+def choose_device(arg: str) -> str:
+    if arg == "auto":
+        return "cuda" if torch.cuda.is_available() else "cpu"
+    return arg
+
+
+def safe_savefig(fig, out_path: Path, **kwargs):
+    out_path = Path(out_path)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        fig.savefig(str(out_path), **kwargs)
+    except OSError as exc:
+        if getattr(exc, "errno", None) != 22:
+            raise
+        old = Path.cwd()
+        try:
+            os.chdir(out_path.parent)
+            fig.savefig(out_path.name, **kwargs)
+        finally:
+            os.chdir(old)
+
+
+def normalize_group_value(v):
+    s = str(v)
+    if s.upper().startswith("G"):
+        return s.upper()
+    try:
+        return f"G{int(float(v))}"
+    except Exception:
+        return s
+
+
+def verify_specimen_safe_split(manifest: pd.DataFrame):
+    n = manifest.groupby("physical_id")["split"].nunique()
+    if len(n) and n.max() > 1:
+        bad = n[n > 1].index.tolist()
+        raise ValueError(f"Specimens occur in multiple manifest splits: {bad[:10]}")
+
+
+def infer_group(row) -> str:
+    if "group" in row and pd.notna(row["group"]):
+        return normalize_group_value(row["group"])
+    m = re.search(r"BCG(\d+)", str(row.get("sample_name", "")), re.I)
+    return f"G{m.group(1)}" if m else "unknown"
+
+
+def pseudo_label_path(pseudo_root: Path, row: dict) -> Path:
+    """Canonical location for one manually verified/corrected patch label map."""
+    return (
+        Path(pseudo_root)
+        / str(row.get("split", "unknown"))
+        / str(row["scanner"])
+        / str(row["sample_name"])
+        / "pseudo_labels.npz"
+    )
+
+
+# ============================================================================
+# MULTI-LAYER DINO FEATURE PREPARATION
+# ============================================================================
+
+def multilayer_cache_name(modality: str, blocks: list[int]) -> str:
+    b = "-".join(str(x) for x in blocks)
+    return f"dino_multilayer_{modality}_blocks_{b}.npz"
+
+
+def load_dino(model_name: str, device: str):
+    print(f"Loading frozen DINOv2 '{model_name}'...", flush=True)
+    model = torch.hub.load("facebookresearch/dinov2", model_name, pretrained=True)
+    model = model.to(device).eval()
+    for p in model.parameters():
+        p.requires_grad_(False)
+    return model
+
+
+def prepare_multilayer_features(
+    rows: pd.DataFrame,
+    device: str,
+    model_name: str,
+    blocks: list[int],
+    modality: str,
+    force: bool = False,
+):
+    """Cache normalized patch tokens from selected DINO blocks.
+
+    Human block numbers are 1-based (3,6,9,12). DINO's API receives 0-based
+    indices, hence [b-1 for b in blocks].
+    """
+    cache_file = multilayer_cache_name(modality, blocks)
+    unique = rows.drop_duplicates("map_dir").reset_index(drop=True)
+
+    todo = []
+    for r in unique.to_dict("records"):
+        target = Path(r["map_dir"]) / cache_file
+        if force or not target.exists():
+            todo.append(r)
+
+    if not todo:
+        print(f"All multi-layer {modality} DINO caches already exist: {cache_file}", flush=True)
+        return
+
+    model = load_dino(model_name, device)
+    mean = torch.tensor([0.485, 0.456, 0.406], dtype=torch.float32, device=device)[None, :, None, None]
+    std = torch.tensor([0.229, 0.224, 0.225], dtype=torch.float32, device=device)[None, :, None, None]
+    block_indices = [b - 1 for b in blocks]
+
+    if min(block_indices) < 0:
+        raise ValueError("Block numbers must be >= 1")
+
+    print(
+        f"Preparing multi-layer DINO features for {len(todo)} scans; "
+        f"blocks={blocks}; modality={modality}",
+        flush=True,
+    )
+
+    for i, row in enumerate(todo, 1):
+        folder = Path(row["map_dir"])
+        maps_path = folder / "maps.npz"
+        base_feature_path = folder / RGB_SINGLE_FEATURE_FILE
+        target = folder / cache_file
+
+        with np.load(maps_path) as z:
+            rgb = z["rgb"].astype(np.float32)
+
+        if rgb.ndim != 3 or rgb.shape[2] != 3:
+            raise ValueError(f"Expected HxWx3 rgb map in {maps_path}, got {rgb.shape}")
+
+        # Reuse the verified valid-patch geometry from the original DINO cache.
+        if not base_feature_path.exists():
+            raise FileNotFoundError(
+                f"Missing original DINO feature cache needed for patch_valid: {base_feature_path}"
+            )
+        with np.load(base_feature_path) as z:
+            patch_valid = z["patch_valid"].astype(bool)
+
+        if modality == "rgb":
+            arr = rgb
+        elif modality == "gray":
+            gray = 0.2126 * rgb[..., 0] + 0.7152 * rgb[..., 1] + 0.0722 * rgb[..., 2]
+            arr = np.repeat(gray[..., None], 3, axis=2)
+        else:
+            raise ValueError(modality)
+
+        h, w, _ = arr.shape
+        x = torch.from_numpy(arr.transpose(2, 0, 1).copy()).unsqueeze(0).to(device)
+        x = (x - mean) / std
+
+        with torch.inference_mode():
+            if not hasattr(model, "get_intermediate_layers"):
+                raise AttributeError("Loaded DINO model has no get_intermediate_layers()")
+            outputs = model.get_intermediate_layers(
+                x,
+                n=block_indices,
+                reshape=True,
+                return_class_token=False,
+                norm=True,
+            )
+
+        if len(outputs) != len(blocks):
+            raise RuntimeError(
+                f"Expected {len(blocks)} intermediate outputs, got {len(outputs)}"
+            )
+
+        payload = {
+            "patch_valid": patch_valid.astype(np.uint8),
+            "map_sha256": np.array(hashlib.sha256(maps_path.read_bytes()).hexdigest()),
+            "modality": np.array(modality),
+            "dino_model": np.array(model_name),
+            "blocks": np.array(blocks, dtype=np.int16),
+        }
+        for b, feat in zip(blocks, outputs):
+            # get_intermediate_layers(... reshape=True) -> B,C,Hpatch,Wpatch
+            f = feat[0].detach().cpu().numpy().astype(np.float16)
+            if f.shape[1:] != patch_valid.shape:
+                raise ValueError(
+                    f"Block {b} feature grid {f.shape[1:]} != patch_valid {patch_valid.shape}"
+                )
+            payload[f"block_{b}"] = f
+
+        np.savez_compressed(target, **payload)
+
+        if i == 1 or i % 10 == 0 or i == len(todo):
+            print(f"[multi-DINO {i:>3}/{len(todo)}] {row['scanner']} {row['sample_name']}", flush=True)
+
+    del model
+    if device.startswith("cuda"):
+        torch.cuda.empty_cache()
+    gc.collect()
+
+
+# ============================================================================
+# DATASET: ONE ITEM = ONE PHYSICAL SPECIMEN, ALL SCANNERS/STAGES
+# ============================================================================
+
+class SpecimenDataset(Dataset):
+    def __init__(
+        self,
+        rows: pd.DataFrame,
+        cache_file: str,
+        blocks: list[int],
+        pseudo_root: Path | None = None,
+        use_pseudo_labels: bool = False,
+        verified_only: bool = True,
+    ):
+        self.rows = rows.reset_index(drop=True).copy()
+        self.cache_file = cache_file
+        self.blocks = list(blocks)
+        self.pseudo_root = Path(pseudo_root) if pseudo_root is not None else None
+        self.use_pseudo_labels = bool(use_pseudo_labels)
+        self.verified_only = bool(verified_only)
+        self.specimen_ids = sorted(self.rows["physical_id"].astype(str).unique())
+
+    def __len__(self):
+        return len(self.specimen_ids)
+
+    def __getitem__(self, idx):
+        pid = self.specimen_ids[idx]
+        g = self.rows[self.rows["physical_id"].astype(str) == pid].reset_index(drop=True)
+
+        per_block = {b: [] for b in self.blocks}
+        masks = []
+        labels = []
+        pseudo_labels = []
+        meta = []
+
+        for row in g.to_dict("records"):
+            folder = Path(row["map_dir"])
+            path = folder / self.cache_file
+            if not path.exists():
+                raise FileNotFoundError(f"Missing multi-layer feature cache: {path}")
+
+            with np.load(path) as z:
+                maps_path = folder / "maps.npz"
+                digest = hashlib.sha256(maps_path.read_bytes()).hexdigest()
+                if "map_sha256" in z and str(z["map_sha256"]) != digest:
+                    raise ValueError(f"Stale multi-layer cache: {path}")
+
+                mask = z["patch_valid"].astype(np.float32)[None]
+                for b in self.blocks:
+                    key = f"block_{b}"
+                    if key not in z:
+                        raise KeyError(f"{path} lacks {key}")
+                    per_block[b].append(torch.from_numpy(z[key].astype(np.float32)))
+
+            pseudo = np.full(mask.shape, -1, dtype=np.int8)
+            if self.use_pseudo_labels and self.pseudo_root is not None:
+                ppath = pseudo_label_path(self.pseudo_root, row)
+                if ppath.exists():
+                    with np.load(ppath, allow_pickle=False) as zp:
+                        if "labels_patch" not in zp:
+                            raise ValueError(f"Pseudo-label file lacks labels_patch: {ppath}")
+                        verified = bool(zp["verified"].item()) if "verified" in zp else False
+                        if (not self.verified_only) or verified:
+                            lab = zp["labels_patch"].astype(np.int8)
+                            if lab.shape != mask.shape[1:]:
+                                raise ValueError(
+                                    f"Pseudo-label grid {lab.shape} != DINO mask {mask.shape[1:]}: {ppath}"
+                                )
+                            pseudo[0] = np.where(mask[0] > 0.5, lab, -1)
+
+            masks.append(torch.from_numpy(mask))
+            labels.append(CLASS_TO_IDX[row["stage"]])
+            pseudo_labels.append(torch.from_numpy(pseudo))
+            meta.append(
+                {
+                    "physical_id": str(row["physical_id"]),
+                    "scanner": str(row["scanner"]),
+                    "stage": str(row["stage"]),
+                    "sample_name": str(row["sample_name"]),
+                    "map_dir": str(row["map_dir"]),
+                    "group": infer_group(row),
+                    "split": str(row.get("split", "unknown")),
+                }
+            )
+
+        return {
+            "features": {b: torch.stack(per_block[b], dim=0) for b in self.blocks},
+            "mask": torch.stack(masks, dim=0),
+            "labels": torch.tensor(labels, dtype=torch.long),
+            "pseudo_labels": torch.stack(pseudo_labels, dim=0),
+            "meta": meta,
+        }
+
+
+def specimen_collate(items):
+    blocks = list(items[0]["features"].keys())
+    return {
+        "features": {b: torch.cat([it["features"][b] for it in items], dim=0) for b in blocks},
+        "mask": torch.cat([it["mask"] for it in items], dim=0),
+        "labels": torch.cat([it["labels"] for it in items], dim=0),
+        "pseudo_labels": torch.cat([it["pseudo_labels"] for it in items], dim=0),
+        "meta": sum([it["meta"] for it in items], []),
+    }
+
+
+# ============================================================================
+# MODEL
+# ============================================================================
+
+class ResidualSpatialBlock(nn.Module):
+    def __init__(self, channels: int, groups: int = 8, dropout: float = 0.10):
+        super().__init__()
+        groups = min(groups, channels)
+        while channels % groups != 0 and groups > 1:
+            groups -= 1
+        self.net = nn.Sequential(
+            nn.GroupNorm(groups, channels),
+            nn.Conv2d(channels, channels, 3, padding=1),
+            nn.GELU(),
+            nn.Dropout2d(dropout),
+            nn.GroupNorm(groups, channels),
+            nn.Conv2d(channels, channels, 3, padding=1),
+        )
+        self.act = nn.GELU()
+
+    def forward(self, x):
+        return self.act(x + self.net(x))
+
+
+class WeakLocalizationModel(nn.Module):
+    def __init__(
+        self,
+        blocks: list[int],
+        in_channels: int = 384,
+        projection_channels: int = 64,
+        fused_channels: int = 128,
+        n_res_blocks: int = 2,
+        dropout: float = 0.10,
+    ):
+        super().__init__()
+        self.blocks = list(blocks)
+
+        self.projections = nn.ModuleDict(
+            {
+                str(b): nn.Sequential(
+                    nn.Conv2d(in_channels, projection_channels, 1),
+                    nn.GroupNorm(8 if projection_channels % 8 == 0 else 1, projection_channels),
+                    nn.GELU(),
+                )
+                for b in self.blocks
+            }
+        )
+
+        fused_in = len(self.blocks) * projection_channels
+        self.fuse = nn.Sequential(
+            nn.Conv2d(fused_in, fused_channels, 1),
+            nn.GroupNorm(8 if fused_channels % 8 == 0 else 1, fused_channels),
+            nn.GELU(),
+        )
+        self.spatial_blocks = nn.Sequential(
+            *[
+                ResidualSpatialBlock(fused_channels, groups=8, dropout=dropout)
+                for _ in range(n_res_blocks)
+            ]
+        )
+
+        # Attention pooling makes the stage classifier spatially selective.
+        self.stage_attention = nn.Conv2d(fused_channels, 1, 1)
+        self.stage_classifier = nn.Sequential(
+            nn.Linear(fused_channels, max(64, fused_channels // 2)),
+            nn.GELU(),
+            nn.Dropout(dropout),
+            nn.Linear(max(64, fused_channels // 2), len(CLASSES)),
+        )
+
+        # Candidate plaque/burden map. Not a validated segmentation yet.
+        self.plaque_head = nn.Conv2d(fused_channels, 1, 1)
+
+    @staticmethod
+    def masked_softmax(logits, mask):
+        # logits/mask: N,1,H,W
+        valid = mask > 0.5
+        very_neg = torch.finfo(logits.dtype).min
+        x = torch.where(valid, logits, torch.tensor(very_neg, device=logits.device, dtype=logits.dtype))
+        n = x.shape[0]
+        attn = torch.softmax(x.view(n, 1, -1), dim=-1).view_as(x)
+        attn = attn * mask
+        attn = attn / attn.sum((2, 3), keepdim=True).clamp_min(1e-12)
+        return attn
+
+    def forward(self, features: dict[int, torch.Tensor], mask: torch.Tensor):
+        projected = [self.projections[str(b)](features[b]) for b in self.blocks]
+        x = self.fuse(torch.cat(projected, dim=1))
+        shared = self.spatial_blocks(x)
+
+        attn_logits = self.stage_attention(shared)
+        attention = self.masked_softmax(attn_logits, mask)
+        pooled = (shared * attention).sum((2, 3))
+        stage_logits = self.stage_classifier(pooled)
+
+        plaque_logits = self.plaque_head(shared)
+        plaque_prob = torch.sigmoid(plaque_logits) * mask
+        burden = plaque_prob.sum((2, 3)).squeeze(1) / mask.sum((2, 3)).squeeze(1).clamp_min(1)
+
+        # Masked mean shared feature for cross-scanner representation consistency.
+        mean_feat = (shared * mask).sum((2, 3)) / mask.sum((2, 3)).clamp_min(1)
+        mean_feat = nn.functional.normalize(mean_feat, dim=1)
+
+        return {
+            "stage_logits": stage_logits,
+            "shared": shared,
+            "attention": attention,
+            "plaque_logits": plaque_logits,
+            "plaque_prob": plaque_prob,
+            "burden": burden,
+            "mean_feature": mean_feat,
+        }
+
+
+def initialize_from_old_stage_head(model: WeakLocalizationModel, checkpoint: Path, block: int):
+    """Copy old StageHead 384->64 conv into the selected DINO-block projection."""
+    if not checkpoint.exists():
+        print(f"No old stage checkpoint found at {checkpoint}; using random projection init.", flush=True)
+        return False
+
+    ckpt = torch.load(checkpoint, map_location="cpu")
+    state = ckpt.get("state_dict", ckpt)
+    w = state.get("spatial.0.weight")
+    b = state.get("spatial.0.bias")
+    target_conv = model.projections[str(block)][0]
+
+    if w is None:
+        print("Old checkpoint has no 'spatial.0.weight'; skipping reuse.", flush=True)
+        return False
+    if tuple(w.shape) != tuple(target_conv.weight.shape):
+        print(
+            f"Old projection shape {tuple(w.shape)} != new {tuple(target_conv.weight.shape)}; skipping reuse.",
+            flush=True,
+        )
+        return False
+
+    with torch.no_grad():
+        target_conv.weight.copy_(w)
+        if b is not None and target_conv.bias is not None and tuple(b.shape) == tuple(target_conv.bias.shape):
+            target_conv.bias.copy_(b)
+
+    print(
+        f"Initialized DINO block {block} 384->64 projection from old stage-classification head.",
+        flush=True,
+    )
+    return True
+
+
+# ============================================================================
+# WEAK LOSSES
+# ============================================================================
+
+def temporal_ranking_loss(burden: torch.Tensor, meta: list[dict], margin: float):
+    """Enforce baseline > partial > clean within same physical_id + scanner."""
+    groups = defaultdict(dict)
+    for i, m in enumerate(meta):
+        groups[(m["physical_id"], m["scanner"])][m["stage"]] = i
+
+    losses = []
+    for stage_idx in groups.values():
+        pairs = []
+        if "baseline" in stage_idx and "partial" in stage_idx:
+            pairs.append((stage_idx["baseline"], stage_idx["partial"]))
+        if "partial" in stage_idx and "clean" in stage_idx:
+            pairs.append((stage_idx["partial"], stage_idx["clean"]))
+        # Two-stage groups, or backup direct ordering.
+        if "partial" not in stage_idx and "baseline" in stage_idx and "clean" in stage_idx:
+            pairs.append((stage_idx["baseline"], stage_idx["clean"]))
+
+        for high, low in pairs:
+            losses.append(torch.relu(margin - (burden[high] - burden[low])))
+
+    if not losses:
+        return burden.sum() * 0.0
+    return torch.stack(losses).mean()
+
+
+def scanner_burden_consistency_loss(burden: torch.Tensor, meta: list[dict]):
+    """Same physical specimen + stage should have similar burden across scanners."""
+    groups = defaultdict(list)
+    for i, m in enumerate(meta):
+        groups[(m["physical_id"], m["stage"])].append(i)
+
+    losses = []
+    for idxs in groups.values():
+        if len(idxs) < 2:
+            continue
+        vals = burden[idxs]
+        losses.append(((vals - vals.mean()) ** 2).mean())
+
+    if not losses:
+        return burden.sum() * 0.0
+    return torch.stack(losses).mean()
+
+
+def scanner_feature_consistency_loss(mean_feature: torch.Tensor, meta: list[dict]):
+    """Reduce scanner identity in the shared representation for paired scans."""
+    groups = defaultdict(list)
+    for i, m in enumerate(meta):
+        groups[(m["physical_id"], m["stage"])].append(i)
+
+    losses = []
+    for idxs in groups.values():
+        if len(idxs) < 2:
+            continue
+        f = mean_feature[idxs]
+        centroid = nn.functional.normalize(f.mean(0, keepdim=True), dim=1)
+        # 1 - cosine similarity to paired-scan centroid.
+        losses.append((1.0 - (f * centroid).sum(1)).mean())
+
+    if not losses:
+        return mean_feature.sum() * 0.0
+    return torch.stack(losses).mean()
+
+
+def spatial_pseudo_label_loss(
+    plaque_logits: torch.Tensor,
+    pseudo_labels: torch.Tensor,
+    mask: torch.Tensor,
+):
+    """BCE on manually verified patch labels only. -1 means ignore."""
+    valid = (pseudo_labels >= 0) & (mask > 0.5)
+    if not valid.any():
+        return plaque_logits.sum() * 0.0
+    target = pseudo_labels[valid].float()
+    logits = plaque_logits[valid]
+    return nn.functional.binary_cross_entropy_with_logits(logits, target)
+
+
+def class_weights_from_rows(rows: pd.DataFrame, device: str):
+    y = rows["stage"].map(CLASS_TO_IDX).to_numpy()
+    counts = np.bincount(y, minlength=len(CLASSES))
+    if np.any(counts == 0):
+        raise ValueError(f"Training split missing stage(s), counts={counts.tolist()}")
+    return torch.tensor(
+        len(y) / (len(CLASSES) * counts), dtype=torch.float32, device=device
+    )
+
+
+def compute_loss(outputs, labels, pseudo_labels, mask, meta, class_weights, args):
+    stage = nn.functional.cross_entropy(
+        outputs["stage_logits"],
+        labels,
+        weight=class_weights,
+        label_smoothing=args.stage_label_smoothing,
+    )
+    rank = temporal_ranking_loss(outputs["burden"], meta, args.rank_margin)
+    burden_cons = scanner_burden_consistency_loss(outputs["burden"], meta)
+    feat_cons = scanner_feature_consistency_loss(outputs["mean_feature"], meta)
+    pseudo_spatial = spatial_pseudo_label_loss(
+        outputs["plaque_logits"], pseudo_labels, mask
+    )
+
+    total = (
+        args.lambda_stage * stage
+        + args.lambda_rank * rank
+        + args.lambda_burden_consistency * burden_cons
+        + args.lambda_feature_consistency * feat_cons
+        + args.lambda_pseudo_spatial * pseudo_spatial
+    )
+    return total, {
+        "stage": stage,
+        "rank": rank,
+        "burden_consistency": burden_cons,
+        "feature_consistency": feat_cons,
+        "pseudo_spatial": pseudo_spatial,
+    }
+
+
+# ============================================================================
+# TRAIN / EVALUATE
+# ============================================================================
+
+def move_batch(batch, device):
+    features = {b: x.to(device, non_blocking=True) for b, x in batch["features"].items()}
+    mask = batch["mask"].to(device, non_blocking=True)
+    labels = batch["labels"].to(device, non_blocking=True)
+    pseudo_labels = batch["pseudo_labels"].to(device, non_blocking=True)
+    return features, mask, labels, pseudo_labels, batch["meta"]
+
+
+def run_epoch(model, loader, device, class_weights, args, optimizer=None):
+    training = optimizer is not None
+    model.train(training)
+
+    sums = defaultdict(float)
+    n_scans = 0
+    ys, preds = [], []
+
+    if training:
+        optimizer.zero_grad(set_to_none=True)
+
+    for step, batch in enumerate(loader, 1):
+        features, mask, labels, pseudo_labels, meta = move_batch(batch, device)
+
+        with torch.set_grad_enabled(training):
+            outputs = model(features, mask)
+            total, pieces = compute_loss(outputs, labels, pseudo_labels, mask, meta, class_weights, args)
+
+            if training:
+                (total / args.grad_accum).backward()
+                if step % args.grad_accum == 0 or step == len(loader):
+                    nn.utils.clip_grad_norm_(model.parameters(), args.grad_clip)
+                    optimizer.step()
+                    optimizer.zero_grad(set_to_none=True)
+
+        bs = len(labels)
+        n_scans += bs
+        sums["total"] += float(total.detach().cpu()) * bs
+        for k, v in pieces.items():
+            sums[k] += float(v.detach().cpu()) * bs
+
+        p = outputs["stage_logits"].argmax(1)
+        ys.extend(labels.detach().cpu().tolist())
+        preds.extend(p.detach().cpu().tolist())
+
+    out = {k: v / max(n_scans, 1) for k, v in sums.items()}
+    out["accuracy"] = accuracy_score(ys, preds)
+    out["balanced_accuracy"] = balanced_accuracy_score(ys, preds)
+    return out
+
+
+@torch.no_grad()
+def evaluate_detailed(model, loader, device, class_weights, args):
+    model.eval()
+    rows = []
+    metric_accum = defaultdict(float)
+    n_scans = 0
+
+    for batch in loader:
+        features, mask, labels, pseudo_labels, meta = move_batch(batch, device)
+        outputs = model(features, mask)
+        total, pieces = compute_loss(outputs, labels, pseudo_labels, mask, meta, class_weights, args)
+        probs = outputs["stage_logits"].softmax(1)
+        pred = probs.argmax(1)
+
+        bs = len(labels)
+        n_scans += bs
+        metric_accum["total"] += float(total.cpu()) * bs
+        for k, v in pieces.items():
+            metric_accum[k] += float(v.cpu()) * bs
+
+        for i, m in enumerate(meta):
+            rec = dict(m)
+            rec["true_stage"] = CLASSES[int(labels[i])]
+            rec["predicted_stage"] = CLASSES[int(pred[i])]
+            rec["correct"] = int(pred[i]) == int(labels[i])
+            rec["burden"] = float(outputs["burden"][i].cpu())
+            for c, name in enumerate(CLASSES):
+                rec[f"p_{name}"] = float(probs[i, c].cpu())
+            rec["true_class_probability"] = float(probs[i, int(labels[i])].cpu())
+            rows.append(rec)
+
+    pred_df = pd.DataFrame(rows)
+    y = pred_df["true_stage"].map(CLASS_TO_IDX).to_numpy()
+    p = pred_df["predicted_stage"].map(CLASS_TO_IDX).to_numpy()
+    metrics = {k: v / max(n_scans, 1) for k, v in metric_accum.items()}
+    metrics["accuracy"] = accuracy_score(y, p)
+    metrics["balanced_accuracy"] = balanced_accuracy_score(y, p)
+    return metrics, pred_df
+
+
+def plot_training(history: pd.DataFrame, out_path: Path):
+    fig, ax = plt.subplots(figsize=(9, 5.2))
+    ax.plot(history["epoch"], history["train_total"], label="Train total")
+    ax.plot(history["epoch"], history["val_total"], label="Validation total")
+    ax.plot(history["epoch"], history["val_stage"], label="Validation stage CE", alpha=0.8)
+    if "val_pseudo_spatial" in history.columns and history["val_pseudo_spatial"].max() > 0:
+        ax.plot(history["epoch"], history["val_pseudo_spatial"], label="Validation spatial pseudo BCE", alpha=0.8)
+    ax.set_xlabel("Epoch")
+    ax.set_ylabel("Loss")
+    ax.set_title("Weak-localization pretraining")
+    ax.grid(alpha=0.2)
+    ax.legend()
+    fig.tight_layout()
+    safe_savefig(fig, out_path, dpi=220, bbox_inches="tight")
+    plt.close(fig)
+
+
+def plot_confusion(pred_df: pd.DataFrame, out_path: Path):
+    y = pred_df["true_stage"].map(CLASS_TO_IDX).to_numpy()
+    p = pred_df["predicted_stage"].map(CLASS_TO_IDX).to_numpy()
+    cm = confusion_matrix(y, p, labels=list(range(len(CLASSES))))
+    rs = cm.sum(1, keepdims=True)
+    frac = np.divide(cm, rs, out=np.zeros_like(cm, dtype=float), where=rs != 0)
+
+    fig, ax = plt.subplots(figsize=(6.3, 5.4))
+    im = ax.imshow(frac, vmin=0, vmax=1, cmap="Blues")
+    for r in range(3):
+        for c in range(3):
+            ax.text(
+                c, r, f"{cm[r,c]}\n({100*frac[r,c]:.1f}%)",
+                ha="center", va="center",
+                color="white" if frac[r,c] >= 0.5 else "black",
+            )
+    ax.set_xticks(range(3), [x.title() for x in CLASSES])
+    ax.set_yticks(range(3), [x.title() for x in CLASSES])
+    ax.set_xlabel("Predicted stage")
+    ax.set_ylabel("True stage")
+    ax.set_title("Validation stage classification")
+    fig.colorbar(im, ax=ax, label="Fraction of true class")
+    fig.tight_layout()
+    safe_savefig(fig, out_path, dpi=220, bbox_inches="tight")
+    plt.close(fig)
+
+
+@torch.no_grad()
+def save_split_maps(
+    model,
+    dataset,
+    device,
+    blocks,
+    out_root: Path,
+    max_examples: int | None = None,
+    montage_out_path: Path | None = None,
+    split_name: str = "validation",
+):
+    """Save maps/previews for one split and one combined montage.
+
+    Parameters
+    ----------
+    max_examples:
+        None or <=0 means ALL validation scans. A positive value can still be
+        supplied for quick debugging, but the default CLI behaviour is now all.
+    montage_out_path:
+        Destination for a single long montage containing every saved validation
+        scan as rows and RGB / stage attention / candidate burden map as columns.
+    """
+    out_root.mkdir(parents=True, exist_ok=True)
+    saved = 0
+    montage_rows = []
+
+    def upsample(a, rgb_shape):
+        return np.array(
+            Image.fromarray(a.astype(np.float32), mode="F").resize(
+                (rgb_shape[1], rgb_shape[0]), Image.Resampling.BILINEAR
+            ),
+            dtype=np.float32,
+        )
+
+    def heat_overlay(rgb, heat_value, valid, max_alpha=0.65):
+        """Intensity-dependent overlay: zero heat leaves the RGB untouched."""
+        heat_value = np.clip(heat_value.astype(np.float32), 0, 1)
+        heat_rgb = colormaps["inferno"](heat_value)[..., :3].astype(np.float32)
+        alpha = (max_alpha * heat_value)[..., None]
+        out = rgb.astype(np.float32).copy()
+        out[valid] = (
+            (1.0 - alpha[valid]) * out[valid]
+            + alpha[valid] * heat_rgb[valid]
+        )
+        return np.clip(out, 0, 1)
+
+    # Iterate the supplied split dataset only.
+    for sidx in range(len(dataset)):
+        item = dataset[sidx]
+        features = {b: item["features"][b].to(device) for b in blocks}
+        mask = item["mask"].to(device)
+        outputs = model(features, mask)
+        probs = outputs["stage_logits"].softmax(1)
+
+        for i, meta in enumerate(item["meta"]):
+            if max_examples is not None and max_examples > 0 and saved >= max_examples:
+                break
+
+            folder = out_root / meta["scanner"] / meta["sample_name"]
+            folder.mkdir(parents=True, exist_ok=True)
+
+            with np.load(Path(meta["map_dir"]) / "maps.npz") as z:
+                rgb = z["rgb"].astype(np.float32)
+                valid = z["valid"].astype(bool)
+
+            plaque = outputs["plaque_prob"][i, 0].cpu().numpy()
+            attn = outputs["attention"][i, 0].cpu().numpy()
+
+            # Attention is normalized per scan only for DISPLAY. Raw attention is
+            # preserved in weak_localization_maps.npz.
+            attn_disp = attn / max(float(attn.max()), 1e-12)
+
+            plaque_full = upsample(plaque, rgb.shape)
+            attn_full = upsample(attn_disp, rgb.shape)
+            plaque_full[~valid] = 0
+            attn_full[~valid] = 0
+
+            attn_overlay = heat_overlay(rgb, attn_full, valid)
+            plaque_overlay = heat_overlay(rgb, plaque_full, valid)
+
+            true_idx = CLASS_TO_IDX[meta["stage"]]
+            pred_idx = int(probs[i].argmax().cpu())
+            p_true = float(probs[i, true_idx].cpu())
+            burden = float(outputs["burden"][i].cpu())
+
+            # ------------------------------------------------------------
+            # Individual preview: saved for EVERY validation scan by default.
+            # ------------------------------------------------------------
+            fig, axes = plt.subplots(1, 3, figsize=(12, 4))
+            axes[0].imshow(rgb)
+            axes[0].set_title("RGB")
+            axes[1].imshow(attn_overlay)
+            axes[1].set_title("Stage attention")
+            axes[2].imshow(plaque_overlay)
+            axes[2].set_title("Candidate plaque/burden map")
+            for ax in axes:
+                ax.axis("off")
+
+            fig.suptitle(
+                f"{meta['scanner']} {meta['sample_name']} | true={meta['stage']} | "
+                f"pred={CLASSES[pred_idx]} | P(true)={p_true:.3f} | burden={burden:.3f}",
+                fontsize=10,
+            )
+            fig.tight_layout(rect=[0, 0, 1, 0.92])
+            safe_savefig(fig, folder / "weak_localization_preview.png", dpi=180, bbox_inches="tight")
+            plt.close(fig)
+
+            np.savez_compressed(
+                folder / "weak_localization_maps.npz",
+                plaque_probability_patch=plaque,
+                stage_attention_patch=attn,
+                burden=np.array(burden),
+                stage_probabilities=probs[i].cpu().numpy(),
+                classes=np.array(CLASSES),
+            )
+
+            # Keep only compact display tiles in RAM for the combined montage.
+            # This avoids retaining all full-resolution floating point maps.
+            tile_size = 280
+            def tile(arr):
+                return Image.fromarray(
+                    np.uint8(np.clip(arr, 0, 1) * 255), mode="RGB"
+                ).resize((tile_size, tile_size), Image.Resampling.LANCZOS)
+
+            montage_rows.append(
+                {
+                    "sort_key": (
+                        str(meta["scanner"]),
+                        str(meta["physical_id"]),
+                        STAGE_RANK.get(meta["stage"], -1) * -1,
+                        str(meta["sample_name"]),
+                    ),
+                    "scanner": meta["scanner"],
+                    "sample_name": meta["sample_name"],
+                    "physical_id": meta["physical_id"],
+                    "group": meta.get("group", ""),
+                    "true_stage": meta["stage"],
+                    "predicted_stage": CLASSES[pred_idx],
+                    "p_true": p_true,
+                    "burden": burden,
+                    "rgb": tile(rgb),
+                    "attention": tile(attn_overlay),
+                    "plaque": tile(plaque_overlay),
+                }
+            )
+            saved += 1
+
+        if max_examples is not None and max_examples > 0 and saved >= max_examples:
+            break
+
+    if not montage_rows:
+        print(f"No {split_name} maps were saved; combined montage skipped.", flush=True)
+        return
+
+    # Save a small index table matching the row order of the montage.
+    montage_rows.sort(key=lambda r: r["sort_key"])
+    pd.DataFrame(
+        [
+            {
+                "row": j + 1,
+                "scanner": r["scanner"],
+                "sample_name": r["sample_name"],
+                "physical_id": r["physical_id"],
+                "group": r["group"],
+                "true_stage": r["true_stage"],
+                "predicted_stage": r["predicted_stage"],
+                "true_class_probability": r["p_true"],
+                "burden": r["burden"],
+            }
+            for j, r in enumerate(montage_rows)
+        ]
+    ).to_csv(out_root / f"{split_name}_all_samples_montage_index.csv", index=False)
+
+    # ------------------------------------------------------------
+    # Combined figure, analogous to the earlier validation montage.
+    # PIL is used rather than a 40-row matplotlib figure to keep memory sane.
+    # ------------------------------------------------------------
+    tile_size = 280
+    label_w = 330
+    header_h = 64
+    row_gap = 8
+    row_h = tile_size + row_gap
+    width = label_w + 3 * tile_size
+    height = header_h + len(montage_rows) * row_h
+    canvas = Image.new("RGB", (width, height), "white")
+    draw = ImageDraw.Draw(canvas)
+
+    try:
+        header_font = ImageFont.truetype("DejaVuSans.ttf", 19)
+        label_font = ImageFont.truetype("DejaVuSans.ttf", 14)
+    except OSError:
+        header_font = ImageFont.load_default()
+        label_font = ImageFont.load_default()
+
+    headers = ["RGB", "Stage attention", "Candidate plaque/burden map"]
+    for c, title in enumerate(headers):
+        x0 = label_w + c * tile_size
+        box = draw.textbbox((0, 0), title, font=header_font)
+        tw = box[2] - box[0]
+        draw.text(
+            (x0 + (tile_size - tw) / 2, 20),
+            title,
+            fill="black",
+            font=header_font,
+        )
+
+    for row_i, r in enumerate(montage_rows):
+        y = header_h + row_i * row_h
+        label = (
+            f"{r['scanner']}  {r['sample_name']}\n"
+            f"{r['group']} | true={r['true_stage']} -> pred={r['predicted_stage']}\n"
+            f"P(true)={r['p_true']:.3f} | burden={r['burden']:.3f}"
+        )
+        draw.multiline_text(
+            (12, y + 92),
+            label,
+            fill="black",
+            font=label_font,
+            spacing=4,
+        )
+        canvas.paste(r["rgb"], (label_w, y))
+        canvas.paste(r["attention"], (label_w + tile_size, y))
+        canvas.paste(r["plaque"], (label_w + 2 * tile_size, y))
+
+        if row_i < len(montage_rows) - 1:
+            yy = y + tile_size + row_gap // 2
+            draw.line((0, yy, width, yy), fill=(225, 225, 225), width=1)
+
+    if montage_out_path is None:
+        montage_out_path = out_root.parent / f"{split_name}_all_samples_montage.png"
+    montage_out_path = Path(montage_out_path)
+    montage_out_path.parent.mkdir(parents=True, exist_ok=True)
+    canvas.save(montage_out_path)
+
+    print(
+        f"Saved {split_name} previews/maps for {saved} scans and combined montage: "
+        f"{montage_out_path}",
+        flush=True,
+    )
+
+
+# ============================================================================
+# MAIN
+# ============================================================================
+
+def main():
+    p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    p.add_argument("--root", type=Path, default=DATA_ROOT / "_dino_preparation_80_10_10")
+    p.add_argument(
+        "--output-dir",
+        type=Path,
+        default=None,
+        help="Output directory. Default: <root>/weak_localization_pretrain_<modality>. Use a new directory for pseudo-label fine-tuning to preserve the baseline run.",
+    )
+    p.add_argument("--modality", choices=["rgb", "gray"], default="rgb")
+    p.add_argument("--blocks", nargs="+", type=int, default=[3, 6, 9, 12])
+    p.add_argument("--dino-model", default="dinov2_vits14_reg")
+    p.add_argument("--skip-feature-preparation", action="store_true")
+    p.add_argument("--force-features", action="store_true")
+
+    p.add_argument("--projection-channels", type=int, default=64)
+    p.add_argument("--fused-channels", type=int, default=128)
+    p.add_argument("--res-blocks", type=int, default=2)
+    p.add_argument("--dropout", type=float, default=0.20)
+
+    p.add_argument("--epochs", type=int, default=100)
+    p.add_argument("--patience", type=int, default=25)
+    p.add_argument("--specimen-batch-size", type=int, default=1)
+    p.add_argument("--grad-accum", type=int, default=4)
+    p.add_argument("--lr", type=float, default=5e-4)
+    p.add_argument("--weight-decay", type=float, default=5e-3)
+    p.add_argument("--grad-clip", type=float, default=5.0)
+
+    p.add_argument("--rank-margin", type=float, default=0.10)
+    p.add_argument("--lambda-stage", type=float, default=0.5)
+    p.add_argument("--lambda-rank", type=float, default=1.0)
+    p.add_argument("--lambda-burden-consistency", type=float, default=1.0)
+    p.add_argument("--lambda-feature-consistency", type=float, default=0.1)
+    p.add_argument("--lambda-pseudo-spatial", type=float, default=2.0)
+    p.add_argument("--stage-label-smoothing", type=float, default=0.05)
+    p.add_argument(
+        "--use-pseudo-labels",
+        action="store_true",
+        help="Use verified patch pseudo-labels produced by biocal3d_pseudolabel_editor.py.",
+    )
+    p.add_argument(
+        "--pseudo-label-root",
+        type=Path,
+        default=None,
+        help="Default: <root>/weak_pseudo_labels",
+    )
+    p.add_argument(
+        "--use-unverified-pseudo",
+        action="store_true",
+        help="Also train/evaluate on unverified auto-initialized pseudo-label files (not recommended).",
+    )
+
+    p.add_argument("--seed", type=int, default=42)
+    p.add_argument("--device", default="auto")
+    p.add_argument("--num-workers", type=int, default=0)
+    p.add_argument(
+        "--max-preview-examples",
+        type=int,
+        default=0,
+        help="Validation preview limit. 0 (default) saves ALL validation scans.",
+    )
+    p.add_argument(
+        "--export-train-maps",
+        action="store_true",
+        help="Also export candidate maps for the training split so they can be manually corrected for pseudo-label training.",
+    )
+    p.add_argument(
+        "--validation-only",
+        action="store_true",
+        help=(
+            "Skip training and load <output>/best_weak_localization_model.pt, then "
+            "regenerate validation predictions, all per-scan maps/previews, and the combined montage."
+        ),
+    )
+
+    p.add_argument(
+        "--init-weak-checkpoint",
+        type=Path,
+        default=None,
+        help=(
+            "Initialize the ENTIRE weak-localization model from an earlier "
+            "best_weak_localization_model.pt. Recommended when fine-tuning with corrected pseudo-labels."
+        ),
+    )
+    p.add_argument(
+        "--init-stage-head",
+        type=Path,
+        default=None,
+        help="Existing best_stage_head.pt. Default: <root>/stage_classification/best_stage_head.pt",
+    )
+    p.add_argument("--no-init-stage-head", action="store_true")
+    args = p.parse_args()
+
+    if min(args.epochs, args.patience, args.specimen_batch_size, args.grad_accum) <= 0:
+        p.error("epochs/patience/specimen-batch-size/grad-accum must be positive")
+    if args.projection_channels != 64 and not args.no_init_stage_head:
+        print(
+            "Note: projection_channels != 64, so old 384->64 stage projection cannot be reused unless shapes happen to match.",
+            flush=True,
+        )
+    if not args.blocks:
+        p.error("At least one DINO block is required")
+    if min(
+        args.lambda_stage, args.lambda_rank, args.lambda_burden_consistency,
+        args.lambda_feature_consistency, args.lambda_pseudo_spatial
+    ) < 0:
+        p.error("Loss weights must be non-negative")
+    if not (0 <= args.stage_label_smoothing < 1):
+        p.error("--stage-label-smoothing must be in [0,1)")
+    if args.pseudo_label_root is None:
+        args.pseudo_label_root = args.root / "weak_pseudo_labels"
+
+    set_seed(args.seed)
+    device = choose_device(args.device)
+    print(f"Device: {device}", flush=True)
+
+    manifest_path = args.root / "scan_manifest.csv"
+    if not manifest_path.exists():
+        raise FileNotFoundError(f"Missing manifest: {manifest_path}")
+    manifest = pd.read_csv(manifest_path)
+
+    required = {"scanner", "sample_name", "physical_id", "stage", "split", "map_dir"}
+    missing = required - set(manifest.columns)
+    if missing:
+        raise ValueError(f"Manifest missing required columns: {sorted(missing)}")
+    bad_stage = set(manifest["stage"]) - set(CLASSES)
+    if bad_stage:
+        raise ValueError(f"Unexpected stages: {sorted(bad_stage)}")
+    verify_specimen_safe_split(manifest)
+
+    train_rows = manifest[manifest["split"] == "train"].copy()
+    val_rows = manifest[manifest["split"] == "val"].copy()
+    if len(train_rows) == 0 or len(val_rows) == 0:
+        raise ValueError("This script expects manifest train and val splits")
+
+    # Keep test split untouched.
+    dev_rows = manifest[manifest["split"].isin(["train", "val"])].copy()
+    cache_file = multilayer_cache_name(args.modality, args.blocks)
+
+    if not args.skip_feature_preparation:
+        prepare_multilayer_features(
+            dev_rows,
+            device=device,
+            model_name=args.dino_model,
+            blocks=args.blocks,
+            modality=args.modality,
+            force=args.force_features,
+        )
+
+    # Verify at least one cache before training.
+    probe = Path(dev_rows.iloc[0]["map_dir"]) / cache_file
+    if not probe.exists():
+        raise FileNotFoundError(
+            f"Missing multi-layer cache {probe}. Rerun without --skip-feature-preparation."
+        )
+
+    out = args.output_dir or (args.root / f"weak_localization_pretrain_{args.modality}")
+    out = Path(out)
+    out.mkdir(parents=True, exist_ok=True)
+
+    if args.use_pseudo_labels:
+        n_train_pseudo = 0
+        for row in train_rows.to_dict("records"):
+            ppath = pseudo_label_path(args.pseudo_label_root, row)
+            if not ppath.exists():
+                continue
+            try:
+                with np.load(ppath, allow_pickle=False) as zp:
+                    verified = bool(zp["verified"].item()) if "verified" in zp else False
+                    if args.use_unverified_pseudo or verified:
+                        n_train_pseudo += 1
+            except Exception:
+                pass
+        print(
+            f"Spatial pseudo-label supervision enabled: {n_train_pseudo} training scans have "
+            f"{'verified/unverified' if args.use_unverified_pseudo else 'verified'} patch labels.",
+            flush=True,
+        )
+        if n_train_pseudo == 0:
+            print(
+                "WARNING: --use-pseudo-labels is set but no eligible TRAIN pseudo-label files were found; "
+                "the spatial pseudo BCE term will be zero.",
+                flush=True,
+            )
+
+    train_ds = SpecimenDataset(
+        train_rows, cache_file, args.blocks,
+        pseudo_root=args.pseudo_label_root,
+        use_pseudo_labels=args.use_pseudo_labels,
+        verified_only=not args.use_unverified_pseudo,
+    )
+    val_ds = SpecimenDataset(
+        val_rows, cache_file, args.blocks,
+        pseudo_root=args.pseudo_label_root,
+        use_pseudo_labels=args.use_pseudo_labels,
+        verified_only=not args.use_unverified_pseudo,
+    )
+    train_loader = DataLoader(
+        train_ds,
+        batch_size=args.specimen_batch_size,
+        shuffle=True,
+        num_workers=args.num_workers,
+        collate_fn=specimen_collate,
+        pin_memory=device.startswith("cuda"),
+    )
+    val_loader = DataLoader(
+        val_ds,
+        batch_size=args.specimen_batch_size,
+        shuffle=False,
+        num_workers=args.num_workers,
+        collate_fn=specimen_collate,
+        pin_memory=device.startswith("cuda"),
+    )
+
+    # Infer DINO channel width from cache instead of hard-coding 384.
+    with np.load(probe) as z:
+        in_channels = int(z[f"block_{args.blocks[-1]}"].shape[0])
+
+    model = WeakLocalizationModel(
+        blocks=args.blocks,
+        in_channels=in_channels,
+        projection_channels=args.projection_channels,
+        fused_channels=args.fused_channels,
+        n_res_blocks=args.res_blocks,
+        dropout=args.dropout,
+    )
+
+    init_ckpt = args.init_stage_head or (args.root / "stage_classification" / "best_stage_head.pt")
+    reused_stage_projection = False
+    initialized_from_weak_checkpoint = False
+    if args.init_weak_checkpoint is not None:
+        weak_ckpt = torch.load(args.init_weak_checkpoint, map_location="cpu")
+        state = weak_ckpt.get("state_dict", weak_ckpt)
+        model.load_state_dict(state)
+        initialized_from_weak_checkpoint = True
+        print(
+            f"Initialized full weak-localization model from: {args.init_weak_checkpoint}",
+            flush=True,
+        )
+    elif not args.no_init_stage_head:
+        reused_stage_projection = initialize_from_old_stage_head(model, init_ckpt, args.blocks[-1])
+
+    model = model.to(device)
+    class_weights = class_weights_from_rows(train_rows, device)
+
+    if args.validation_only:
+        ckpt_path = out / "best_weak_localization_model.pt"
+        if not ckpt_path.exists():
+            raise FileNotFoundError(
+                f"--validation-only requires an existing checkpoint: {ckpt_path}"
+            )
+        ckpt = torch.load(ckpt_path, map_location=device)
+        expected = {
+            "blocks": list(args.blocks),
+            "projection_channels": args.projection_channels,
+            "fused_channels": args.fused_channels,
+            "res_blocks": args.res_blocks,
+        }
+        for key, current in expected.items():
+            if key in ckpt and ckpt[key] != current:
+                raise ValueError(
+                    f"Checkpoint {key}={ckpt[key]} but current argument is {current}. "
+                    "Run validation-only with the same architecture arguments used during training."
+                )
+        model.load_state_dict(ckpt["state_dict"])
+        model.eval()
+
+        val_metrics, val_pred = evaluate_detailed(
+            model, val_loader, device, class_weights, args
+        )
+        val_pred.to_csv(out / "validation_predictions.csv", index=False)
+        pd.DataFrame([val_metrics]).to_csv(out / "validation_metrics.csv", index=False)
+        plot_confusion(val_pred, out / "validation_confusion_matrix.png")
+        save_split_maps(
+            model, val_ds, device, args.blocks, out / "validation_maps",
+            max_examples=(None if args.max_preview_examples <= 0 else args.max_preview_examples),
+            montage_out_path=out / "validation_all_samples_montage.png",
+            split_name="validation",
+        )
+        if args.export_train_maps:
+            save_split_maps(
+                model, train_ds, device, args.blocks, out / "train_maps",
+                max_examples=None,
+                montage_out_path=out / "train_all_samples_montage.png",
+                split_name="train",
+            )
+        print("Validation-only regeneration complete.", flush=True)
+        return
+
+    optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)
+
+    best_val = float("inf")
+    best_epoch = 0
+    best_state = None
+    history = []
+
+    print(
+        f"Train: {len(train_rows)} scans / {train_rows.physical_id.nunique()} specimens | "
+        f"Val: {len(val_rows)} scans / {val_rows.physical_id.nunique()} specimens",
+        flush=True,
+    )
+    print(
+        f"Multi-layer DINO blocks={args.blocks}; projection={args.projection_channels}; "
+        f"fused={args.fused_channels}; residual blocks={args.res_blocks}",
+        flush=True,
+    )
+    print(
+        "Loss weights: "
+        f"stage={args.lambda_stage}, rank={args.lambda_rank}, "
+        f"burden_cons={args.lambda_burden_consistency}, "
+        f"feature_cons={args.lambda_feature_consistency}, "
+        f"pseudo_spatial={args.lambda_pseudo_spatial if args.use_pseudo_labels else 0.0}",
+        flush=True,
+    )
+
+    for epoch in range(1, args.epochs + 1):
+        tr = run_epoch(model, train_loader, device, class_weights, args, optimizer=optimizer)
+        va = run_epoch(model, val_loader, device, class_weights, args, optimizer=None)
+
+        rec = {"epoch": epoch}
+        for k, v in tr.items():
+            rec[f"train_{k}"] = v
+        for k, v in va.items():
+            rec[f"val_{k}"] = v
+        history.append(rec)
+        hist_df = pd.DataFrame(history)
+        hist_df.to_csv(out / "training_history.csv", index=False)
+
+        print(
+            f"Epoch {epoch:03d} | train total={tr['total']:.4f} stage={tr['stage']:.4f} "
+            f"rank={tr['rank']:.4f} | val total={va['total']:.4f} "
+            f"BA={va['balanced_accuracy']:.3f}",
+            flush=True,
+        )
+
+        if va["total"] < best_val:
+            best_val = va["total"]
+            best_epoch = epoch
+            best_state = copy.deepcopy(model.state_dict())
+            torch.save(
+                {
+                    "state_dict": best_state,
+                    "blocks": args.blocks,
+                    "in_channels": in_channels,
+                    "projection_channels": args.projection_channels,
+                    "fused_channels": args.fused_channels,
+                    "res_blocks": args.res_blocks,
+                    "classes": CLASSES,
+                    "best_epoch": best_epoch,
+                    "best_val_total_loss": best_val,
+                    "modality": args.modality,
+                    "cache_file": cache_file,
+                    "reused_stage_projection": reused_stage_projection,
+                    "initialized_from_weak_checkpoint": initialized_from_weak_checkpoint,
+                    "init_weak_checkpoint": str(args.init_weak_checkpoint) if args.init_weak_checkpoint else None,
+                    "lambda_stage": args.lambda_stage,
+                    "lambda_rank": args.lambda_rank,
+                    "lambda_burden_consistency": args.lambda_burden_consistency,
+                    "lambda_feature_consistency": args.lambda_feature_consistency,
+                    "lambda_pseudo_spatial": args.lambda_pseudo_spatial,
+                    "stage_label_smoothing": args.stage_label_smoothing,
+                },
+                out / "best_weak_localization_model.pt",
+            )
+
+        if epoch - best_epoch >= args.patience:
+            print("Early stopping.", flush=True)
+            break
+
+    if best_state is None:
+        raise RuntimeError("Training did not produce a best model")
+
+    model.load_state_dict(best_state)
+    model.eval()
+
+    history = pd.DataFrame(history)
+    plot_training(history, out / "training_progress.png")
+
+    val_metrics, val_pred = evaluate_detailed(
+        model, val_loader, device, class_weights, args
+    )
+    val_pred.to_csv(out / "validation_predictions.csv", index=False)
+    pd.DataFrame([val_metrics]).to_csv(out / "validation_metrics.csv", index=False)
+    plot_confusion(val_pred, out / "validation_confusion_matrix.png")
+
+    save_split_maps(
+        model, val_ds, device, args.blocks, out / "validation_maps",
+        max_examples=(None if args.max_preview_examples <= 0 else args.max_preview_examples),
+        montage_out_path=out / "validation_all_samples_montage.png",
+        split_name="validation",
+    )
+    if args.export_train_maps:
+        save_split_maps(
+            model, train_ds, device, args.blocks, out / "train_maps",
+            max_examples=None,
+            montage_out_path=out / "train_all_samples_montage.png",
+            split_name="train",
+        )
+
+    config = {
+        "purpose": "weak localization pretraining before validated plaque segmentation",
+        "dino_model": args.dino_model,
+        "dino_frozen": True,
+        "dino_blocks": args.blocks,
+        "modality": args.modality,
+        "cache_file": cache_file,
+        "projection_channels": args.projection_channels,
+        "fused_channels": args.fused_channels,
+        "res_blocks": args.res_blocks,
+        "loss_weights": {
+            "stage_ce": args.lambda_stage,
+            "temporal_ranking": args.lambda_rank,
+            "cross_scanner_burden_consistency": args.lambda_burden_consistency,
+            "cross_scanner_feature_consistency": args.lambda_feature_consistency,
+            "verified_spatial_pseudo_bce": args.lambda_pseudo_spatial,
+        },
+        "stage_label_smoothing": args.stage_label_smoothing,
+        "pseudo_label_root": str(args.pseudo_label_root),
+        "use_pseudo_labels": args.use_pseudo_labels,
+        "use_unverified_pseudo": args.use_unverified_pseudo,
+        "rank_margin": args.rank_margin,
+        "old_stage_projection_checkpoint": str(init_ckpt),
+        "reused_old_384_to_64_projection": reused_stage_projection,
+        "initialized_from_weak_checkpoint": initialized_from_weak_checkpoint,
+        "init_weak_checkpoint": str(args.init_weak_checkpoint) if args.init_weak_checkpoint else None,
+        "best_epoch": best_epoch,
+        "best_val_total_loss": best_val,
+        "test_split_used": False,
+        "validation_visualization": (
+            "All validation scans are saved individually by default, plus one combined "
+            "validation_all_samples_montage.png. Training scans are not rendered."
+        ),
+        "warning": (
+            "Candidate plaque/burden map is weakly supervised by stage ordering and scanner consistency; "
+            "it is not yet a validated plaque segmentation."
+        ),
+    }
+    (out / "run_config.json").write_text(json.dumps(config, indent=2))
+
+    print("\nDone.", flush=True)
+    print(f"Output: {out}", flush=True)
+    print(f"Best epoch: {best_epoch}", flush=True)
+    print(f"Validation balanced accuracy: {val_metrics['balanced_accuracy']:.3f}", flush=True)
+    print("Next: validate partial-sample spatial maps / Grad-CAM before using pseudo-labels.", flush=True)
+
+
+if __name__ == "__main__":
+    main()
