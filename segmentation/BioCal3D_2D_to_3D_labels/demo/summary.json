@@ -1,0 +1,32 @@
+{
+  "scanner": "iTERO",
+  "sample_name": "BCG3T1-2",
+  "physical_id": "G3_S2",
+  "group": 3,
+  "stage": "partial",
+  "split": "test",
+  "source": "C:\\Users\\johan\\repos\\biocal3d\\data\\02-09-2026-Data collected\\_processed_ROI\\iTERO\\G3\\BCG3T1-2\\roi.vtp",
+  "texture_path": "",
+  "color_source": "vertex_rgb",
+  "fov_mm": 13.4,
+  "image_size": 518,
+  "mesh_surface_area_mm2": 111.2041315614685,
+  "raster_surface_area_mm2": 111.20834350585938,
+  "valid_pixels": 166128,
+  "overlap_fraction": 0.0,
+  "orientation": "Per-scan plane; NOT cross-scan registered",
+  "projection_extent_mm": 12.099521753749048,
+  "annotation_checked": false,
+  "reviewed_background": false,
+  "annotation_shapes": {
+    "plaque": 5
+  },
+  "plaque_pixels": 34299,
+  "no_plaque_pixels": 0,
+  "unknown_valid_pixels": 131829,
+  "unobserved_faces": 0,
+  "faces_with_unknown_pixels": 2140,
+  "max_reprojection_error_pixels": 1.039465419391212e-05,
+  "mean_reprojection_error_pixels": 2.157937337889263e-06,
+  "note": "Face/vertex labels vote among known pixels only; consult known/unknown coverage arrays before training. No unseen surfaces inferred."
+}
