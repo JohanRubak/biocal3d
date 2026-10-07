@@ -1,0 +1,203 @@
+{
+  "synthetic_only": true,
+  "checks": {
+    "pointnext_s_geometry_rgb_seed42": {
+      "nonzero_local_gradient": true,
+      "head_dependent_cam": true,
+      "trained_epochs": 2,
+      "outputs_verified": true
+    },
+    "pointnext_s_geometry_seed42": {
+      "nonzero_local_gradient": true,
+      "head_dependent_cam": true,
+      "trained_epochs": 2,
+      "outputs_verified": true
+    },
+    "tsgcnet_geometry_rgb_seed42": {
+      "nonzero_local_gradient": true,
+      "head_dependent_cam": true,
+      "trained_epochs": 2,
+      "outputs_verified": true
+    },
+    "tsgcnet_geometry_seed42": {
+      "nonzero_local_gradient": true,
+      "head_dependent_cam": true,
+      "trained_epochs": 2,
+      "outputs_verified": true
+    }
+  },
+  "specimen_split_disjoint": true,
+  "geometry_hash_mismatch_rejected": true,
+  "torch_version": "2.14.1+cpu",
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "/workspace/scratch/4ffbf45fb572/deliverables/BioCal3D_3D_classification/biocal3d_train_3d.py",
+    "run",
+    "--index",
+    "/workspace/scratch/4ffbf45fb572/classification_smoke_final/snapshot/dataset_index.json",
+    "--output",
+    "/workspace/scratch/4ffbf45fb572/classification_smoke_final/results",
+    "--device",
+    "cpu",
+    "--epochs",
+    "2",
+    "--patience",
+    "2",
+    "--batch-size",
+    "4",
+    "--faces",
+    "32",
+    "--points",
+    "32",
+    "--threads",
+    "1",
+    "--bootstrap",
+    "30",
+    "--explain-count",
+    "2"
+  ],
+  "additional_checks": {
+    "resume_completed_reuse": true,
+    "resume_saved_final_epoch_exact": true,
+    "resume_interrupted_epoch_one_exact": true,
+    "resume_changed_hyperparameter_rejected": true,
+    "overlapping_specimens_rejected": true,
+    "default_dimensions": {
+      "tsgcnet_geometry": {
+        "logits": [
+          1,
+          3
+        ],
+        "local_features": [
+          1,
+          512,
+          1024
+        ],
+        "nonzero_gradient": true
+      },
+      "tsgcnet_rgb": {
+        "logits": [
+          1,
+          3
+        ],
+        "local_features": [
+          1,
+          512,
+          1024
+        ],
+        "nonzero_gradient": true
+      },
+      "pointnext_s_geometry": {
+        "logits": [
+          4,
+          3
+        ],
+        "local_features": [
+          4,
+          512,
+          64
+        ],
+        "nonzero_gradient": true
+      },
+      "pointnext_s_rgb": {
+        "logits": [
+          4,
+          3
+        ],
+        "local_features": [
+          4,
+          512,
+          64
+        ],
+        "nonzero_gradient": true
+      }
+    },
+    "learning_check": {
+      "synthetic_only": true,
+      "steps": 200,
+      "learning_rate": 0.0005,
+      "points_faces": 64,
+      "three_examples": {
+        "tsgcnet_geometry": {
+          "first_loss": 1.3610894083976746,
+          "last_10_loss": 0.0034647449996555225,
+          "predicted": [
+            0,
+            1,
+            2
+          ],
+          "expected": [
+            0,
+            1,
+            2
+          ]
+        },
+        "tsgcnet_rgb": {
+          "first_loss": 1.19559907913208,
+          "last_10_loss": 0.0029470480112649966,
+          "predicted": [
+            0,
+            1,
+            2
+          ],
+          "expected": [
+            0,
+            1,
+            2
+          ]
+        },
+        "pointnext_s_geometry": {
+          "first_loss": 1.2982922792434692,
+          "last_10_loss": 0.002154639840591699,
+          "predicted": [
+            0,
+            1,
+            2
+          ],
+          "expected": [
+            0,
+            1,
+            2
+          ]
+        },
+        "pointnext_s_rgb": {
+          "first_loss": 0.9005197882652283,
+          "last_10_loss": 0.001084212915156968,
+          "predicted": [
+            0,
+            1,
+            2
+          ],
+          "expected": [
+            0,
+            1,
+            2
+          ]
+        }
+      }
+    }
+  },
+  "real_index_split_validation": {
+    "scan_count": 512,
+    "physical_specimens": 48,
+    "train_scans": 384,
+    "val_scans": 64,
+    "test_scans": 64,
+    "train_specimens": 36,
+    "val_specimens": 6,
+    "test_specimens": 6
+  },
+  "limitations": [
+    "Synthetic CPU training only; no training or evaluation on real BioCal3D meshes.",
+    "Windows and CUDA execution were not available here.",
+    "Portable architecture adaptations are not checkpoint-compatible with official TSGCNet/DentalPSAM/PointNeXt weights."
+  ],
+  "source_hashes": {
+    "data3d.py": "e9b6e8259d02856a4329816a88c25c8f2002f95ebb07c685d78f9a629c7a63b3",
+    "models3d.py": "9bd9649117b0ed69a0f2ba6e376d387ebc49b314651b6223f41faaf2e6c04a43",
+    "explain3d.py": "d8e051ab5d3895aa7a33902f1059f093af0e00e94d4d0e93ad6d30dc0b1b5687",
+    "biocal3d_train_3d.py": "6139bb0cf18e20b7ede1e087629d31aa73887da1507c8398ab5c955060cbb9ae",
+    "report3d.py": "833ee06c0cd021dd13be2d3dd5f03e06432f2e30003331f868c389af19f1a4aa",
+    "smoke_test.py": "ace9247c64f694ad890bdac250ad7ebf3f709cca95183195bbae0caca17a875f"
+  }
+}

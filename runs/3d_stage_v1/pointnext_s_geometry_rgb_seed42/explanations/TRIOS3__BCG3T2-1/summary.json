@@ -1,0 +1,15 @@
+{
+  "scan_id": "TRIOS3__BCG3T2-1",
+  "physical_id": "G3_S1",
+  "scanner": "TRIOS3",
+  "true_label": "clean",
+  "predicted_label": "clean",
+  "target": "clean",
+  "target_probability": 0.9877707958221436,
+  "local_elements": 64,
+  "positive_cam_available": false,
+  "support": "CAM at the final local point stage, interpolated to faces for display. Interpolation is not measured face-level attribution.",
+  "explained_test_scan": false,
+  "top_feature_probability_drop": 8.547306060791016e-05,
+  "random_feature_probability_drop": 8.915066719050735e-05
+}

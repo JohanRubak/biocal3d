@@ -1,0 +1,5 @@
+﻿scanner,n,accuracy,balanced_accuracy,macro_f1,cross_entropy,roc_auc,observed_class_balanced_accuracy,classes_present
+LABscanner,16,1.0,1.0,1.0,7.212195094714241e-06,1.0,1.0,baseline;partial;clean
+TRIOS3,16,1.0,1.0,1.0,6.049893808277858e-06,1.0,1.0,baseline;partial;clean
+TRIOS5,16,1.0,1.0,1.0,0.0006934189479315685,1.0,1.0,baseline;partial;clean
+iTERO,16,0.9375,0.9444444444444445,0.9326599326599326,0.8696069312396733,0.9666666666666667,0.9444444444444445,baseline;partial;clean

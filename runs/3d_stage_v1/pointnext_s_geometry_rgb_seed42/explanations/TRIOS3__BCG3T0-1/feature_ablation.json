@@ -1,0 +1,11 @@
+{
+  "method": "zero local feature vectors before pooling/global abstraction; positions retained",
+  "fraction": 0.109375,
+  "baseline_probability": 0.9662964344024658,
+  "top_cam_probability": 0.01825784146785736,
+  "top_cam_probability_drop": 0.9480385929346085,
+  "random_probability_drop_mean": 0.9474168676882982,
+  "random_probability_drop_std": 0.004402556585511282,
+  "random_repeats": 10,
+  "positive_cam_available": false
+}

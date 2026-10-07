@@ -1,0 +1,4 @@
+﻿scan_id,physical_id,scanner,true_label,predicted_label,target,target_probability,local_elements,positive_cam_available,support,explained_test_scan,top_feature_probability_drop,random_feature_probability_drop
+TRIOS3__BCG3T0-1,G3_S1,TRIOS3,baseline,baseline,baseline,0.9662964344024658,64,False,"CAM at the final local point stage, interpolated to faces for display. Interpolation is not measured face-level attribution.",False,0.9480385929346085,0.9474168676882982
+TRIOS3__BCG3T1-1,G3_S1,TRIOS3,partial,partial,partial,0.9956355690956116,64,True,"CAM at the final local point stage, interpolated to faces for display. Interpolation is not measured face-level attribution.",False,0.8314404338598251,0.0038501441478728804
+TRIOS3__BCG3T2-1,G3_S1,TRIOS3,clean,clean,clean,0.9877707958221436,64,False,"CAM at the final local point stage, interpolated to faces for display. Interpolation is not measured face-level attribution.",False,8.547306060791016e-05,8.915066719050735e-05

@@ -1,0 +1,7 @@
+# Torch is installed separately: see README for CPU / NVIDIA options.
+numpy>=1.26,<3
+scipy>=1.11,<2
+matplotlib>=3.8,<4
+scikit-learn>=1.4,<2
+pillow>=10,<13
+plotly>=5.20,<7

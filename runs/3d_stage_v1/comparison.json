@@ -1,0 +1,53 @@
+[
+  {
+    "run": "pointnext_s_geometry_seed42",
+    "model": "pointnext_s",
+    "input": "geometry",
+    "seed": 42,
+    "n": 64,
+    "accuracy": 0.375,
+    "balanced_accuracy": 0.4236111111111111,
+    "macro_f1": 0.3143881208397337,
+    "cross_entropy": 0.9928862023023939,
+    "roc_auc": 0.6169270833333333,
+    "balanced_accuracy_ci_low": 0.3333333333333333,
+    "balanced_accuracy_ci_high": 0.4861111111111111,
+    "macro_f1_ci_low": 0.2328042328042328,
+    "macro_f1_ci_high": 0.3748006379585327,
+    "bootstrap_valid": 999
+  },
+  {
+    "run": "tsgcnet_geometry_rgb_seed42",
+    "model": "tsgcnet",
+    "input": "geometry_rgb",
+    "seed": 42,
+    "n": 64,
+    "accuracy": 0.984375,
+    "balanced_accuracy": 0.9861111111111112,
+    "macro_f1": 0.9828067913174295,
+    "cross_entropy": 0.21757840306912696,
+    "roc_auc": 0.9916666666666667,
+    "balanced_accuracy_ci_low": 0.9583333333333334,
+    "balanced_accuracy_ci_high": 1.0,
+    "macro_f1_ci_low": 0.9492063492063493,
+    "macro_f1_ci_high": 1.0,
+    "bootstrap_valid": 999
+  },
+  {
+    "run": "tsgcnet_geometry_seed42",
+    "model": "tsgcnet",
+    "input": "geometry",
+    "seed": 42,
+    "n": 64,
+    "accuracy": 0.6875,
+    "balanced_accuracy": 0.6597222222222222,
+    "macro_f1": 0.663824950269963,
+    "cross_entropy": 0.6069835801631795,
+    "roc_auc": 0.8700520833333333,
+    "balanced_accuracy_ci_low": 0.5833333333333334,
+    "balanced_accuracy_ci_high": 0.763888888888889,
+    "macro_f1_ci_low": 0.5888405797101449,
+    "macro_f1_ci_high": 0.750451521959385,
+    "bootstrap_valid": 999
+  }
+]

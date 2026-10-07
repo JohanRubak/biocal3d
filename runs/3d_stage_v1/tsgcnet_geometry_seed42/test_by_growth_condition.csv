@@ -1,0 +1,3 @@
+﻿growth_condition,n,accuracy,balanced_accuracy,macro_f1,cross_entropy,roc_auc,observed_class_balanced_accuracy,classes_present
+fresh_12h,16,0.75,0.5,0.5675213675213676,0.3900765963228868,nan,0.75,baseline;clean
+mature_24h,48,0.6666666666666666,0.6666666666666666,0.6661546338965694,0.6792859081099438,0.8619791666666666,0.6666666666666666,baseline;partial;clean

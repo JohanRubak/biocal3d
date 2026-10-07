@@ -1,0 +1,66 @@
+{
+  "model": "pointnext_s",
+  "input_mode": "geometry_rgb",
+  "colour": true,
+  "classes": [
+    "baseline",
+    "partial",
+    "clean"
+  ],
+  "seed": 42,
+  "sampling_seed": 1234,
+  "elements": 1024,
+  "scale_mm": 6.7,
+  "radius": 0.15,
+  "index_hash": "7b2a9b5b0b1a4577b3404ae6180936eb46cdc9108f9ddc6ae2e893199b42d155",
+  "split_hash": "dcfa271e6ac16b586a2619ed508a361ed0c54f07089be92cc62a75c93d96dca9",
+  "targets_hash": "e55505ec004232694ac8733588189a1d6bdf4dc661be5f2505a8d8c2b9210a65",
+  "index": "C:\\Users\\au662213\\repos\\biocal3d\\data\\02-09-2026-Data collected\\_development_20261007_100936_877172\\dataset_index.json",
+  "labels_csv": null,
+  "args": {
+    "command": "run",
+    "index": "C:\\Users\\au662213\\repos\\biocal3d\\data\\02-09-2026-Data collected\\_development_20261007_100936_877172\\dataset_index.json",
+    "output": "C:\\Users\\au662213\\repos\\biocal3d\\runs\\3d_stage_v1",
+    "labels_csv": null,
+    "classes": [
+      "baseline",
+      "partial",
+      "clean"
+    ],
+    "splits": null,
+    "split_seed": 20261008,
+    "fold": null,
+    "folds": 5,
+    "models": [
+      "tsgcnet",
+      "pointnext_s"
+    ],
+    "inputs": [
+      "geometry",
+      "geometry_rgb"
+    ],
+    "seeds": [
+      42
+    ],
+    "sampling_seed": 1234,
+    "epochs": 100,
+    "patience": 20,
+    "batch_size": 4,
+    "faces": 1024,
+    "points": 1024,
+    "scale_mm": 6.7,
+    "radius": 0.15,
+    "lr": 0.001,
+    "weight_decay": 0.01,
+    "device": "auto",
+    "threads": 4,
+    "amp": false,
+    "no_augment": false,
+    "resume": true,
+    "exclude_train_scanners": [],
+    "bootstrap": 1000,
+    "explain_count": 6
+  },
+  "device": "cuda",
+  "parameters": 1364963
+}
