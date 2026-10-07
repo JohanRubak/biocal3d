@@ -1,0 +1,7 @@
+﻿run_a,run_b,metric,difference_a_minus_b,ci_low,ci_high,clusters
+pointnext_s_geometry_seed42,tsgcnet_geometry_rgb_seed42,balanced_accuracy,-0.5625,-0.6388888888888888,-0.5138888888888888,6
+pointnext_s_geometry_seed42,tsgcnet_geometry_rgb_seed42,macro_f1,-0.6684186704776958,-0.7509157509157509,-0.6170846215504409,6
+pointnext_s_geometry_seed42,tsgcnet_geometry_seed42,balanced_accuracy,-0.2361111111111111,-0.41680555555555554,-0.09722222222222227,6
+pointnext_s_geometry_seed42,tsgcnet_geometry_seed42,macro_f1,-0.3494368294302293,-0.4874643987728099,-0.23134381242083843,6
+tsgcnet_geometry_rgb_seed42,tsgcnet_geometry_seed42,balanced_accuracy,0.32638888888888895,0.1997222222222223,0.41666666666666663,6
+tsgcnet_geometry_rgb_seed42,tsgcnet_geometry_seed42,macro_f1,0.3189818410474665,0.19875482724696425,0.4111594202898551,6

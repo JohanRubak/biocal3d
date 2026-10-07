@@ -1,0 +1,19 @@
+{
+  "index_hash": "7b2a9b5b0b1a4577b3404ae6180936eb46cdc9108f9ddc6ae2e893199b42d155",
+  "index": "C:\\Users\\au662213\\repos\\biocal3d\\data\\02-09-2026-Data collected\\_development_20261007_100936_877172\\dataset_index.json",
+  "split_hash": "dcfa271e6ac16b586a2619ed508a361ed0c54f07089be92cc62a75c93d96dca9",
+  "targets_hash": "e55505ec004232694ac8733588189a1d6bdf4dc661be5f2505a8d8c2b9210a65",
+  "versions": {
+    "python": "3.11.16",
+    "torch": "2.14.1+cu126",
+    "numpy": "2.4.6"
+  },
+  "code_hashes": {
+    "biocal3d_train_3d.py": "6139bb0cf18e20b7ede1e087629d31aa73887da1507c8398ab5c955060cbb9ae",
+    "data3d.py": "e9b6e8259d02856a4329816a88c25c8f2002f95ebb07c685d78f9a629c7a63b3",
+    "explain3d.py": "d8e051ab5d3895aa7a33902f1059f093af0e00e94d4d0e93ad6d30dc0b1b5687",
+    "models3d.py": "9bd9649117b0ed69a0f2ba6e376d387ebc49b314651b6223f41faaf2e6c04a43",
+    "report3d.py": "833ee06c0cd021dd13be2d3dd5f03e06432f2e30003331f868c389af19f1a4aa",
+    "smoke_test.py": "ace9247c64f694ad890bdac250ad7ebf3f709cca95183195bbae0caca17a875f"
+  }
+}

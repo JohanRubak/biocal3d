@@ -1,0 +1,36 @@
+{
+  "classes": [
+    "baseline",
+    "partial",
+    "clean"
+  ],
+  "counts": {
+    "train": {
+      "baseline": 144,
+      "partial": 96,
+      "clean": 144
+    },
+    "val": {
+      "baseline": 24,
+      "partial": 16,
+      "clean": 24
+    },
+    "test": {
+      "baseline": 24,
+      "partial": 16,
+      "clean": 24
+    }
+  },
+  "specimens": {
+    "train": 36,
+    "val": 6,
+    "test": 6
+  },
+  "scanners": [
+    "LABscanner",
+    "TRIOS3",
+    "TRIOS5",
+    "iTERO"
+  ],
+  "excluded": 0
+}

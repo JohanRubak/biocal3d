@@ -1,0 +1,11 @@
+{
+  "n": 64,
+  "accuracy": 0.984375,
+  "balanced_accuracy": 0.9861111111111112,
+  "macro_f1": 0.9828067913174295,
+  "cross_entropy": 0.21757841110229492,
+  "roc_auc": 0.9916666666666667,
+  "best_epoch": 60,
+  "parameters": 2472515,
+  "training_seconds": 767.0815775999945
+}
