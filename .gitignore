@@ -9,6 +9,7 @@ __pycache__/
 venv/
 env/
 .labeling-env/
+third-party/
 
 # ============================================================
 # Jupyter
