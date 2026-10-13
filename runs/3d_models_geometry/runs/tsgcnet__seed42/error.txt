@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "C:\Users\au662213\repos\biocal3d\3D branch\biocal3d_3d_benchmark\biocal3d_3d_benchmark\biocal3d_train_3d_models.py", line 1264, in main
+    if run_model(name, seed, records, args, device):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\au662213\repos\biocal3d\3D branch\biocal3d_3d_benchmark\biocal3d_3d_benchmark\biocal3d_train_3d_models.py", line 1101, in run_model
+    raise ValueError(f"Settings changed for {run}; use a new output.")
+ValueError: Settings changed for runs\3d_models_geometry\runs\tsgcnet__seed42; use a new output.

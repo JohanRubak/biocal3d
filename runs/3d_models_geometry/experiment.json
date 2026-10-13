@@ -1,0 +1,1060 @@
+{
+  "version": 1,
+  "inputs": "geometry",
+  "points": 2048,
+  "scale_mm": 10.0,
+  "sampling_seed": 123,
+  "grid_size": 0.01,
+  "cohort": [
+    {
+      "row_id": "0016675d4b7a5a41",
+      "physical_id": "BCG3-6",
+      "split": "val",
+      "stage": "clean"
+    },
+    {
+      "row_id": "00718b9e4fa486c9",
+      "physical_id": "BCG3-5",
+      "split": "train",
+      "stage": "partial"
+    },
+    {
+      "row_id": "01dca0befba61b59",
+      "physical_id": "BCG3-1",
+      "split": "train",
+      "stage": "clean"
+    },
+    {
+      "row_id": "02da71a1e4933cde",
+      "physical_id": "BCG3-1",
+      "split": "train",
+      "stage": "clean"
+    },
+    {
+      "row_id": "048ff0347c52f175",
+      "physical_id": "BCG3-4",
+      "split": "train",
+      "stage": "partial"
+    },
+    {
+      "row_id": "04b6026c413ee798",
+      "physical_id": "BCG3-7",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "0585c7816465f989",
+      "physical_id": "BCG2-4",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "05e1fe8f17e32b1a",
+      "physical_id": "BCG1-3",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "0767534b38429476",
+      "physical_id": "BCG3-6",
+      "split": "val",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "09054ed81803704a",
+      "physical_id": "BCG1-2",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "09523680a5f95dd0",
+      "physical_id": "BCG2-6",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "0a5525004249488c",
+      "physical_id": "BCG3-7",
+      "split": "train",
+      "stage": "clean"
+    },
+    {
+      "row_id": "0d4328a773f9e2a8",
+      "physical_id": "BCG1-6",
+      "split": "train",
+      "stage": "clean"
+    },
+    {
+      "row_id": "0f4b225bb51a71f9",
+      "physical_id": "BCG3-7",
+      "split": "train",
+      "stage": "clean"
+    },
+    {
+      "row_id": "0f92c88a895052f6",
+      "physical_id": "BCG1-4",
+      "split": "val",
+      "stage": "clean"
+    },
+    {
+      "row_id": "13bb51e70e51e7fb",
+      "physical_id": "BCG3-7",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "14228684ce71e0ae",
+      "physical_id": "BCG1-4",
+      "split": "val",
+      "stage": "clean"
+    },
+    {
+      "row_id": "157fec50d7cf125f",
+      "physical_id": "BCG3-6",
+      "split": "val",
+      "stage": "partial"
+    },
+    {
+      "row_id": "16303b08e1c33ae8",
+      "physical_id": "BCG3-6",
+      "split": "val",
+      "stage": "partial"
+    },
+    {
+      "row_id": "1840dc679ae0cc30",
+      "physical_id": "BCG2-7",
+      "split": "train",
+      "stage": "clean"
+    },
+    {
+      "row_id": "1a3502eac67cc639",
+      "physical_id": "BCG1-3",
+      "split": "train",
+      "stage": "clean"
+    },
+    {
+      "row_id": "1a42b561febc8a4e",
+      "physical_id": "BCG1-8",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "1be93a28a00a9dab",
+      "physical_id": "BCG3-5",
+      "split": "train",
+      "stage": "partial"
+    },
+    {
+      "row_id": "1c19564b66395392",
+      "physical_id": "BCG2-2",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "1d2d9d41020b431e",
+      "physical_id": "BCG3-2",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "1d372a0b088e768e",
+      "physical_id": "BCG3-4",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "2092950f53b0d583",
+      "physical_id": "BCG3-3",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "2173de9ac043a128",
+      "physical_id": "BCG3-4",
+      "split": "train",
+      "stage": "partial"
+    },
+    {
+      "row_id": "22cf7ac9d3d25371",
+      "physical_id": "BCG1-7",
+      "split": "train",
+      "stage": "clean"
+    },
+    {
+      "row_id": "2393f31a13b843ff",
+      "physical_id": "BCG2-8",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "2602fc16683fb960",
+      "physical_id": "BCG3-5",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "26139b704a9be299",
+      "physical_id": "BCG1-2",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "265e3d8201c0d991",
+      "physical_id": "BCG3-4",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "2739072ab0b6b505",
+      "physical_id": "BCG2-2",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "27420e5b66ba7ef6",
+      "physical_id": "BCG3-2",
+      "split": "train",
+      "stage": "clean"
+    },
+    {
+      "row_id": "28dae91841b1c49c",
+      "physical_id": "BCG3-2",
+      "split": "train",
+      "stage": "partial"
+    },
+    {
+      "row_id": "2b89a2e652d36cde",
+      "physical_id": "BCG3-3",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "2d3c41279d698351",
+      "physical_id": "BCG3-6",
+      "split": "val",
+      "stage": "partial"
+    },
+    {
+      "row_id": "2e68a72a2ac5b044",
+      "physical_id": "BCG1-8",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "2e83fbd4a13b0390",
+      "physical_id": "BCG3-2",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "35a020c28adba79e",
+      "physical_id": "BCG2-6",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "36ed72849bb52416",
+      "physical_id": "BCG3-7",
+      "split": "train",
+      "stage": "partial"
+    },
+    {
+      "row_id": "37548f7a83142496",
+      "physical_id": "BCG2-5",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "3c6fe9aa2fc03ec2",
+      "physical_id": "BCG1-6",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "3ced0a90162dc029",
+      "physical_id": "BCG1-2",
+      "split": "train",
+      "stage": "clean"
+    },
+    {
+      "row_id": "3f0df5c37b631d73",
+      "physical_id": "BCG1-7",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "3ff93111aba260d3",
+      "physical_id": "BCG3-2",
+      "split": "train",
+      "stage": "partial"
+    },
+    {
+      "row_id": "41dd556a30eb1c9c",
+      "physical_id": "BCG3-1",
+      "split": "train",
+      "stage": "partial"
+    },
+    {
+      "row_id": "42d8c44e9fd482f8",
+      "physical_id": "BCG1-4",
+      "split": "val",
+      "stage": "clean"
+    },
+    {
+      "row_id": "4379f65004acd233",
+      "physical_id": "BCG1-3",
+      "split": "train",
+      "stage": "clean"
+    },
+    {
+      "row_id": "44536b91bac01b7b",
+      "physical_id": "BCG2-4",
+      "split": "train",
+      "stage": "clean"
+    },
+    {
+      "row_id": "46b53322f88e4105",
+      "physical_id": "BCG2-1",
+      "split": "val",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "4808acae9a94720e",
+      "physical_id": "BCG3-3",
+      "split": "train",
+      "stage": "partial"
+    },
+    {
+      "row_id": "4be2e60eb6b644da",
+      "physical_id": "BCG2-5",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "4bff493fdfb23f0f",
+      "physical_id": "BCG3-1",
+      "split": "train",
+      "stage": "clean"
+    },
+    {
+      "row_id": "4c72ac4d41d21245",
+      "physical_id": "BCG3-2",
+      "split": "train",
+      "stage": "partial"
+    },
+    {
+      "row_id": "4efbdecf7766c20f",
+      "physical_id": "BCG1-7",
+      "split": "train",
+      "stage": "clean"
+    },
+    {
+      "row_id": "53c5c42bc929e0c7",
+      "physical_id": "BCG2-2",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "53f63673842fb9c5",
+      "physical_id": "BCG3-6",
+      "split": "val",
+      "stage": "clean"
+    },
+    {
+      "row_id": "548dc5a5be93f25b",
+      "physical_id": "BCG3-1",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "5511e94175f5664a",
+      "physical_id": "BCG3-5",
+      "split": "train",
+      "stage": "partial"
+    },
+    {
+      "row_id": "55c918dd19c78abd",
+      "physical_id": "BCG1-1",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "583d34e86e44f130",
+      "physical_id": "BCG3-1",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "58d0c677864dbb65",
+      "physical_id": "BCG2-2",
+      "split": "train",
+      "stage": "clean"
+    },
+    {
+      "row_id": "5b1bbf9cc48344b5",
+      "physical_id": "BCG3-5",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "5d38e004e9cc72c8",
+      "physical_id": "BCG3-3",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "5e6e0c9bc84e7264",
+      "physical_id": "BCG1-4",
+      "split": "val",
+      "stage": "clean"
+    },
+    {
+      "row_id": "5f119a7acf159c2c",
+      "physical_id": "BCG1-6",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "5f823cd15d087d71",
+      "physical_id": "BCG1-1",
+      "split": "train",
+      "stage": "clean"
+    },
+    {
+      "row_id": "61b867511799c458",
+      "physical_id": "BCG1-6",
+      "split": "train",
+      "stage": "clean"
+    },
+    {
+      "row_id": "63d4298da86c463e",
+      "physical_id": "BCG3-4",
+      "split": "train",
+      "stage": "clean"
+    },
+    {
+      "row_id": "64042fb3ff52ea29",
+      "physical_id": "BCG1-6",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "64b109cbb585832c",
+      "physical_id": "BCG3-3",
+      "split": "train",
+      "stage": "clean"
+    },
+    {
+      "row_id": "653ae8a524769605",
+      "physical_id": "BCG2-8",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "654ccd76c3dbccef",
+      "physical_id": "BCG3-2",
+      "split": "train",
+      "stage": "clean"
+    },
+    {
+      "row_id": "659e5235ac9a385a",
+      "physical_id": "BCG1-1",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "65aff7eb77180e25",
+      "physical_id": "BCG2-4",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "664ce34a1a821a16",
+      "physical_id": "BCG1-1",
+      "split": "train",
+      "stage": "clean"
+    },
+    {
+      "row_id": "6b5d7ebddf956005",
+      "physical_id": "BCG2-6",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "71864cbdb6328c51",
+      "physical_id": "BCG3-6",
+      "split": "val",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "74a0e4a8f9ae57be",
+      "physical_id": "BCG2-7",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "7587e5ba9da7e1e0",
+      "physical_id": "BCG1-1",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "76bd9113b9537d18",
+      "physical_id": "BCG1-3",
+      "split": "train",
+      "stage": "clean"
+    },
+    {
+      "row_id": "78a873352f0a3293",
+      "physical_id": "BCG3-5",
+      "split": "train",
+      "stage": "clean"
+    },
+    {
+      "row_id": "78d8edf2d00c9eff",
+      "physical_id": "BCG3-2",
+      "split": "train",
+      "stage": "clean"
+    },
+    {
+      "row_id": "799b6a9680f99dbd",
+      "physical_id": "BCG3-5",
+      "split": "train",
+      "stage": "clean"
+    },
+    {
+      "row_id": "7c4f287d3793d42e",
+      "physical_id": "BCG3-4",
+      "split": "train",
+      "stage": "partial"
+    },
+    {
+      "row_id": "7df9438884025e07",
+      "physical_id": "BCG2-1",
+      "split": "val",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "7e40e463d211c55f",
+      "physical_id": "BCG1-1",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "80b7879aa8d1166c",
+      "physical_id": "BCG2-8",
+      "split": "train",
+      "stage": "clean"
+    },
+    {
+      "row_id": "815587475c7b95ab",
+      "physical_id": "BCG2-8",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "81ecfb7b150ba14d",
+      "physical_id": "BCG3-3",
+      "split": "train",
+      "stage": "partial"
+    },
+    {
+      "row_id": "82d3a1b75f5904d8",
+      "physical_id": "BCG3-1",
+      "split": "train",
+      "stage": "partial"
+    },
+    {
+      "row_id": "84cc8502fff4a2e5",
+      "physical_id": "BCG3-2",
+      "split": "train",
+      "stage": "partial"
+    },
+    {
+      "row_id": "87cd84a21cf37f5e",
+      "physical_id": "BCG1-4",
+      "split": "val",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "8a0b3e5b1a43b44b",
+      "physical_id": "BCG3-6",
+      "split": "val",
+      "stage": "clean"
+    },
+    {
+      "row_id": "8a5fee9bfedd5138",
+      "physical_id": "BCG2-6",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "8c0dfc90b77c65ef",
+      "physical_id": "BCG3-1",
+      "split": "train",
+      "stage": "clean"
+    },
+    {
+      "row_id": "8c9bef5d0827d4ae",
+      "physical_id": "BCG1-4",
+      "split": "val",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "8cea96d168591116",
+      "physical_id": "BCG1-7",
+      "split": "train",
+      "stage": "clean"
+    },
+    {
+      "row_id": "8ceec535f45c65e7",
+      "physical_id": "BCG1-8",
+      "split": "train",
+      "stage": "clean"
+    },
+    {
+      "row_id": "8d4def8ab25f1317",
+      "physical_id": "BCG1-2",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "9256b85d14bf1d7a",
+      "physical_id": "BCG3-2",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "930f244d8a620ea6",
+      "physical_id": "BCG3-3",
+      "split": "train",
+      "stage": "clean"
+    },
+    {
+      "row_id": "943b96fe4ba01523",
+      "physical_id": "BCG3-4",
+      "split": "train",
+      "stage": "clean"
+    },
+    {
+      "row_id": "94e0891980b39729",
+      "physical_id": "BCG3-7",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "9c4e6bf1f0c8ed4c",
+      "physical_id": "BCG1-2",
+      "split": "train",
+      "stage": "clean"
+    },
+    {
+      "row_id": "9cc7a45c549502ca",
+      "physical_id": "BCG1-1",
+      "split": "train",
+      "stage": "clean"
+    },
+    {
+      "row_id": "9f00d0696f67c980",
+      "physical_id": "BCG3-7",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "9fc00a8b0f485cdd",
+      "physical_id": "BCG3-3",
+      "split": "train",
+      "stage": "partial"
+    },
+    {
+      "row_id": "a11eb3d51d470863",
+      "physical_id": "BCG2-4",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "a3388e01eba66f1e",
+      "physical_id": "BCG3-5",
+      "split": "train",
+      "stage": "clean"
+    },
+    {
+      "row_id": "a3d6946bf9210432",
+      "physical_id": "BCG1-4",
+      "split": "val",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "a48e63d8dcea7a3c",
+      "physical_id": "BCG3-5",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "a57f6586c61c6391",
+      "physical_id": "BCG3-7",
+      "split": "train",
+      "stage": "clean"
+    },
+    {
+      "row_id": "a6f2c83ded79366e",
+      "physical_id": "BCG3-5",
+      "split": "train",
+      "stage": "clean"
+    },
+    {
+      "row_id": "a8a5dfe264b3c07e",
+      "physical_id": "BCG1-8",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "aaf9af28cb22f8c8",
+      "physical_id": "BCG3-2",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "ac1e0a62811b4689",
+      "physical_id": "BCG2-4",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "aca57f11e3096097",
+      "physical_id": "BCG3-3",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "ad31b0be1a259593",
+      "physical_id": "BCG3-1",
+      "split": "train",
+      "stage": "partial"
+    },
+    {
+      "row_id": "ae7a8dcb60176096",
+      "physical_id": "BCG1-4",
+      "split": "val",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "b0acab43b797eb09",
+      "physical_id": "BCG1-6",
+      "split": "train",
+      "stage": "clean"
+    },
+    {
+      "row_id": "b366b7a4c4e28cf1",
+      "physical_id": "BCG1-7",
+      "split": "train",
+      "stage": "clean"
+    },
+    {
+      "row_id": "b3e9fa190522af7f",
+      "physical_id": "BCG1-3",
+      "split": "train",
+      "stage": "clean"
+    },
+    {
+      "row_id": "b413b51b7c2bd547",
+      "physical_id": "BCG1-8",
+      "split": "train",
+      "stage": "clean"
+    },
+    {
+      "row_id": "b56aaa67b6c07c00",
+      "physical_id": "BCG1-2",
+      "split": "train",
+      "stage": "clean"
+    },
+    {
+      "row_id": "b60d3fa0d772ee21",
+      "physical_id": "BCG1-7",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "b7d242689d6a5e03",
+      "physical_id": "BCG1-3",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "b7d25ef5d91f1421",
+      "physical_id": "BCG2-8",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "b801e24aca1732a6",
+      "physical_id": "BCG1-2",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "c097219c6a2cfc12",
+      "physical_id": "BCG1-3",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "c1fa3f00703405b4",
+      "physical_id": "BCG2-5",
+      "split": "train",
+      "stage": "clean"
+    },
+    {
+      "row_id": "c6d1edb82c97dbcf",
+      "physical_id": "BCG3-1",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "c9b787c0744ebe85",
+      "physical_id": "BCG3-6",
+      "split": "val",
+      "stage": "clean"
+    },
+    {
+      "row_id": "ca4be8594b1a7292",
+      "physical_id": "BCG3-7",
+      "split": "train",
+      "stage": "clean"
+    },
+    {
+      "row_id": "d0327303d1498aa5",
+      "physical_id": "BCG3-3",
+      "split": "train",
+      "stage": "clean"
+    },
+    {
+      "row_id": "d1677026aa038503",
+      "physical_id": "BCG3-3",
+      "split": "train",
+      "stage": "clean"
+    },
+    {
+      "row_id": "d5ffb636dfc68963",
+      "physical_id": "BCG3-6",
+      "split": "val",
+      "stage": "partial"
+    },
+    {
+      "row_id": "d80f4a6f42a27a4c",
+      "physical_id": "BCG3-1",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "d9e4260d0906127b",
+      "physical_id": "BCG3-6",
+      "split": "val",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "da11750dd6aa5b81",
+      "physical_id": "BCG3-2",
+      "split": "train",
+      "stage": "clean"
+    },
+    {
+      "row_id": "da55831c6ebe1900",
+      "physical_id": "BCG1-7",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "dad715274eceaf69",
+      "physical_id": "BCG1-6",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "dc51b5b35a69f22e",
+      "physical_id": "BCG3-3",
+      "split": "train",
+      "stage": "partial"
+    },
+    {
+      "row_id": "dc82b91e441b1cc6",
+      "physical_id": "BCG1-3",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "dcce738cd69c100d",
+      "physical_id": "BCG2-1",
+      "split": "val",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "dd347c5b42a8b6a2",
+      "physical_id": "BCG2-5",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "dd42ac54c32777ce",
+      "physical_id": "BCG1-8",
+      "split": "train",
+      "stage": "clean"
+    },
+    {
+      "row_id": "dfaa19a84bbaa5e1",
+      "physical_id": "BCG3-6",
+      "split": "val",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "e136c053bd03ccb9",
+      "physical_id": "BCG2-2",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "e4d346ef41280b81",
+      "physical_id": "BCG3-4",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "e5222ada8ec0804f",
+      "physical_id": "BCG2-6",
+      "split": "train",
+      "stage": "clean"
+    },
+    {
+      "row_id": "ea76842be64f2106",
+      "physical_id": "BCG3-1",
+      "split": "train",
+      "stage": "partial"
+    },
+    {
+      "row_id": "ea86a6e5521b8127",
+      "physical_id": "BCG3-4",
+      "split": "train",
+      "stage": "clean"
+    },
+    {
+      "row_id": "eac23daafd6a3ba7",
+      "physical_id": "BCG3-5",
+      "split": "train",
+      "stage": "partial"
+    },
+    {
+      "row_id": "ec8b3a303cb797f6",
+      "physical_id": "BCG2-7",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "ed037a254ab05791",
+      "physical_id": "BCG1-2",
+      "split": "train",
+      "stage": "clean"
+    },
+    {
+      "row_id": "ed6dc1ef19d9a027",
+      "physical_id": "BCG1-8",
+      "split": "train",
+      "stage": "clean"
+    },
+    {
+      "row_id": "eee1b65dba213ebc",
+      "physical_id": "BCG3-7",
+      "split": "train",
+      "stage": "partial"
+    },
+    {
+      "row_id": "eeeff743d9218088",
+      "physical_id": "BCG1-7",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "f03b3c73024edd11",
+      "physical_id": "BCG3-4",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "f1360feb6e7f57ad",
+      "physical_id": "BCG1-6",
+      "split": "train",
+      "stage": "clean"
+    },
+    {
+      "row_id": "f463f7f45da1f370",
+      "physical_id": "BCG3-7",
+      "split": "train",
+      "stage": "partial"
+    },
+    {
+      "row_id": "f50dcc7e05f9d8eb",
+      "physical_id": "BCG3-7",
+      "split": "train",
+      "stage": "partial"
+    },
+    {
+      "row_id": "f5659dc3c5ba8ac6",
+      "physical_id": "BCG2-7",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "f71a9367069f5952",
+      "physical_id": "BCG3-4",
+      "split": "train",
+      "stage": "clean"
+    },
+    {
+      "row_id": "f7a91da4de32247d",
+      "physical_id": "BCG3-4",
+      "split": "train",
+      "stage": "partial"
+    },
+    {
+      "row_id": "f7a9d761fa60d350",
+      "physical_id": "BCG2-5",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "f87d8ed634be1563",
+      "physical_id": "BCG1-1",
+      "split": "train",
+      "stage": "clean"
+    },
+    {
+      "row_id": "f90de5abc2504aca",
+      "physical_id": "BCG2-1",
+      "split": "val",
+      "stage": "clean"
+    },
+    {
+      "row_id": "f93c2271b45d29bf",
+      "physical_id": "BCG2-1",
+      "split": "val",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "fd3f0adc4f91521f",
+      "physical_id": "BCG3-5",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "feddffcbcd1e3c95",
+      "physical_id": "BCG2-7",
+      "split": "train",
+      "stage": "baseline"
+    },
+    {
+      "row_id": "ff20700df4483afb",
+      "physical_id": "BCG1-8",
+      "split": "train",
+      "stage": "baseline"
+    }
+  ]
+}

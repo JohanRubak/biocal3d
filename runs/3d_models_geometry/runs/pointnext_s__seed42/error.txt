@@ -1,0 +1,23 @@
+Traceback (most recent call last):
+  File "C:\Users\au662213\repos\biocal3d\3D branch\biocal3d_3d_benchmark\biocal3d_3d_benchmark\biocal3d_train_3d_models.py", line 1264, in main
+    if run_model(name, seed, records, args, device):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\au662213\repos\biocal3d\3D branch\biocal3d_3d_benchmark\biocal3d_3d_benchmark\biocal3d_train_3d_models.py", line 1077, in run_model
+    encoder = make_model(name, args, device)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\au662213\repos\biocal3d\3D branch\biocal3d_3d_benchmark\biocal3d_3d_benchmark\biocal3d_train_3d_models.py", line 631, in make_model
+    encoder = PointNextEncoder(args)
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\au662213\repos\biocal3d\3D branch\biocal3d_3d_benchmark\biocal3d_3d_benchmark\biocal3d_train_3d_models.py", line 530, in __init__
+    from openpoints.utils import EasyConfig
+  File "C:\Users\au662213\repos\biocal3d\3D branch\biocal3d_3d_benchmark\biocal3d_3d_benchmark\third_party\PointNeXt\openpoints\__init__.py", line 3, in <module>
+    from .transforms import *
+  File "C:\Users\au662213\repos\biocal3d\3D branch\biocal3d_3d_benchmark\biocal3d_3d_benchmark\third_party\PointNeXt\openpoints\transforms\__init__.py", line 5, in <module>
+    from .transforms_factory import *
+  File "C:\Users\au662213\repos\biocal3d\3D branch\biocal3d_3d_benchmark\biocal3d_3d_benchmark\third_party\PointNeXt\openpoints\transforms\transforms_factory.py", line 2, in <module>
+    from ..utils.registry import Registry
+  File "C:\Users\au662213\repos\biocal3d\3D branch\biocal3d_3d_benchmark\biocal3d_3d_benchmark\third_party\PointNeXt\openpoints\utils\__init__.py", line 2, in <module>
+    from .config import EasyConfig, print_args
+  File "C:\Users\au662213\repos\biocal3d\3D branch\biocal3d_3d_benchmark\biocal3d_3d_benchmark\third_party\PointNeXt\openpoints\utils\config.py", line 6, in <module>
+    from multimethod import multimethod
+ModuleNotFoundError: No module named 'multimethod'

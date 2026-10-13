@@ -1,0 +1,10 @@
+{
+  "commit": "18c09ff8d713494f78a8213792262b910977a65d",
+  "model": "sonata",
+  "checkpoint_sha256": null,
+  "initialization": "official pretrained",
+  "grid_size": 0.01,
+  "flash": false,
+  "adaptation": "frozen encoder; deterministic voxel representatives; original-face mean/max pooling",
+  "state_sha256": "4a471e2e8c3f5c8091956c4045cf1f035d121b8495b710d25c9af09bc89ee156"
+}

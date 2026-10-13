@@ -1,0 +1,10 @@
+# Dedicated Windows labeling runtime. Qt/VTK come from pip only.
+numpy==1.26.4
+PySide6==6.8.3
+vtk==9.3.1
+scipy>=1.11,<1.14
+Pillow>=10,<12
+plyfile>=1.0,<2
+pandas>=2.0,<3
+matplotlib>=3.8,<3.10
+pyvista>=0.43,<0.45

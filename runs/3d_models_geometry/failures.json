@@ -1,0 +1,22 @@
+[
+  {
+    "model": "tsgcnet",
+    "seed": 42,
+    "error": "ValueError: Settings changed for runs\\3d_models_geometry\\runs\\tsgcnet__seed42; use a new output."
+  },
+  {
+    "model": "pointnext_s",
+    "seed": 42,
+    "error": "ModuleNotFoundError: No module named 'multimethod'"
+  },
+  {
+    "model": "sonata",
+    "seed": 42,
+    "error": "ModuleNotFoundError: No module named 'huggingface_hub'"
+  },
+  {
+    "model": "concerto",
+    "seed": 42,
+    "error": "ModuleNotFoundError: No module named 'huggingface_hub'"
+  }
+]

@@ -1,0 +1,47 @@
+Traceback (most recent call last):
+  File "C:\Users\au662213\repos\biocal3d\3D branch\biocal3d_3d_benchmark\biocal3d_3d_benchmark\third_party\PointNeXt\openpoints\cpp\pointnet2_batch\__init__.py", line 22, in <module>
+    import pointnet2_batch_cuda as pointnet2_cuda
+ModuleNotFoundError: No module named 'pointnet2_batch_cuda'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\au662213\repos\biocal3d\3D branch\biocal3d_3d_benchmark\biocal3d_3d_benchmark\biocal3d_train_3d_models.py", line 1257, in main
+    local, coords = encoder(data)
+                    ^^^^^^^^^^^^^
+  File "C:\Users\au662213\AppData\Local\anaconda3\envs\biocal3d\Lib\site-packages\torch\nn\modules\module.py", line 1783, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\au662213\AppData\Local\anaconda3\envs\biocal3d\Lib\site-packages\torch\nn\modules\module.py", line 1794, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\au662213\repos\biocal3d\3D branch\biocal3d_3d_benchmark\biocal3d_3d_benchmark\biocal3d_train_3d_models.py", line 547, in forward
+    positions, features = self.model.forward_seg_feat(data["coord"].contiguous(), feat)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\au662213\repos\biocal3d\3D branch\biocal3d_3d_benchmark\biocal3d_3d_benchmark\third_party\PointNeXt\openpoints\models\backbone\pointnext.py", line 452, in forward_seg_feat
+    _p, _f = self.encoder[i]([p[-1], f[-1]])
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\au662213\AppData\Local\anaconda3\envs\biocal3d\Lib\site-packages\torch\nn\modules\module.py", line 1783, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\au662213\AppData\Local\anaconda3\envs\biocal3d\Lib\site-packages\torch\nn\modules\module.py", line 1794, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\au662213\AppData\Local\anaconda3\envs\biocal3d\Lib\site-packages\torch\nn\modules\container.py", line 259, in forward
+    input = module(input)
+            ^^^^^^^^^^^^^
+  File "C:\Users\au662213\AppData\Local\anaconda3\envs\biocal3d\Lib\site-packages\torch\nn\modules\module.py", line 1783, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\au662213\AppData\Local\anaconda3\envs\biocal3d\Lib\site-packages\torch\nn\modules\module.py", line 1794, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\au662213\repos\biocal3d\3D branch\biocal3d_3d_benchmark\biocal3d_3d_benchmark\third_party\PointNeXt\openpoints\models\backbone\pointnext.py", line 146, in forward
+    idx = self.sample_fn(p, p.shape[1] // self.stride).long()
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\au662213\repos\biocal3d\3D branch\biocal3d_3d_benchmark\biocal3d_3d_benchmark\third_party\PointNeXt\openpoints\models\layers\subsample.py", line 96, in forward
+    pointnet2_cuda.furthest_point_sampling_wrapper(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\au662213\repos\biocal3d\3D branch\biocal3d_3d_benchmark\biocal3d_3d_benchmark\third_party\PointNeXt\openpoints\cpp\pointnet2_batch\__init__.py", line 14, in __getattr__
+    raise ImportError(
+ImportError: pointnet2_batch_cuda is not installed. Build OpenPoints CUDA ops from source first, e.g. `cd cpp/pointnet2_batch && python setup.py install`, or install a wheel that includes the compiled CUDA extension.

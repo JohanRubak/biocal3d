@@ -1,0 +1,10 @@
+{
+  "commit": "5b41117160cdd92c3538be1911277b17e7ef5871",
+  "model": "concerto_small",
+  "checkpoint_sha256": null,
+  "initialization": "official pretrained",
+  "grid_size": 0.01,
+  "flash": false,
+  "adaptation": "frozen encoder; deterministic voxel representatives; original-face mean/max pooling",
+  "state_sha256": "02e07a1d02c4e2f34d5d3078c057f65ea370bd16b194dde104901d718e6a04b2"
+}
