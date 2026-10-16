@@ -1,0 +1,5 @@
+model,seeds,mean_specimen_ba,sd_across_seeds
+concerto,1,0.6944444444444443,
+pointnext_s,1,0.5555555555555555,
+sonata,1,0.6111111111111112,
+tsgcnet,1,0.5,

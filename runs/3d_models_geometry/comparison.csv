@@ -1,0 +1,2 @@
+run,model,seed,training_mode,completed_epochs,best_epoch,specimen_ba,specimen_ba_ci_low,specimen_ba_ci_high,balanced_accuracy,accuracy,macro_f1,macro_auc,train_seconds,feature_extraction_seconds,trainable_parameters,total_encoder_parameters
+tsgcnet__seed42,tsgcnet,42,scratch encoder + trained stage head,17,2,0.5,0.4166666666666667,0.5277777777777778,0.47222222222222215,0.52,0.4666666666666666,0.700371387871388,139.26024150004378,0.0,4161827,4128416

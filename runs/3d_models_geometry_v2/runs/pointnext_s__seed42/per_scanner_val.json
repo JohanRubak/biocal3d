@@ -1,0 +1,66 @@
+[
+  {
+    "scanner": "LABscanner",
+    "accuracy": 0.7142857142857143,
+    "balanced_accuracy": 0.5555555555555555,
+    "specimen_macro_accuracy": 0.7777777777777778,
+    "specimen_balanced_accuracy": 0.5555555555555555,
+    "macro_f1": 0.5555555555555555,
+    "macro_auc": 0.75,
+    "class_support": [
+      3,
+      1,
+      3
+    ],
+    "scans": 7,
+    "specimens": 3
+  },
+  {
+    "scanner": "TRIOS3",
+    "accuracy": 0.8333333333333334,
+    "balanced_accuracy": 0.8333333333333334,
+    "specimen_macro_accuracy": 0.8333333333333334,
+    "specimen_balanced_accuracy": 0.8333333333333334,
+    "macro_f1": 0.7777777777777777,
+    "macro_auc": 0.9333333333333332,
+    "class_support": [
+      3,
+      1,
+      2
+    ],
+    "scans": 6,
+    "specimens": 3
+  },
+  {
+    "scanner": "TRIOS5",
+    "accuracy": 0.3333333333333333,
+    "balanced_accuracy": 0.3333333333333333,
+    "specimen_macro_accuracy": 0.27777777777777773,
+    "specimen_balanced_accuracy": 0.3333333333333333,
+    "macro_f1": 0.19047619047619047,
+    "macro_auc": 0.7833333333333333,
+    "class_support": [
+      3,
+      1,
+      2
+    ],
+    "scans": 6,
+    "specimens": 3
+  },
+  {
+    "scanner": "iTERO",
+    "accuracy": 0.5,
+    "balanced_accuracy": 0.3333333333333333,
+    "specimen_macro_accuracy": 0.611111111111111,
+    "specimen_balanced_accuracy": 0.3333333333333333,
+    "macro_f1": 0.25,
+    "macro_auc": 0.5805555555555556,
+    "class_support": [
+      3,
+      1,
+      2
+    ],
+    "scans": 6,
+    "specimens": 3
+  }
+]
