@@ -1,0 +1,8 @@
+# Use the same working biocal3d CUDA environment as the original 3D run.
+# Official third_party repositories/checkpoints are reused, not bundled.
+numpy>=1.24
+scipy>=1.10
+scikit-learn>=1.2
+pandas>=1.5
+matplotlib>=3.7
+# Do not replace torch/torchvision/CUDA while other jobs are running.

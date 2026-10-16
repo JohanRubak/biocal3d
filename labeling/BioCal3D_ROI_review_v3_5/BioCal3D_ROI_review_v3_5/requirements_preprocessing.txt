@@ -1,0 +1,4 @@
+# Optional raw preprocessing only; not needed to label prepared samples.
+-r requirements_labeling.txt
+open3d>=0.19,<0.21
+scikit-learn>=1.4,<2

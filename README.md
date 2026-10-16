@@ -52,3 +52,4 @@ Create the Conda environment:
 conda create -n biocal3d python=3.11
 conda activate biocal3d
 pip install -e .
+con

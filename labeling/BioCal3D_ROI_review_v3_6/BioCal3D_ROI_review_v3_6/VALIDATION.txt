@@ -1,0 +1,161 @@
+BioCal3D ROI review v3.6 — validation, 16 October 2026
+
+PASS: 58 annotator/extraction/rebuild regression tests.
+PASS: 4 workflow/labeling-study regression tests.
+- Label status loads as approved for completed annotations, changes to pending
+  after editing labels, and becomes approved again after label approval.
+- F5 reloads another saved geometry revision, preserves matched plaque labels,
+  resets completion, and retains the main top-only painting guard.
+- Automatic label saves, colored PLY, review approvals, keyboard actions,
+  source-face migration, textures, actual extraction, offscreen picking and
+  reviewed snapshot rebuilds remain functional.
+PASS: approved Qt preview source matches packaged application source.
+PASS: compact review controls fit one line without clipping at 1280x800,
+  1380x880 and 1600x1000. Measured viewer gain: 180 logical pixels vs v3.5.
+PASS: installer backs up old code, copies every update file and leaves existing
+  data, annotations and Python environment marker files unchanged.
+PASS: Python compilation and archive CRC/SHA-256 checks during packaging.
+
+Runtime: Linux Python 3.12, PySide6 6.8.3, VTK 9.5.2, PyVista 0.49.1.
+Qt logic tests disable native rendering. Standalone VTK tests and the preview
+render the sample offscreen. Windows desktop/OpenGL was not available.
+The previously reported intermittent Windows shutdown popup is not fixed in
+this UI update. Registration/full raw preprocessing was not rerun.
+No extraction-algorithm change from v3.4; no preprocessing rerun is required.
+
+Previous release validation follows:
+
+BioCal3D ROI review v3.5 — validation, 16 October 2026
+
+PASS: 57 distinct annotator/extraction/rebuild regression checks across the
+main suite and focused reruns/additions.
+- Main-window Approve ROI & Next approves the exact displayed geometry,
+  including unused vertices, source-face IDs, inactive mask and UV seams.
+- Plaque labels, notes and existing completion are preserved. New geometry
+  approvals do not mark unreviewed plaque labeling complete.
+- Navigation skips approved ROIs, includes pending/flagged ROIs, and reports
+  ROI approvals separately from plaque completion. Ctrl+Enter advances once.
+- Repeated approval is idempotent. Stale shared versions cannot be approved;
+  failures retain the current sample and read-only review cannot approve.
+- Original context and live preview default on; Restore surface is selected.
+  No automatic extraction is triggered on opening. A parameter change updates
+  the live selection, and the existing camera/history/depth regressions pass.
+- Actual snapshot rebuilding accepts quick approvals and preserves UV/RGB,
+  face identity, labels and splits. Inactive faces remain excluded on export.
+- Existing geometry selection, source correspondence, label migration/storage,
+  rendered brush picking, reviewer UI and extraction checks pass.
+PASS: code-update installer backup/copy smoke test for all installed files.
+PASS: Python compilation and archive CRC/SHA-256 checks during packaging.
+
+Runtime: Linux Python 3.12, PySide6 6.8.3, VTK 9.5.2, PyVista 0.49.1.
+Qt UI tests disable native rendering; standalone VTK tests render offscreen.
+Windows desktop interaction and the full raw scans were not available.
+Registration and a complete raw-data preprocessing run were not executed.
+No extraction algorithm change from v3.4; no preprocessing rerun is required.
+
+Previous release validation follows:
+
+BioCal3D ROI review v3.4 — validation, 15 October 2026
+
+PASS: 49 annotator/extraction/rebuild regression tests (48-test suite plus one
+additional actual Apply-button regression); 4 workflow/labeling-study tests.
+- Repeated actual Apply with identical settings retains all 32 eligible faces
+  on a UV-split synthetic specimen with steep interior detail; two exposed
+  wall faces remain excluded. No history entry is added for unchanged Apply.
+- A real vtkPLYReader texture-seam split now retains both connected triangles,
+  with original UVs, face identities and saved plaque labels preserved.
+- Exact duplicate geometry connects across seams; nearby separate geometry
+  and isolated touching vertices remain disconnected.
+- Enclosed steep detail is preserved without moving coordinates. Circle and
+  height limits remain strict, including -0.5/+0.5 mm boundary tests.
+- A historical opening-mask/settings mismatch is described before Apply;
+  exclusion counts explain height, slope and connectivity decisions.
+- Existing context-camera, keyboard undo/redo, live-depth, review storage,
+  source mapping, migration, texture, actual extractor, rebuild, brush picking,
+  label storage and workflow checks pass.
+- Python compilation and archive integrity verified during packaging.
+
+Qt reviewer tests disable native rendering; standalone VTK tests use actual
+EGL offscreen rendering. Windows desktop interaction and the full source meshes
+shown in the screenshots were unavailable. Synthetic and real reader-seam
+regressions validate these code changes, not the exact screenshot specimens.
+Registration and a full raw-data preprocessing run were not executed.
+
+Previous release validation follows:
+
+BioCal3D ROI review v3.3 — validation, 15 October 2026
+
+PASS: 13 relevant reviewer UI and label storage regressions.
+- Context toggling changes visible faces while preserving camera position, focal point, view-up, zoom, projection and window centre.
+- Ctrl+Z, Ctrl+Y and Ctrl+Shift+Z route to ROI history from controls and viewport. Two-step history verifies one action per keypress.
+- Undo/redo restores extraction parameters and masks; pending live preview does not overwrite Undo.
+- Notes retain native text Undo/Redo; geometry commands preserve plaque labels.
+- Reviewer reopen/save/navigation, draft saves, colored exports and label resets remain functional.
+- Python compilation and archive integrity verified.
+
+UI logic used rendering-disabled Qt windows. Native Windows interaction was not available.
+
+Previous release validation:
+BioCal3D ROI review v3.2 — validation, 15 October 2026
+
+PASS: 16 relevant existing storage, label, reset and reviewer UI tests.
+PASS: actual Entire ROI -> plaque button smoke test with rendering disabled:
+- Replaces all included ROI labels with plaque; excluded faces unchanged.
+- Saves a draft and restores exact labels with Undo/Redo.
+- Disabled for read-only annotations; original geometry unchanged.
+PASS: Python compilation and archive integrity.
+
+Previous v3.1 baseline validation (before this button addition):
+BioCal3D ROI review v3.1 — validation, 15 October 2026
+
+PASS: 40 annotator/extraction/rebuild tests (including 12 focused v3.1 regressions).
+PASS: 4 existing workflow/labeling-study tests.
+PASS: installer backup/update smoke test.
+PASS: compilation of all bundled Python sources.
+
+New v3.1 checks:
+- Default height limits -0.5/+0.5 mm, inclusive boundaries, and preservation of saved manual review limits.
+- Real vtkPLYReader vertex splitting at a PLY texture seam: full-model loading succeeds, UVs and plaque labels remain aligned.
+- Verified reordered/reindexed triangles; different and ambiguous geometry is rejected.
+- Actual offscreen rendered context on/off produces different pixels.
+- Explicit display subsets preserve source-face brush picking.
+- Live depth changes alter displayed geometry and move the lower boundary guide.
+- Empty selections display zero faces and cannot be approved; unchanged selections are explained.
+- Reviewer maximized state and minimize/maximize flags.
+- Space capture from spinboxes, numeric line editors, sliders, combo boxes and buttons.
+- Notes retain ordinary typing spaces.
+
+Covered behavior:
+- Synthetic specimen side walls and detached holder surface removal.
+- Shared-edge connectivity and preservation of genuine sloped surface relief.
+- Actual core.extract_specimen integration and raw triangle ID preservation.
+- Verified full-source context and restoration beyond the previous crop.
+- Source-face label migration, newly restored unreviewed faces, completion reset.
+- Geometry revision concurrency rejection and old annotation archiving.
+- RGB, per-face UV seams and portable texture storage.
+- Corrected snapshot rebuild with regenerated projection maps and copied specimen splits.
+- Textured rebuild preserving shared vertices and identical RGB raster when geometry is unchanged.
+- Read-only geometry audit generation.
+- Qt reviewer control, save, reload and sample navigation state (rendering disabled).
+- VTK offscreen visible-face brush picking and ROI guards (real rendering).
+- Existing PLY/NPZ storage, resets, independent raters and workflow checks.
+
+Experimental input check:
+- Previously uploaded roi.vtp.labeled.ply loaded successfully: 4,466 vertices,
+  8,674 triangles, RGB present. This is not one of the full raw meshes shown
+  in the current screenshots, so it does not validate those particular crops.
+
+Runtime used for tests:
+- Linux Python 3.12; NumPy/SciPy; PySide6 6.12; VTK 9.5.2; PyVista 0.49.1.
+- The update retains the supplied Windows environment requirements. A native
+  Windows desktop/OpenGL run was not available here. The full interactive
+  legacy desktop test_ui.py was not run; reviewer UI logic was exercised with
+  rendering disabled and brush visibility was tested in standalone offscreen VTK.
+- Open3D registration and a complete raw-data preprocessing run were not executed.
+  The extraction-only integration test isolates registration and runs the actual
+  updated extraction function. Registration routines were not changed.
+
+Interpretation:
+The code and reproducibility safeguards are tested. The initial geometric
+thresholds still require review on the actual BioCal3D scans. No original scan
+or existing prepared dataset was overwritten or declared repaired.

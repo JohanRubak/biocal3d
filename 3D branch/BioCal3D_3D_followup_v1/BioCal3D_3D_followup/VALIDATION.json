@@ -1,0 +1,42 @@
+{
+  "date": "2026-10-15",
+  "python": "3.12.14",
+  "unit_tests": {
+    "total": 11,
+    "passed": 10,
+    "skipped": 1,
+    "skipped_reason": "No torch: differentiable pathway/gradient routing test is included for the training machine"
+  },
+  "cpu_integration": {
+    "status": "passed",
+    "source": "synthetic 512-scan / 48-specimen fixture only",
+    "original_manifest_matching": "passed",
+    "original_output_write_protection": "passed",
+    "no_reserved_test_in_training_assessment": "passed",
+    "colour_jobs": 36,
+    "CV_jobs": 20,
+    "LOSO_jobs": 80,
+    "mature_only_and_pilot_plans": "passed",
+    "development_metadata_scans": 448,
+    "paired_geometry_rows": 168,
+    "sample_inspection_figures": 7,
+    "control_fitting": "passed on synthetic fixture",
+    "incremental_report": "passed",
+    "OOF_partial_complete_labels": "passed",
+    "results_zip_export": "passed: 62 small files, no model weights/caches"
+  },
+  "original_runner_backend_hashes": "verified unchanged against uploaded run provenance",
+  "not_executed": [
+    "Actual user data reading on Windows drive",
+    "Official backbone inference/pretrained feature extraction",
+    "GPU training/resumption",
+    "Existing best.pt inference reproduction",
+    "Windows batch execution"
+  ],
+  "required_local_checks": [
+    "02_preflight.cmd",
+    "10_run_tests.cmd",
+    "03_existing_rgb_diagnostics.cmd before interpreting existing RGB focus"
+  ],
+  "syntax_compilation": "passed"
+}
