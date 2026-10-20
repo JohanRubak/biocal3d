@@ -1,0 +1,9 @@
+{
+  "features": [
+    "log_faces"
+  ],
+  "C": 1,
+  "class_weight": "balanced",
+  "fit_partition": "train",
+  "no_validation_tuning": true
+}

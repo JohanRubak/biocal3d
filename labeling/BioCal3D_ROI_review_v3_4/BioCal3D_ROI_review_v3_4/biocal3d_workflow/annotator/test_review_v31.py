@@ -131,7 +131,11 @@ class ReviewControlTests(unittest.TestCase):
         self.app.processEvents();self.q.vtkRenderWindow,self.q.vtkGenericRenderWindowInteractor=self.old
         vtk.vtkObject.GlobalWarningDisplayOn();self.tmp.cleanup()
     def configure(self):
+<<<<<<< HEAD
+        r=self.r;r.connected.setChecked(False);r.controls['z'].setValue(0);r.controls['radius'].setValue(3)
+=======
         r=self.r;r.original.setChecked(False);r.operation.setCurrentIndex(0);r.connected.setChecked(False);r.controls['z'].setValue(0);r.controls['radius'].setValue(3)
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
         r.controls['above'].setValue(1);r.controls['below'].setValue(1.5);r.automatic()
     def test_window_buttons_and_large_default(self):
         r=self.r
@@ -156,7 +160,11 @@ class ReviewControlTests(unittest.TestCase):
         from roi_geometry import Extraction
         v,f=SurfaceTests.detail_fixture(self)
         v=v[f.ravel()];f=np.arange(len(v)).reshape(-1,3)
+<<<<<<< HEAD
+        r=self.r;r.base=Mesh(Path('synthetic.ply'),v,f,polydata(v,f,None),np.ones(len(f),bool))
+=======
         r=self.r;r.original.setChecked(False);r.base=Mesh(Path('synthetic.ply'),v,f,polydata(v,f,None),np.ones(len(f),bool))
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
         r.base.context_kind='full';r.mask=np.r_[np.ones(32,bool),False,False]
         r.settings=Extraction(radius=2,max_angle=25)
         for name,control in r.controls.items():

@@ -10,6 +10,8 @@ venv/
 env/
 .labeling-env/
 third-party/
+/runs/3d_models_geometry_v2.zip
+/3D branch/BioCal3D_3D_investigations_v1/BioCal3D_3D_investigations/runs/3d_prepared_20261013.zip
 
 # ============================================================
 # Jupyter
@@ -39,6 +41,7 @@ data/
 *.ply
 *.npz
 *.npy
+*.zip
 
 # ============================================================
 # Machine learning outputs

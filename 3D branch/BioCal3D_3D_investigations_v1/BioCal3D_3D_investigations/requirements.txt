@@ -1,0 +1,7 @@
+# Keep the CUDA torch and official backend dependencies already working on your PC.
+numpy
+scipy
+pandas
+scikit-learn
+matplotlib
+pillow

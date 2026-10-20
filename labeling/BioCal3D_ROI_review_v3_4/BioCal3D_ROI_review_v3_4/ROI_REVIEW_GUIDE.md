@@ -1,3 +1,9 @@
+<<<<<<< HEAD
+# BioCal3D specimen surface verification — v3.4
+
+This update adds shared ROI review to the existing annotator and uses the same face-selection algorithm in new preprocessing runs. The existing scanner-colour display, label classes, rater selection, brush controls, reset-label action and coloured PLY exports remain available.
+
+=======
 # BioCal3D specimen surface verification — v3.9
 
 ## Portable G5 study folders in v3.9
@@ -81,6 +87,7 @@ was not available for verification. This release does not claim a shutdown fix.
 4. Confirm all exported scans are approved. A filtered queue's progress refers only to that queue; the rebuild checks the complete scan manifest.
 5. Run **rebuild_reviewed.cmd**, choose the reviewed snapshot and a separate new verified output folder, then use that verified output for labeling and investigations. There is no need to rerun raw preprocessing after installing v3.5.
 
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
 ## Changes in v3.4
 
 - Automatic selection now recognizes shared geometric edges across texture seams. Scanner exports may duplicate the same physical vertex for different UV coordinates; these duplicates no longer split the specimen into artificial components. Exact coordinate matching is used only for analysis, preserving original topology, source IDs, colors and UV seams.
@@ -104,7 +111,11 @@ Undo/redo restores both the surface selection and its extraction parameters. A p
 
 ## Changes in v3.2
 
+<<<<<<< HEAD
+**Entire ROI → plaque** labels every included ROI face as Plaque, replacing any Clean, Uncertain or Unreviewed labels in that ROI. Excluded geometry remains unchanged. It saves a draft, supports Undo/Redo, and is disabled for read-only annotations. The existing **Reviewed remainder → clean** button still changes only unreviewed faces.
+=======
 **Entire ROI → plaque** labels every included ROI face as Plaque, replacing any Clean, Uncertain or Unreviewed labels in that ROI. Excluded geometry remains unchanged. It saves a draft, supports Undo/Redo, and is disabled for read-only annotations. The existing **Remaining → clean** button still changes only unreviewed faces.
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
 
 ## Changes in v3.1
 
@@ -138,9 +149,15 @@ Do not run the setup script again merely to apply this update. The full bundle i
 6. Rotate and inspect from several directions. Use **Exclude surface** to brush away side walls or holder remnants; use **Restore surface** for valid specimen surface. With the original model hidden, excluded faces cannot be picked for restoration; show it again first. Brushes affect visible faces only. Disable **Brush enabled** to navigate normally, or hold Space + left drag to rotate. Undo/redo/reset operate on geometry selections.
 7. Save as **pending**, **approved**, or **flagged**. A flagged case is retained for investigation and blocks final snapshot rebuilding. Cancel discards the current review edits. No smoothing, flattening, remeshing or hole filling is performed.
 8. The annotator reloads the selected surface. Existing plaque labels transfer only through verified source-face identity. Newly restored faces are unreviewed, and completion resets for review. Removed faces are excluded from the analysed surface; they are not counted as clean.
+<<<<<<< HEAD
+9. Complete plaque annotation normally. **Save & Next** now requires an approved specimen surface. Draft saves remain available before approval.
+
+If someone changes a shared surface while you have it open, saving is blocked. Click **Reload shared ROI** to transfer your in-memory labels to the current surface. Old label files are archived when a different geometry revision is saved.
+=======
 9. Complete plaque annotation normally. **Approve Label & Next** now requires an approved specimen surface. Draft saves remain available before approval.
 
 If someone changes a shared surface while you have it open, saving is blocked. Press **F5** to transfer your in-memory labels to the current surface. Old label files are archived when a different geometry revision is saved.
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
 
 ## Shared geometry and independent raters
 

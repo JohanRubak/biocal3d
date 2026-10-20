@@ -1,0 +1,15 @@
+{
+  "interval": [
+    0.4444444444444444,
+    0.513888888888889
+  ],
+  "method": "95% percentile; fresh/mature-stratified whole-specimen bootstrap; fixed fitted model",
+  "repeats": 300,
+  "seed": 123,
+  "specimens_per_stage": {
+    "baseline": 6,
+    "partial": 4,
+    "clean": 6
+  },
+  "limitation": "Conditional on this fit/split; does not capture retraining, seed or model-selection variability."
+}

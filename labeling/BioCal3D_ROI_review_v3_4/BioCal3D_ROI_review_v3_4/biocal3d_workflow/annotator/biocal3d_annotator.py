@@ -10,10 +10,17 @@ from PySide6 import QtCore, QtGui, QtWidgets
 import vtk
 from vtk.util.numpy_support import numpy_to_vtk, vtk_to_numpy
 from vtkmodules.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
+<<<<<<< HEAD
+from mesh_io import (LABELS, PALETTE, AnnotationStore, area_summary, create_demo,
+                     discover, manifest_queue, export_vtp, export_ply, export_label_colors, load_mesh, shaded_display)
+
+from roi_review_store import read_reviewed, current_version
+=======
 from mesh_io import (LABELS, PALETTE, AnnotationStore, create_demo,
                      discover, manifest_queue, export_vtp, export_ply, export_label_colors, load_mesh, shaded_display)
 
 from roi_review_store import read_reviewed, current_version, read_state, approve_displayed_surface, resolve_review_source, manifest_reviews
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
 from surface_display import display_subset
 from rotation_keys import SpaceRotateFilter
 
@@ -341,7 +348,11 @@ class Annotator(AnnotatorFeatures, QtWidgets.QMainWindow):
         resort=QtWidgets.QPushButton('↻');resort.setToolTip('Reapply sorting, including updated annotation statuses')
         resort.setFixedWidth(34);resort.clicked.connect(self.sort_queue);sort_row.addWidget(resort);side.addLayout(sort_row)
         self.list = QtWidgets.QListWidget(); self.list.currentRowChanged.connect(self.change_sample); side.addWidget(self.list,1)
+<<<<<<< HEAD
+        self.progress = QtWidgets.QLabel('0 samples'); side.addWidget(self.progress)
+=======
         self.progress = QtWidgets.QLabel('0 samples');self.progress.setWordWrap(True); side.addWidget(self.progress)
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
         self.notes = QtWidgets.QPlainTextEdit(); self.notes.setPlaceholderText('Optional annotation notes')
         self.notes.setMaximumHeight(90); self.notes.textChanged.connect(self.note_changed); side.addWidget(self.notes)
         layout.addWidget(sidebar)
@@ -392,6 +403,13 @@ class Annotator(AnnotatorFeatures, QtWidgets.QMainWindow):
         rendering.addWidget(self.auto_ply);main.addLayout(rendering)
         self.view = SurfaceView(); main.addWidget(self.view,1)
         self.install_feature_controls(main)
+<<<<<<< HEAD
+        review_row=QtWidgets.QHBoxLayout()
+        self.roi_review_button=QtWidgets.QPushButton('Verify / correct specimen ROI…')
+        self.roi_review_button.clicked.connect(self.open_roi_review);review_row.addWidget(self.roi_review_button)
+        reload_roi=QtWidgets.QPushButton('Reload shared ROI');reload_roi.clicked.connect(self.reload_shared_roi);review_row.addWidget(reload_roi)
+        self.roi_status=QtWidgets.QLabel('Surface review: pending');review_row.addWidget(self.roi_status);review_row.addStretch()
+=======
         review_row=QtWidgets.QHBoxLayout();review_row.setSpacing(6)
         self.roi_review_button=QtWidgets.QPushButton('Verify / correct ROI…')
         self.roi_review_button.setToolTip('Open the original-model context and extraction/manual correction window.')
@@ -413,6 +431,7 @@ class Annotator(AnnotatorFeatures, QtWidgets.QMainWindow):
         self.label_status=QtWidgets.QLabel('Label: pending');self.label_status.setObjectName('labelStatus')
         self.label_status.setToolTip('Plaque-label approval for the selected annotator; independent of ROI approval.')
         review_row.addWidget(self.label_status)
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
         main.insertLayout(main.indexOf(self.view),review_row)
         self.color_toggle.toggled.connect(self.set_scanner_color)
         for control in (self.surface_toggle,self.points_toggle,self.wire_toggle):control.toggled.connect(self.render_options_changed)
@@ -423,31 +442,53 @@ class Annotator(AnnotatorFeatures, QtWidgets.QMainWindow):
         self.view.stroke_started.connect(self.start_stroke); self.view.faces_painted.connect(self.paint_faces)
         self.view.stroke_finished.connect(self.end_stroke); self.view.failure.connect(self.show_error)
         tools = QtWidgets.QHBoxLayout()
+<<<<<<< HEAD
+        for text, callback in [('Undo [Ctrl+Z]',self.undo),('Redo [Ctrl+Y]',self.redo),('Reset view [R]',self.view.reset_camera),
+                               ('Choose texture…',self.choose_texture),('Export mesh…',self.export),('Export all…',self.export_all)]:
+            b = QtWidgets.QPushButton(text); b.clicked.connect(callback); tools.addWidget(b)
+            if callback==self.redo:b.setToolTip('Redo annotation: Ctrl+Y or Ctrl+Shift+Z')
+        main.addLayout(tools)
+        self.stats = QtWidgets.QLabel(''); main.addWidget(self.stats)
+        bulk_actions=QtWidgets.QHBoxLayout()
+        b = QtWidgets.QPushButton('Reviewed remainder → clean'); b.setToolTip('Mark only unreviewed ROI faces clean after reviewing the full surface.')
+=======
         for text, callback in [('Undo [Ctrl+Z]',self.undo),('Redo [Ctrl+Y]',self.redo),('Reset view [R]',self.view.reset_camera)]:
             b = QtWidgets.QPushButton(text); b.clicked.connect(callback); tools.addWidget(b)
             if callback==self.redo:b.setToolTip('Redo annotation: Ctrl+Y or Ctrl+Shift+Z')
         tools.addStretch(1)
         bulk_actions=tools
         b = QtWidgets.QPushButton('Remaining → clean'); b.setToolTip('Mark only unreviewed ROI faces clean after reviewing the full surface.')
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
         b.clicked.connect(self.fill_clean);bulk_actions.addWidget(b)
         self.all_plaque_button=QtWidgets.QPushButton('Entire ROI → plaque')
         self.all_plaque_button.setToolTip('Replace every included ROI face label with Plaque. Excluded geometry is unchanged. Undo with Ctrl+Z.')
         self.all_plaque_button.clicked.connect(self.fill_plaque);bulk_actions.addWidget(self.all_plaque_button)
+<<<<<<< HEAD
+        bulk_actions.addStretch();main.addLayout(bulk_actions)
+=======
         main.addLayout(tools)
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
         actions = QtWidgets.QHBoxLayout()
         self.clear_labels_button = QtWidgets.QPushButton('Clear all labels')
         self.clear_labels_button.setToolTip('Reset all ROI faces to Unreviewed and mark this sample Draft. Undo with Ctrl+Z.')
         self.clear_labels_button.clicked.connect(self.clear_labels); actions.addWidget(self.clear_labels_button)
         b = QtWidgets.QPushButton('Save draft [Ctrl+S]'); b.clicked.connect(self.save); actions.addWidget(b)
         b = QtWidgets.QPushButton('Next unfinished'); b.clicked.connect(self.next_unfinished); actions.addWidget(b)
+<<<<<<< HEAD
+        b = QtWidgets.QPushButton('Save & Next [N]'); b.setObjectName('primary'); b.clicked.connect(self.complete_next); actions.addWidget(b)
+=======
         b = QtWidgets.QPushButton('Approve Label && Next [N]'); b.setObjectName('primary'); b.clicked.connect(self.complete_next); actions.addWidget(b)
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
         main.addLayout(actions)
         help_text = QtWidgets.QLabel('Paint: left drag  •  Hold Space + left drag: rotate  •  Middle drag: pan  •  Wheel: zoom  •  Ctrl+wheel: brush size  •  A/D: previous/next sample')
         help_text.setWordWrap(True); help_text.setStyleSheet('color:#9daec4'); main.addWidget(help_text)
         for key, callback in [('1',lambda:self.class_picker.setCurrentIndex(0)),('2',lambda:self.class_picker.setCurrentIndex(1)),
                               ('3',lambda:self.class_picker.setCurrentIndex(2)),('4',lambda:self.class_picker.setCurrentIndex(3)),
                               ('Ctrl+Z',self.undo),('Ctrl+Y',self.redo),('Ctrl+Shift+Z',self.redo),('Ctrl+S',self.save),('N',self.complete_next),
+<<<<<<< HEAD
+=======
                               ('Ctrl+Return',self.approve_roi_next),('Ctrl+Enter',self.approve_roi_next),('F5',self.reload_shared_roi),
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
                               ('R',self.view.reset_camera),('O',self.show_overlay.toggle),('B',self.mode.toggle),
                               ('S',self.surface_toggle.toggle),('W',self.wire_toggle.toggle),('P',self.points_toggle.toggle),
                               ('A',lambda:self.navigate_sample(-1)),('D',lambda:self.navigate_sample(1)),
@@ -456,7 +497,10 @@ class Annotator(AnnotatorFeatures, QtWidgets.QMainWindow):
             if key in ('1','2','3','4'):
                 shortcut.setKeys([QtGui.QKeySequence(key),QtGui.QKeySequence('Num+'+key)])
             shortcut.setContext(QtCore.Qt.ShortcutContext.WindowShortcut)
+<<<<<<< HEAD
+=======
             if key in ('Ctrl+Return','Ctrl+Enter'):shortcut.setAutoRepeat(False)
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
             shortcut.activated.connect(callback); self.shortcuts.append(shortcut)
         QtWidgets.QApplication.instance().focusChanged.connect(self.update_shortcuts)
         # Capture the held rotation key even when sliders/buttons have focus.
@@ -466,9 +510,12 @@ class Annotator(AnnotatorFeatures, QtWidgets.QMainWindow):
             QLineEdit,QPlainTextEdit,QListWidget,QComboBox {background:#192534;border:1px solid #344359;border-radius:5px;padding:6px;}
             QPushButton {background:#24354a;border:1px solid #3c516b;border-radius:5px;padding:9px;}
             QPushButton:hover {background:#314a65;} QPushButton#primary {background:#16675b;border-color:#269d89;}
+<<<<<<< HEAD
+=======
             QPushButton#primary:hover {background:#238574;border-color:#54c7ae;}
             QPushButton[roiControl="true"] {padding:4px 10px;}
             QLabel#roiStatus,QLabel#labelStatus {color:#c4cfde;padding:4px 8px;border:1px solid #344359;border-radius:5px;}
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
             QListWidget::item {padding:8px;} QListWidget::item:selected {background:#304c6b;}
             QSlider::groove:horizontal {height:5px;background:#344359;} QSlider::handle:horizontal {width:12px;background:#6ed6bc;margin:-4px 0;border-radius:6px;}''')
         self.statusBar().showMessage('Ready'); self.view.setCursor(QtCore.Qt.CursorShape.CrossCursor)
@@ -527,7 +574,11 @@ class Annotator(AnnotatorFeatures, QtWidgets.QMainWindow):
             root = root.resolve()
             store = AnnotationStore(root, output or root/'annotations', self.rater.currentText().strip())
             queue = manifest_queue(root,manifest,self.filter.text().strip()) if manifest else discover(root,self.filter.text().strip())
+<<<<<<< HEAD
+            queue = [p for p in queue if not p.is_relative_to(store.output)]
+=======
             queue = list(dict.fromkeys(resolve_review_source(store,p) for p in queue if not p.is_relative_to(store.output)))
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
             if not queue:
                 raise ValueError('No supported meshes found. Select the prepared ROI folder; accepted files are roi.vtp, geometry.npz, or triangle PLY/VTP.')
             self.release_lock()
@@ -584,8 +635,14 @@ class Annotator(AnnotatorFeatures, QtWidgets.QMainWindow):
             self.notes.blockSignals(True); self.notes.setPlainText(notes); self.notes.blockSignals(False)
             self.sample_title.setText(f'{index+1} / {len(self.queue)}  •  {mesh.path.parent.name} / {mesh.path.name}')
             self.notice.setText(mesh.warning or 'Scanner colors • adjustments affect the display only')
+<<<<<<< HEAD
+            self.orientation_note.setText('Top: '+self.view.top_source)
+            self.last_save='Reopened annotation' if saved.exists() else 'New sample — not saved'
+            self.roi_status.setText('Surface review: '+mesh.review_status+' • '+(mesh.review_version[:8] or 'original crop'))
+=======
             self.last_save='Reopened annotation' if saved.exists() else 'New sample — not saved'
             self.update_roi_status(mesh)
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
             self.refresh(); self.update_review_mode(); self.view.setFocus()
         except Exception as exc:
             if lock and lock != self.lock_path:
@@ -607,6 +664,8 @@ class Annotator(AnnotatorFeatures, QtWidgets.QMainWindow):
             if dialog is not None:dialog.deleteLater()
             self.timer.start()
 
+<<<<<<< HEAD
+=======
     def update_roi_status(self,mesh):
         self.roi_status.setText('ROI: '+mesh.review_status)
         self.roi_status.setToolTip('Surface review: '+mesh.review_status+' • '+(mesh.review_version or 'original crop')+'. F5 reloads the latest shared ROI.')
@@ -646,6 +705,7 @@ class Annotator(AnnotatorFeatures, QtWidgets.QMainWindow):
                     self.show_error('Could not verify the complete dataset review status.\n\n'+str(e));return
             self.statusBar().showMessage(message)
 
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
     def reload_shared_roi(self):
         if self.mesh is None:return
         from roi_review_store import source_face_ids,source_domain,migrate_labels
@@ -666,7 +726,11 @@ class Annotator(AnnotatorFeatures, QtWidgets.QMainWindow):
             self.view.set_mesh(mesh)
             normal=read_orientation(self.store,mesh)
             if normal is not None:self.view.set_top_normal(normal);self.view.reset_camera()
+<<<<<<< HEAD
+            self.roi_status.setText('Surface review: '+mesh.review_status+' • '+(mesh.review_version[:8] or 'original crop'))
+=======
             self.update_roi_status(mesh)
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
             self.dirty=not self.is_read_only();self.refresh()
             if self.dirty:self.save()
         except Exception as e:self.show_error('Could not reload shared ROI. Current labels are kept open.\n\n'+str(e))
@@ -726,7 +790,11 @@ class Annotator(AnnotatorFeatures, QtWidgets.QMainWindow):
     def fill_clean(self):
         if self.is_read_only():return
         if self.view.top_only and self.mesh is not None and self.view.side_alignment()<=.08:
+<<<<<<< HEAD
+            self.show_error("Return to the top view before marking the reviewed remainder clean.");return
+=======
             self.show_error("Return to the top view before marking the remaining unreviewed faces clean.");return
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
         if self.mesh is not None:
             self.edit(np.flatnonzero(self.mesh.active & (self.labels==-2)),0)
             self.view.setFocus()
@@ -763,12 +831,28 @@ class Annotator(AnnotatorFeatures, QtWidgets.QMainWindow):
         if self.mesh is None:
             return
         self.view.update_labels(self.labels)
+<<<<<<< HEAD
+        counts={name:int(np.sum((self.labels==value)&self.mesh.active)) for value,name in LABELS.items()}
+        areas=area_summary(self.mesh,self.labels)
+        valid_area=areas['clean']+areas['plaque']
+        burden=100*areas['plaque']/valid_area if valid_area else 0
+        self.stats.setText(f'Plaque: {counts["plaque"]:,} faces  |  Clean: {counts["clean"]:,}  |  Uncertain: {counts["uncertain"]:,}  |  Unreviewed: {counts["unreviewed"]:,}\n'
+                           f'Plaque area / reviewed clean + plaque area: {burden:.1f}%  •  {"Completed" if self.completed else "Draft"}')
+=======
         self.label_status.setText('Label: '+('approved' if self.completed else 'pending'))
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
         self.statusBar().showMessage(self.last_save+('  •  Unsaved edits' if self.dirty else ''))
 
     def refresh_queue(self):
         if self.store is None:
             return
+<<<<<<< HEAD
+        done=0
+        for i,p in enumerate(self.queue):
+            status=self.store.status(p); done+=status=='done'
+            self.list.item(i).setText(f'[{status.upper()}] {p.relative_to(self.root)}')
+        self.progress.setText(f'{done} / {len(self.queue)} completed  •  {self.store.annotator}')
+=======
         done=0;approved=0
         for i,p in enumerate(self.queue):
             status=self.store.status(p); done+=status=='done'
@@ -776,6 +860,7 @@ class Annotator(AnnotatorFeatures, QtWidgets.QMainWindow):
             approved+=roi_status=='approved'
             self.list.item(i).setText(f'[ROI {roi_status.upper()} | {status.upper()}] {p.relative_to(self.root)}')
         self.progress.setText(f'ROI: {approved}/{len(self.queue)} approved  •  Plaque: {done}/{len(self.queue)} completed  •  {self.store.annotator}')
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
 
     def save(self,*args):
         if self.is_read_only():return True
@@ -784,7 +869,11 @@ class Annotator(AnnotatorFeatures, QtWidgets.QMainWindow):
         self.end_stroke()
         try:
             if current_version(self.store,self.mesh.path)!=self.mesh.review_version:
+<<<<<<< HEAD
+                raise ValueError('The shared ROI changed. Click Reload shared ROI before saving labels.')
+=======
                 raise ValueError('The shared ROI changed. Press F5 to reload the latest shared ROI before saving labels.')
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
             preview=self.store.path_for(self.mesh.path).parent/(self.mesh.path.name+'.label_colors.ply')
             export_label_colors(self.mesh,self.labels,preview)
             if self.auto_ply.isChecked():
@@ -809,10 +898,17 @@ class Annotator(AnnotatorFeatures, QtWidgets.QMainWindow):
             self.show_error('Verify and approve the shared specimen ROI before completing plaque annotation.');return
         unreviewed=int(np.sum((self.labels==-2)&self.mesh.active))
         if unreviewed:
+<<<<<<< HEAD
+            self.show_error(f'{unreviewed:,} faces are still unreviewed. Review the whole ROI, then use “Reviewed remainder → clean”, or paint those faces explicitly.')
+            return
+        if self.mesh.warning:
+            self.show_error('The mesh has no verified color display. Load its correct texture or a colored ROI before completing it.'); return
+=======
             self.show_error(f'{unreviewed:,} faces are still unreviewed. Review the whole ROI, then use “Remaining → clean”, or paint those faces explicitly.')
             return
         if self.mesh.warning:
             self.show_error('The mesh has no verified color display. Fix its prepared texture/RGB data and reopen it before approving labels.'); return
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
         self.completed=True; self.dirty=True
         if self.save():
             self.next_unfinished()

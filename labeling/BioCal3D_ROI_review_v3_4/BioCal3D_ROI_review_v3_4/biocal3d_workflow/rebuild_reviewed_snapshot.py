@@ -3,12 +3,20 @@
 Never reuse model feature/surface caches from the previous snapshot.
 """
 from pathlib import Path
+<<<<<<< HEAD
+import argparse,csv,json,shutil,sys
+=======
 import argparse,csv,json,re,shutil,sys
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
 import numpy as np
 from PIL import Image
 sys.path.insert(0,str(Path(__file__).parent/'annotator'))
 from mesh_io import AnnotationStore,mesh_appearance,load_mesh,atomic_npz
+<<<<<<< HEAD
+from roi_review_store import read_reviewed,source_face_ids,read_state,current_version,source_domain,provenance
+=======
 from roi_review_store import read_reviewed,source_face_ids,read_state,current_version,source_domain,provenance,compact_mesh,manifest_reviews
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
 from biocal3d_prepare_all import export_sample,create_qc,write_csv,write_json
 
 
@@ -16,6 +24,8 @@ def rows(path):
     with Path(path).open(encoding='utf-8-sig',newline='') as f:return list(csv.DictReader(f))
 
 
+<<<<<<< HEAD
+=======
 def normalize_export_row(row):
     """CSV fields must retain prepare-all's T<label>/numeric-index schema."""
     result=dict(row);identity=row.get('scan_id',row.get('sample_id','scan'))
@@ -37,12 +47,27 @@ def normalize_export_row(row):
     return result
 
 
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
 def rebuild(root,dest,annotations=None,allow_pending=False):
     import pyvista as pv
     root=Path(root).resolve();dest=Path(dest).resolve()
     if dest==root or root in dest.parents or dest in root.parents:
         raise ValueError('Choose a separate sibling output snapshot, outside the original dataset.')
     if dest.exists() and any(dest.iterdir()):raise ValueError('Output must be empty/new.')
+<<<<<<< HEAD
+    manifest=rows(root/'scan_manifest.csv')
+    store=AnnotationStore(root,annotations or root/'annotations','geometry_rebuild')
+    todo=[]
+    for row in manifest:
+        sample=root/row['sample_dir'];source=root/row.get('annotation_mesh',row['sample_dir']+'/roi.ply')
+        state=read_state(store,source)
+        status=state['status'] if state else 'pending'
+        if status=='flagged' or (status!='approved' and not allow_pending):
+            raise ValueError(f'{row.get("scan_id",source)} has surface status {status}. Review it first, or use --allow-pending for exploratory pending samples. Flagged scans always block rebuilding.')
+        if not (sample/'geometry.npz').exists() or not (sample/'metadata.json').exists():
+            raise ValueError(f'Missing geometry/metadata for {sample}')
+        todo.append((row,source,sample,current_version(store,source)))
+=======
     store=AnnotationStore(root,annotations or root/'annotations','geometry_rebuild')
     checks=manifest_reviews(store)
     approved=sum(item['status']=='approved' for item in checks)
@@ -59,13 +84,18 @@ def rebuild(root,dest,annotations=None,allow_pending=False):
         if not (sample/'geometry.npz').exists() or not (sample/'metadata.json').exists():
             raise ValueError(f'Missing geometry/metadata for {sample}')
         todo.append((row,source,sample,item['version']))
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
     dest.mkdir(parents=True,exist_ok=True);results=[];audit=[]
     try:
         for i,(row,source,sample,version) in enumerate(todo,1):
             print(f'[{i}/{len(todo)}] {row.get("scan_id",source)}',flush=True)
+<<<<<<< HEAD
+            mesh=read_reviewed(store,source)
+=======
             reviewed_mesh=read_reviewed(store,source)
             mesh=reviewed_mesh
             if not np.all(mesh.active):mesh=compact_mesh(mesh,mesh.active,source)
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
             colors,uv=mesh_appearance(mesh)
             with np.load(sample/'geometry.npz',allow_pickle=False) as z:
                 transform=np.array(z['original_to_canonical']);radius=float(z['roi_radius'])
@@ -100,6 +130,11 @@ def rebuild(root,dest,annotations=None,allow_pending=False):
                 radius=state['settings']['radius']
                 surface.field_data['ROIExtractionJSON']=[json.dumps({'settings':state['settings'],**state['metrics']})]
             newrow=dict(row,source=raw_source)
+<<<<<<< HEAD
+            for key in ('group','timepoint'):
+                if key in newrow:newrow[key]=int(newrow[key])
+=======
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
             folder=dest/row['sample_dir']
             info=export_sample(newrow,surface,color_input,transform,radius,folder,int(previous['image_size']),float(previous['fov_mm']),True)
             info.update(geometry_review_status=mesh.review_status,geometry_review_version=version,
@@ -114,8 +149,12 @@ def rebuild(root,dest,annotations=None,allow_pending=False):
                 if not old_store.path_for(source).exists():continue
                 if old_store.status(source)=='geometry_changed':
                     raise ValueError(f'{rater.name}: reopen and save {source} on the reviewed surface before rebuilding.')
+<<<<<<< HEAD
+                labels,done,notes=old_store.load(mesh)
+=======
                 labels,done,notes=old_store.load(reviewed_mesh)
                 labels=labels[reviewed_mesh.active]
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
                 new_store=AnnotationStore(dest,dest/'annotations',rater.name)
                 new_mesh=load_mesh(folder/'roi.ply')
                 # Same source-face order in export_sample; refuse any unexpected reorder.
@@ -145,8 +184,12 @@ def rebuild(root,dest,annotations=None,allow_pending=False):
                         with np.load(label_path,allow_pickle=False) as z:data={k:z[k] for k in z.files}
                         data['geometry_review_version']=np.array(new_version);data['geometry_review_status']=np.array(state['status'])
                         atomic_npz(label_path,**data)
+<<<<<<< HEAD
+            audit.append(dict(scan_id=row.get('scan_id',''),geometry_review_version=version,status=mesh.review_status))
+=======
             audit.append(dict(scan_id=row.get('scan_id',''),geometry_review_version=version,status=mesh.review_status,
                               review_source=str(source.relative_to(root)),manifest_source=row.get('annotation_mesh','')))
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
         # Ensure nobody changed a shared surface during this rebuild.
         for row,source,sample,version in todo:
             if current_version(store,source)!=version:raise RuntimeError('A shared surface changed while rebuilding. Discard this incomplete output and rerun.')
@@ -167,6 +210,12 @@ def rebuild(root,dest,annotations=None,allow_pending=False):
 
 
 def main():
+<<<<<<< HEAD
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--root',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
+    p.add_argument('--annotations',type=Path);p.add_argument('--allow-pending',action='store_true',help='Exploratory rebuild; approved surfaces remain preferred. Flagged scans still block.')
+    a=p.parse_args();print(rebuild(a.root,a.output,a.annotations,a.allow_pending))
+if __name__=='__main__':main()
+=======
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--root',type=Path,required=True);p.add_argument('--output',type=Path)
     p.add_argument('--annotations',type=Path);p.add_argument('--allow-pending',action='store_true',help='Exploratory rebuild; approved surfaces remain preferred. Flagged scans still block.')
     p.add_argument('--check-only',action='store_true',help='List approval status for the full scan manifest without writing output.')
@@ -183,3 +232,4 @@ def main():
     except (ValueError,RuntimeError,OSError) as e:
         print('Rebuild stopped: '+str(e),file=sys.stderr);return 2
 if __name__=='__main__':raise SystemExit(main())
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb

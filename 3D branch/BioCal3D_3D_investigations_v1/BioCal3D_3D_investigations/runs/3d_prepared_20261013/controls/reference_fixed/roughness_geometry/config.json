@@ -1,0 +1,17 @@
+{
+  "features": [
+    "height_rq",
+    "height_ra",
+    "height_p05",
+    "height_p95",
+    "height_range",
+    "normal_spread",
+    "area_mm2",
+    "width_mm",
+    "length_mm"
+  ],
+  "C": 1,
+  "class_weight": "balanced",
+  "fit_partition": "train",
+  "no_validation_tuning": true
+}

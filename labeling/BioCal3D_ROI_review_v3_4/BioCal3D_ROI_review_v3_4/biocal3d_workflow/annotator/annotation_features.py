@@ -249,7 +249,16 @@ class AnnotatorFeatures:
         self.color_timer.timeout.connect(self.update_display_colors)
         # Throttle rendering while dragging, so long drags still update the view.
         for control in self.color_controls.values():control.valueChanged.connect(self.schedule_color_update)
+<<<<<<< HEAD
+        row=QtWidgets.QHBoxLayout();self.top_guard=QtWidgets.QCheckBox('Paint from top only');self.top_guard.setChecked(True)
+        self.top_guard.toggled.connect(self.set_top_guard);row.addWidget(self.top_guard)
+        button=QtWidgets.QPushButton('Top view [R]');button.clicked.connect(self.view.reset_camera);row.addWidget(button)
+        button=QtWidgets.QPushButton('Flip top/bottom');button.clicked.connect(self.flip_top);row.addWidget(button)
+        self.orientation_note=QtWidgets.QLabel('TOP axis follows the sample');row.addWidget(self.orientation_note);row.addStretch()
+        main.insertLayout(main.indexOf(self.view),row)
+=======
         self.view.top_only=True
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
 
     def schedule_color_update(self,*args):
         if not self.color_timer.isActive():self.color_timer.start()
@@ -264,12 +273,22 @@ class AnnotatorFeatures:
             control.blockSignals(True);control.setValue(0 if name=='brightness' else 100);control.blockSignals(False)
         self.color_timer.stop();self.update_display_colors();self.view.setFocus()
 
+<<<<<<< HEAD
+    def set_top_guard(self,enabled):
+        self.view.top_only=enabled;self.view.update_side_indicator();self.view.GetRenderWindow().Render()
+
+=======
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
     def flip_top(self):
         if self.mesh is None:return
         normal=-self.view.top_normal
         try:
             atomic_npz(orientation_path(self.store,self.mesh),fingerprint=np.array(self.mesh.fingerprint),top_normal=normal)
+<<<<<<< HEAD
+            self.view.set_top_normal(normal);self.orientation_note.setText('Shared top direction corrected')
+=======
             self.view.set_top_normal(normal);self.statusBar().showMessage('Shared top direction corrected')
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
             self.view.reset_camera();self.dirty=True;self.autosave()
         except Exception as exc:self.show_error(str(exc))
 
@@ -318,7 +337,10 @@ class AnnotatorFeatures:
         self.clear_labels_button.setEnabled(not readonly)
         self.all_plaque_button.setEnabled(not readonly)
         self.roi_review_button.setEnabled(not readonly)
+<<<<<<< HEAD
+=======
         self.approve_roi_button.setEnabled(not readonly and self.mesh is not None)
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
         self.mode.setChecked(not readonly)
         if readonly:self.notice.setText('READ ONLY: independent labels. Select '+self.review_owner+' to edit consensus.')
         elif self.mesh:self.notice.setText(self.mesh.warning or 'Scanner colors • adjustments affect the display only')

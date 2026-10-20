@@ -26,6 +26,12 @@ def run():
         errors=[]
         window.show_error=lambda text:errors.append(text)
         window.show();window.activateWindow();app.setActiveWindow(window);QtTest.QTest.qWait(150)
+        from mesh_io import discover
+        from roi_review_store import load_review_context,save_review
+        geometry_store=AnnotationStore(root,root/'annotations','qa')
+        for path in discover(root):
+            mesh=load_mesh(path);base,mask,settings,_,raw=load_review_context(geometry_store,mesh)
+            save_review(geometry_store,path,base,mask,settings,'approved','UI test fixture','',raw)
         window.load_folder(root);QtTest.QTest.qWait(150)
         assert not errors,errors
         assert window.index==0 and len(window.queue)==3

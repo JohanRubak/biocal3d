@@ -1,0 +1,58 @@
+{
+  "physical_ids": {
+    "train": [
+      "BCG1-1",
+      "BCG1-2",
+      "BCG1-4",
+      "BCG1-5",
+      "BCG1-6",
+      "BCG1-7",
+      "BCG2-2",
+      "BCG2-3",
+      "BCG2-4",
+      "BCG2-5",
+      "BCG2-6",
+      "BCG2-7",
+      "BCG3-1",
+      "BCG3-3",
+      "BCG3-4",
+      "BCG3-6",
+      "BCG3-7",
+      "BCG3-8",
+      "BCG4-1",
+      "BCG4-2",
+      "BCG4-3",
+      "BCG4-6",
+      "BCG4-7",
+      "BCG4-8",
+      "BCG5-1",
+      "BCG5-2",
+      "BCG5-3",
+      "BCG5-5",
+      "BCG5-6",
+      "BCG5-7",
+      "BCG6-1",
+      "BCG6-3",
+      "BCG6-4",
+      "BCG6-5",
+      "BCG6-6",
+      "BCG6-7"
+    ],
+    "val": [
+      "BCG1-8",
+      "BCG2-1",
+      "BCG3-5",
+      "BCG4-5",
+      "BCG5-8",
+      "BCG6-8"
+    ],
+    "test": [
+      "BCG1-3",
+      "BCG2-8",
+      "BCG3-2",
+      "BCG4-4",
+      "BCG5-4",
+      "BCG6-2"
+    ]
+  }
+}

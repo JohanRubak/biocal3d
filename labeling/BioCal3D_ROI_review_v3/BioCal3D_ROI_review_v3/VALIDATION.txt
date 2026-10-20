@@ -1,0 +1,41 @@
+BioCal3D ROI review v3 — validation, 15 October 2026
+
+PASS: 28 annotator/extraction/rebuild tests.
+PASS: 4 existing workflow/labeling-study tests.
+PASS: installer backup/update smoke test.
+PASS: compilation of all bundled Python sources.
+
+Covered behavior:
+- Synthetic specimen side walls and detached holder surface removal.
+- Shared-edge connectivity and preservation of genuine sloped surface relief.
+- Actual core.extract_specimen integration and raw triangle ID preservation.
+- Verified full-source context and restoration beyond the previous crop.
+- Source-face label migration, newly restored unreviewed faces, completion reset.
+- Geometry revision concurrency rejection and old annotation archiving.
+- RGB, per-face UV seams and portable texture storage.
+- Corrected snapshot rebuild with regenerated projection maps and copied specimen splits.
+- Textured rebuild preserving shared vertices and identical RGB raster when geometry is unchanged.
+- Read-only geometry audit generation.
+- Qt reviewer control, save, reload and sample navigation state (rendering disabled).
+- VTK offscreen visible-face brush picking and ROI guards (real rendering).
+- Existing PLY/NPZ storage, resets, independent raters and workflow checks.
+
+Experimental input check:
+- Previously uploaded roi.vtp.labeled.ply loaded successfully: 4,466 vertices,
+  8,674 triangles, RGB present. This is not one of the full raw meshes shown
+  in the current screenshots, so it does not validate those particular crops.
+
+Runtime used for tests:
+- Linux Python 3.12; NumPy/SciPy; PySide6 6.12; VTK 9.5.2; PyVista 0.49.1.
+- The update retains the supplied Windows environment requirements. A native
+  Windows desktop/OpenGL run was not available here. The full interactive
+  legacy desktop test_ui.py was not run; reviewer UI logic was exercised with
+  rendering disabled and brush visibility was tested in standalone offscreen VTK.
+- Open3D registration and a complete raw-data preprocessing run were not executed.
+  The extraction-only integration test isolates registration and runs the actual
+  updated extraction function. Registration routines were not changed.
+
+Interpretation:
+The code and reproducibility safeguards are tested. The initial geometric
+thresholds still require review on the actual BioCal3D scans. No original scan
+or existing prepared dataset was overwritten or declared repaired.

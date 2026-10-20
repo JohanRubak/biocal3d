@@ -2,7 +2,11 @@
 from __future__ import annotations
 from dataclasses import asdict
 from pathlib import Path
+<<<<<<< HEAD
+import hashlib,json,os,sys,uuid
+=======
 import csv,hashlib,json,os,sys,uuid
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
 from datetime import datetime,timezone
 import numpy as np
 import vtk
@@ -42,7 +46,10 @@ def current_version(store,path):
 
 
 def read_reviewed(store,path):
+<<<<<<< HEAD
+=======
     path=resolve_review_source(store,path)
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
     state=read_state(store,path)
     if state is None:return load_mesh(path)
     base=load_mesh(path)
@@ -52,10 +59,14 @@ def read_reviewed(store,path):
     m=load_mesh(payload)
     m.path=Path(path).resolve(); m.review_version=state['version']; m.review_status=state['status']
     m.review_directory=review_dir(store,path)
+<<<<<<< HEAD
+    if not m.texture and base.texture and m.display.GetPointData().GetTCoords() is not None:m.texture=base.texture
+=======
     # Portable snapshots carry the scanner texture beside the immutable ROI.
     # A saved payload may still name the old machine's absolute texture path.
     if base.texture and m.display.GetPointData().GetTCoords() is not None and (not m.texture or not m.texture.is_relative_to(store.root)):
         m.texture=base.texture
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
     return m
 
 
@@ -71,6 +82,8 @@ def provenance(mesh):
     return {}
 
 
+<<<<<<< HEAD
+=======
 def resolve_review_source(store,path):
     """Find a saved sibling-format review without moving or rewriting it.
 
@@ -114,6 +127,7 @@ def manifest_reviews(store):
     return result
 
 
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
 def source_face_ids(mesh):
     ids=getattr(mesh,'source_face_ids',None)
     if ids is not None:return np.asarray(ids,np.int64)
@@ -149,8 +163,17 @@ def compact_mesh(base,mask,path):
     return m
 
 
+<<<<<<< HEAD
+def load_review_context(store,mesh,raw_override=None):
+    """Return an editable source domain; missing raw data still permits local cleanup."""
+    original=load_mesh(mesh.path); state=read_state(store,mesh.path)
+    p=provenance(original); raw_hint=str(p.get('source_ply',np.array('')).item())
+    raw=Path(raw_override or raw_hint) if (raw_override or raw_hint) else None
+    if state and not raw_override and state.get('raw_path'):raw=Path(state['raw_path'])
+=======
 def extraction_settings(original,p,state):
     """Saved review limits win; new reviews use the current height defaults."""
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
     settings=Extraction(radius=float(p.get('roi_radius',np.array(0.))))
     if settings.radius<=0:
         center=np.median(original.vertices,axis=0); settings.cx,settings.cy,settings.z=map(float,center)
@@ -161,6 +184,8 @@ def extraction_settings(original,p,state):
     if state:settings=Extraction(**state['settings'])
     else:
         settings.below=DEFAULT_HEIGHT_HALF_WIDTH;settings.above=DEFAULT_HEIGHT_HALF_WIDTH
+<<<<<<< HEAD
+=======
     return settings
 
 
@@ -171,6 +196,7 @@ def load_review_context(store,mesh,raw_override=None):
     raw=Path(raw_override or raw_hint) if (raw_override or raw_hint) else None
     if state and not raw_override and state.get('raw_path'):raw=Path(state['raw_path'])
     settings=extraction_settings(original,p,state)
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
     transform=np.asarray(p.get('original_to_canonical',np.eye(4)),float)
     ids=source_face_ids(original)
     if raw and raw.is_file() and 'original_to_canonical' in p and ids is not None and np.all(ids>=0):
@@ -234,7 +260,11 @@ def load_review_context(store,mesh,raw_override=None):
     return original,mask,settings,'Local ROI only. Locate the original model to restore surface outside this crop.',raw_hint
 
 
+<<<<<<< HEAD
+def save_review(store,input_path,base,mask,settings,status,notes,expected_version,raw_path=''):
+=======
 def save_review(store,input_path,base,mask,settings,status,notes,expected_version,raw_path='',*,preserve_layout=False):
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
     from PySide6.QtCore import QLockFile
     folder=review_dir(store,input_path);folder.mkdir(parents=True,exist_ok=True)
     lock=QLockFile(str(folder/'review.lock'));lock.setStaleLockTime(0)
@@ -244,12 +274,16 @@ def save_review(store,input_path,base,mask,settings,status,notes,expected_versio
         original=load_mesh(input_path)
         if status not in ('pending','approved','flagged'):raise ValueError('Invalid review status.')
         version=uuid.uuid4().hex; dest=folder/'versions'/version;dest.mkdir(parents=True)
+<<<<<<< HEAD
+        m=compact_mesh(base,mask,input_path);colors,uv=mesh_appearance(m)
+=======
         if preserve_layout:
             if not np.array_equal(mask,base.active):raise ValueError('Approval must preserve the displayed ROI mask.')
             if not np.any(mask):raise ValueError('Cannot approve an empty surface.')
             m=base
         else:m=compact_mesh(base,mask,input_path)
         colors,uv=mesh_appearance(m)
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
         data=dict(vertices=m.vertices,faces=m.faces,face_roi_mask=m.active,
                   source_face_ids=m.source_face_ids,source_vertex_ids=m.source_vertex_ids,source_domain=np.array(m.source_domain),
                   texture_path=np.array(str(m.texture) if m.texture else ''))
@@ -266,13 +300,19 @@ def save_review(store,input_path,base,mask,settings,status,notes,expected_versio
                     input_fingerprint=original.fingerprint,settings=asdict(settings),raw_path=raw_path,
                     notes=notes,reviewer=store.annotator,updated_utc=datetime.now(timezone.utc).isoformat(),
                     retained_faces=int(mask.sum()),metrics=metrics,source_domain=m.source_domain,
+<<<<<<< HEAD
+                    downstream_inputs_must_be_regenerated=True)
+=======
                     downstream_inputs_must_be_regenerated=True,review_action='approve_existing_geometry' if preserve_layout else 'surface_review')
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
         (dest/'review.json').write_text(json.dumps(record,indent=2),encoding='utf-8')
         temp=folder/('current.'+version+'.tmp');temp.write_text(json.dumps(record,indent=2),encoding='utf-8');os.replace(temp,folder/'current.json')
         return record
     finally:lock.unlock()
 
 
+<<<<<<< HEAD
+=======
 def approve_displayed_surface(store,mesh):
     """Approve precisely the opened geometry, with no extraction or raw load.
 
@@ -302,6 +342,7 @@ def approve_displayed_surface(store,mesh):
                        state.get('notes','') if state else '',expected,raw_path,preserve_layout=True)
 
 
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
 def migrate_labels(store,mesh,data):
     """Transfer by verified identity only. Never nearest-neighbour label transfer."""
     old_labels=np.asarray(data['face_labels'],np.int8)

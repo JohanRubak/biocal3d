@@ -47,7 +47,13 @@ def read_orientation(store,mesh):
     path=orientation_path(store,mesh)
     if not path.exists():return None
     with np.load(path,allow_pickle=False) as d:
-        if str(d['fingerprint'].item())!=mesh.fingerprint:raise ValueError('Saved top direction does not match this geometry.')
+        if str(d['fingerprint'].item())!=mesh.fingerprint:
+            # Reviewed surfaces retain the original coordinate frame, but an old
+            # orientation fingerprint may belong to the immutable input topology.
+            from mesh_io import load_mesh
+            if not mesh.review_version or str(d['fingerprint'].item())!=load_mesh(mesh.path).fingerprint:
+                if mesh.review_version:return None
+                raise ValueError('Saved top direction does not match this geometry.')
         normal=np.array(d['top_normal'],float)
     if normal.shape!=(3,) or not np.isfinite(normal).all() or np.linalg.norm(normal)<1e-8:raise ValueError('Invalid saved top direction.')
     return normal/np.linalg.norm(normal)
@@ -318,6 +324,8 @@ class AnnotatorFeatures:
     def update_review_mode(self):
         readonly=self.is_read_only();self.notes.setReadOnly(readonly);self.mode.setEnabled(not readonly)
         self.clear_labels_button.setEnabled(not readonly)
+        self.all_plaque_button.setEnabled(not readonly)
+        self.roi_review_button.setEnabled(not readonly)
         self.mode.setChecked(not readonly)
         if readonly:self.notice.setText('READ ONLY: independent labels. Select '+self.review_owner+' to edit consensus.')
         elif self.mesh:self.notice.setText(self.mesh.warning or 'Scanner colors • adjustments affect the display only')

@@ -1,0 +1,84 @@
+[
+  {
+    "transform": "rotate_z_90",
+    "changed_predictions": 17,
+    "mean_probability_difference": 0.01305406540632248,
+    "accuracy": 0.34375,
+    "balanced_accuracy": 0.3194444444444445,
+    "specimen_balanced_accuracy": 0.3194444444444445,
+    "macro_f1": 0.2292682926829268,
+    "macro_auc": 0.4913194444444445,
+    "recall": [
+      0.8333333333333334,
+      0.125,
+      0.0
+    ],
+    "class_support": [
+      24,
+      16,
+      24
+    ],
+    "confusion_matrix": [
+      [
+        20,
+        2,
+        2
+      ],
+      [
+        14,
+        2,
+        0
+      ],
+      [
+        24,
+        0,
+        0
+      ]
+    ],
+    "scans": 64,
+    "specimens": 6,
+    "partial_specimens": 4,
+    "loss": 1.0944582223892212
+  },
+  {
+    "transform": "translate_scaled_0p1",
+    "changed_predictions": 11,
+    "mean_probability_difference": 0.012756799347698689,
+    "accuracy": 0.375,
+    "balanced_accuracy": 0.3333333333333333,
+    "specimen_balanced_accuracy": 0.3333333333333333,
+    "macro_f1": 0.1818181818181818,
+    "macro_auc": 0.5155381944444444,
+    "recall": [
+      1.0,
+      0.0,
+      0.0
+    ],
+    "class_support": [
+      24,
+      16,
+      24
+    ],
+    "confusion_matrix": [
+      [
+        24,
+        0,
+        0
+      ],
+      [
+        16,
+        0,
+        0
+      ],
+      [
+        24,
+        0,
+        0
+      ]
+    ],
+    "scans": 64,
+    "specimens": 6,
+    "partial_specimens": 4,
+    "loss": 1.0935478210449219
+  }
+]

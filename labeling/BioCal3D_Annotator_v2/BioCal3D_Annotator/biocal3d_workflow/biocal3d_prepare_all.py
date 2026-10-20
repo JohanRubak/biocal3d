@@ -322,7 +322,8 @@ def export_sample(row, mesh, colors, transform, roi_radius, folder, size, fov, f
                          Path(colors['texture_path']).resolve() if display_uv is not None else None)
     export_ply(annotation_mesh,None,folder/'roi.ply',face_ids=raw_fid)
     raw_xyz = (np.column_stack((vertices, np.ones(len(vertices))))@np.linalg.inv(transform).T)[:, :3]
-    geom = dict(vertices=vertices, faces=faces, normals=np.asarray(mesh.point_data['Normals']),
+    extraction = json.loads(str(mesh.field_data['ROIExtractionJSON'][0])) if 'ROIExtractionJSON' in mesh.field_data else {}
+    geom = dict(extraction_json=np.array(json.dumps(extraction)), source_sha256=np.array(sha256(row['source'])), vertices=vertices, faces=faces, normals=np.asarray(mesh.point_data['Normals']),
                 vertex_rgb=vertex_rgb.astype(np.float32), vertices_raw=raw_xyz,
                 raw_vertex_id=raw_vid, raw_triangle_id=raw_fid, roi_mask=np.ones(len(vertices), bool),
                 original_to_canonical=transform, canonical_to_original=np.linalg.inv(transform),
@@ -342,7 +343,7 @@ def export_sample(row, mesh, colors, transform, roi_radius, folder, size, fov, f
                         vertices_raw=raw_xyz, raw_vertex_id=raw_vid, raw_triangle_id=raw_fid,
                         origin=origin, basis=basis, fov_mm=fov, mm_per_pixel=fov/size,
                         original_to_canonical=transform, canonical_to_original=np.linalg.inv(transform))
-    metadata = {**row, 'schema_version': 2, 'color_source': colors['color_source'],
+    metadata = {**row, 'geometry_review_status': 'pending', 'extraction': extraction, 'schema_version': 3, 'color_source': colors['color_source'],
                 'texture_path': colors['texture_path'], 'image_size': size, 'fov_mm': fov,
                 'mm_per_pixel': fov/size, 'roi_radius': float(roi_radius),
                 'valid_pixels': int(maps['valid'].sum()), 'projection_extent_mm': extent,
@@ -442,7 +443,7 @@ def prepare(args):
                   flip_v=not args.no_flip_v, coordinate_units='mm', group_protocols=GROUP_PROTOCOLS,
                   created_at=datetime.now().astimezone().isoformat(),
                   script_sha256=sha256(__file__), dependency_versions=dependency_versions(), companion_sha256={n: sha256(Path(__file__).with_name(n))
-                      for n in ['biocal3d_roi_core.py', 'biocal3d_raster.py']})
+                      for n in ['biocal3d_roi_core.py', 'biocal3d_raster.py', 'roi_geometry.py']})
     config['annotation_mode']='direct_3d_faces'
     config['annotation_mesh_format']='binary_little_endian_ply'
     config['export_x_anylabeling']=args.export_x_anylabeling

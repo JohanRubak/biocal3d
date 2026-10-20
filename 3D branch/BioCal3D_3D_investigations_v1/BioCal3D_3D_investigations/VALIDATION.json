@@ -1,0 +1,29 @@
+{
+  "date": "2026-10-15",
+  "automated_tests_passed": 11,
+  "synthetic_snapshot_scans": 512,
+  "synthetic_reference_split_scans": {
+    "train": 384,
+    "val": 64,
+    "test": 64
+  },
+  "test_coverage": [
+    "snapshot identity and SHA256 checks",
+    "path traversal rejection",
+    "specimen split leakage rejection",
+    "CV and LOSO specimen separation and complete assessment coverage",
+    "area sampling and RGB separation",
+    "native triangle streams",
+    "voxel sampling control",
+    "rigid transformations and voxel origin",
+    "specimen bootstrap suppression and variability",
+    "23/73 job planning",
+    "train-only nuisance/geometric/colour controls",
+    "CLI audit and report/figure generation"
+  ],
+  "python_syntax_checked": true,
+  "actual_windows_snapshot_accessed": false,
+  "torch_available_in_build_environment": false,
+  "actual_official_gpu_forward_or_backward_tested": false,
+  "required_next_check": "Run --suite core --preflight in the working CUDA environment before training."
+}

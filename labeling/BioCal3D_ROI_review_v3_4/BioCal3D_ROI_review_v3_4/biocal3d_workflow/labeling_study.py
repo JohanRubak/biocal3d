@@ -1,10 +1,16 @@
 """Specimen-grouped calibration, independent agreement, consensus and production queues."""
 from __future__ import annotations
+<<<<<<< HEAD
+import argparse,csv,json,random,subprocess,sys,hashlib
+=======
 import argparse,csv,json,random,subprocess,sys,hashlib,shutil,tempfile,os
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
 from collections import defaultdict,Counter
 from pathlib import Path
 import numpy as np
 from annotator.mesh_io import AnnotationStore,load_mesh,manifest_queue,export_ply
+<<<<<<< HEAD
+=======
 from annotator.roi_review_store import read_reviewed,read_state,review_dir,current_version,digest
 
 
@@ -106,6 +112,7 @@ def create_study_folders(root,output=None,group=5,calibration=2,agreement=6,seed
     finally:
         if staging.exists():shutil.rmtree(staging)
     print('Study folders ready:',output);print(json.dumps(counts,indent=2));return counts
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
 
 
 def write_csv(path,rows):
@@ -258,10 +265,13 @@ def main():
     plan=sub.add_parser('plan');plan.add_argument('--root',type=Path);plan.add_argument('--output',type=Path)
     plan.add_argument('--calibration',type=int,default=4);plan.add_argument('--agreement',type=int,default=8)
     plan.add_argument('--seed',type=int,default=42);plan.add_argument('--partial-fraction',type=float,default=.75)
+<<<<<<< HEAD
+=======
     folders=sub.add_parser('folders',help='Portable approved G5 calibration/agreement folders without existing plaque labels')
     folders.add_argument('--root',type=Path,required=True);folders.add_argument('--output',type=Path)
     folders.add_argument('--group',type=int,default=5);folders.add_argument('--calibration',type=int,default=2)
     folders.add_argument('--agreement',type=int,default=6);folders.add_argument('--seed',type=int,default=42)
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
     launch=sub.add_parser('open');launch.add_argument('--root',type=Path);launch.add_argument('--plan',type=Path)
     launch.add_argument('--queue',required=True,choices=[f'{phase}_{d}' for phase in ('calibration','agreement','production','all') for d in ('dentist_1','dentist_2')]+['consensus'])
     launch.add_argument('--annotator');launch.add_argument('--allow-rater-switch',action='store_true')
@@ -269,8 +279,11 @@ def main():
     args=p.parse_args()
     try:
         root=resolve_root(args.root)
+<<<<<<< HEAD
+=======
         if args.command=='folders':
             create_study_folders(root,args.output,args.group,args.calibration,args.agreement,args.seed);return 0
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
         if args.command=='plan':
             if not 0<=args.partial_fraction<=1:p.error('--partial-fraction must be between 0 and 1')
             create_plan(root,args.output,args.calibration,args.agreement,args.seed,args.partial_fraction);return 0

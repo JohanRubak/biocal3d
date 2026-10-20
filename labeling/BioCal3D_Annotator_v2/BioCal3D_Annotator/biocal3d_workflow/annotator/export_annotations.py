@@ -11,7 +11,7 @@ else:
 def export_annotations(root,annotations,destination,annotators=None,sources=None,include_drafts=False):
     root=Path(root).resolve();annotations=Path(annotations).resolve();destination=Path(destination).resolve()
     if destination==annotations or destination.is_relative_to(annotations):raise ValueError('Choose an export directory outside the working annotations directory.')
-    names=annotators or sorted(p.name for p in annotations.iterdir() if p.is_dir() and p.name!='_sample_orientation' and re.fullmatch(r'[A-Za-z0-9_-]{1,64}',p.name))
+    names=annotators or sorted(p.name for p in annotations.iterdir() if p.is_dir() and not p.name.startswith(('_','.')) and re.fullmatch(r'[A-Za-z0-9_-]{1,64}',p.name))
     allowed={Path(s).resolve() for s in sources} if sources is not None else None
     rows=[];report=dict(exported=0,skipped=0,failed=0)
     destination.mkdir(parents=True,exist_ok=True)
@@ -25,7 +25,14 @@ def export_annotations(root,annotations,destination,annotators=None,sources=None
                 if not mesh_path.is_relative_to(root):raise ValueError('Source path escapes dataset.')
                 if allowed is not None and mesh_path not in allowed:continue
                 if not completed and not include_drafts:report['skipped']+=1;continue
-                mesh=load_mesh(mesh_path);labels,_,_=store.load(mesh)
+                if __package__:
+                    from .roi_review_store import read_reviewed,current_version
+                else:
+                    from roi_review_store import read_reviewed,current_version
+                mesh=read_reviewed(store,mesh_path)
+                saved_version=str(data['geometry_review_version'].item()) if 'geometry_review_version' in data else ''
+                if saved_version!=current_version(store,mesh_path):raise ValueError('Reopen and save annotation on the current reviewed surface before exporting.')
+                labels,_,_=store.load(mesh)
                 texture=str(data.get('texture_path',''))
                 if texture and Path(texture).is_file():mesh.texture=Path(texture)
                 target=destination/name/relative.parent/(relative.name+'.labeled.ply')

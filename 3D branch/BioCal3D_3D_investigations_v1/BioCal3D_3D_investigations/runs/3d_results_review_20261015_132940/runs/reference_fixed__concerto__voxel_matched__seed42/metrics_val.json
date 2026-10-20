@@ -1,0 +1,42 @@
+{
+  "accuracy": 0.546875,
+  "balanced_accuracy": 0.5138888888888888,
+  "specimen_balanced_accuracy": 0.5138888888888888,
+  "macro_f1": 0.5056751467710372,
+  "macro_auc": 0.6446180555555556,
+  "recall": [
+    0.375,
+    0.25,
+    0.9166666666666666
+  ],
+  "class_support": [
+    24,
+    16,
+    24
+  ],
+  "confusion_matrix": [
+    [
+      9,
+      0,
+      15
+    ],
+    [
+      0,
+      4,
+      12
+    ],
+    [
+      2,
+      0,
+      22
+    ]
+  ],
+  "scans": 64,
+  "specimens": 6,
+  "partial_specimens": 4,
+  "loss": 1.1237742900848389,
+  "best_epoch": 61,
+  "feature_preparation_seconds": 34.44717999998829,
+  "trainable_parameters": 233475,
+  "device": "cuda"
+}

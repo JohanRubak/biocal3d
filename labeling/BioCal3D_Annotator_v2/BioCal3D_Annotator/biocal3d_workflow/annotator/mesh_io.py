@@ -3,6 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 import hashlib
+import importlib
 import json
 import os
 import re
@@ -13,6 +14,9 @@ from datetime import datetime, timezone
 import numpy as np
 import vtk
 from vtk.util.numpy_support import numpy_to_vtk, numpy_to_vtkIdTypeArray, vtk_to_numpy
+
+def _review_module():
+    return importlib.import_module('.roi_review_store', __package__) if __package__ else importlib.import_module('roi_review_store')
 
 LABELS = {-2: 'unreviewed', -1: 'uncertain', 0: 'clean', 1: 'plaque'}
 PALETTE = {-2: (115, 128, 147), -1: (255, 190, 65), 0: (55, 205, 150), 1: (245, 75, 125)}
@@ -55,6 +59,12 @@ class Mesh:
     texture: Path | None = None
     warning: str = ''
     imported_labels: np.ndarray | None = None
+
+    source_face_ids: np.ndarray | None = None
+    source_vertex_ids: np.ndarray | None = None
+    source_domain: str = ''
+    review_version: str = ''
+    review_status: str = 'pending'
 
     @property
     def fingerprint(self):
@@ -100,6 +110,7 @@ def _array(p, names, cell=False):
 def load_mesh(path):
     path = Path(path).resolve()
     texture, warning, colors, uv, wedge_uv, active, imported_labels = None, '', None, None, None, None, None
+    source_fids=source_vids=None; source_key=''
     if path.suffix.lower() == '.npz':
         with np.load(path, allow_pickle=False) as d:
             def get(names, required=False):
@@ -113,6 +124,11 @@ def load_mesh(path):
             f = get(['faces', 'triangles', 'F'], True)
             colors = get(['rgb', 'colors', 'vertex_colors', 'vertex_rgb'])
             imported_labels = get(['face_labels', 'face_label'])
+            source_fids=get(['source_face_ids','raw_triangle_id'])
+            source_vids=get(['source_vertex_ids','raw_vertex_id'])
+            wedge_uv=get(['wedge_uv'])
+            key=get(['source_domain'])
+            if key is not None:source_key=str(key.item())
             uv = get(['uv', 'tcoords', 'TCoords', 'texture_coordinates'])
             mask = get(['roi_mask', 'vertex_roi_mask', 'roi_vertex_mask'])
             face_mask = get(['face_roi_mask', 'roi_face_mask'])
@@ -133,6 +149,10 @@ def load_mesh(path):
         if index_name is None or any(len(x) != 3 for x in fd[index_name]):
             raise ValueError('PLY must contain triangle faces with vertex_indices.')
         f = np.stack(fd[index_name]).astype(np.int64)
+        if 'source_face_id' in fd.dtype.names:source_fids=np.asarray(fd['source_face_id'],np.int64)
+        if 'source_vertex_id' in vd.dtype.names:source_vids=np.asarray(vd['source_vertex_id'],np.int64)
+        domain=next((c.split(' ',1)[1] for c in d.comments if c.startswith('SourceDomain ')),None)
+        if domain:source_key=domain
         if 'roi_active' in fd.dtype.names:active=fd['roi_active'].astype(bool)
         if 'face_label' in fd.dtype.names:imported_labels=np.array(fd['face_label'])
         if all(n in vd.dtype.names for n in ('red', 'green', 'blue')):
@@ -166,10 +186,14 @@ def load_mesh(path):
             uv = vtk_to_numpy(t).copy()
         active = _array(p, ['roi_active', 'roi_mask', 'ROI'], cell=True)
         imported_labels = _array(p, ['face_label', 'face_labels'], cell=True)
+        source_fids=_array(p,['RawTriangleId','source_face_id'],cell=True)
+        source_vids=_array(p,['RawVertexId','source_vertex_id'])
         if active is None:
             mask = _array(p, ['roi_mask', 'ROI'])
             if mask is not None:
                 active = np.asarray(mask, bool).reshape(-1)[f].all(axis=1)
+        domain=p.GetFieldData().GetAbstractArray('SourceDomain')
+        if domain is not None:source_key=domain.GetValue(0)
         field = p.GetFieldData().GetAbstractArray('TextureFile')
         texture = find_texture(path, field.GetValue(0) if field is not None else None)
     else:
@@ -194,19 +218,23 @@ def load_mesh(path):
     # Expand only the display mesh for texture seams. Face order and source arrays remain unchanged.
     if wedge_uv is not None:
         p = polydata(v[f.ravel()], np.arange(len(f)*3).reshape(-1, 3),
-                     colors[f.ravel()] if colors is not None else None, wedge_uv)
+                     colors[f.ravel()] if colors is not None else None, np.asarray(wedge_uv).reshape(-1,2))
     else:
         p = polydata(v, f, colors, uv)
     if imported_labels is not None:
         if imported_labels.shape!=(len(f),) or not np.isin(imported_labels,list(LABELS)).all():
             raise ValueError('Imported face labels are invalid.')
         imported_labels=imported_labels.astype(np.int8)
-    return Mesh(path, v, f, p, active, texture, warning, imported_labels)
+    result=Mesh(path, v, f, p, active, texture, warning, imported_labels)
+    result.source_face_ids=None if source_fids is None else np.asarray(source_fids,np.int64)
+    result.source_vertex_ids=None if source_vids is None else np.asarray(source_vids,np.int64)
+    result.source_domain=source_key
+    return result
 
 def discover(root, contains=''):
     root = Path(root).resolve()
     candidates = [p for p in root.rglob('*') if p.is_file() and p.suffix.lower() in {'.ply', '.vtp', '.npz'}
-                  and not any(s in {'annotations', 'annotation_output', 'labels', '.venv', '__pycache__'}
+                  and not any(s in {'annotations', 'annotation_output', 'labels', '_roi_review', '.venv', '__pycache__'}
                               for s in p.relative_to(root).parts[:-1])
                   and not p.name.endswith(('.labels.npz', '.labeled.vtp', '.labeled.ply', '.label_colors.ply'))]
     # Prepared sample directories: one representative input per sample.
@@ -279,6 +307,9 @@ class AnnotationStore:
             return 'new'
         try:
             with np.load(path, allow_pickle=False) as d:
+                current_version=_review_module().current_version
+                saved_version=str(d['geometry_review_version'].item()) if 'geometry_review_version' in d else ''
+                if saved_version!=current_version(self,source):return 'geometry_changed'
                 return 'done' if bool(d['completed']) else 'draft'
         except Exception:
             return 'error'
@@ -291,19 +322,41 @@ class AnnotationStore:
             return labels, False, ''
         with np.load(path, allow_pickle=False) as d:
             if str(d['fingerprint'].item()) != mesh.fingerprint:
+                if mesh.review_version:
+                    migrate_labels=_review_module().migrate_labels
+                    return migrate_labels(self,mesh,d)
                 raise ValueError('Saved labels do not match this geometry/ROI. Restore the original input or use a new output folder.')
+            saved_version=str(d['geometry_review_version'].item()) if 'geometry_review_version' in d else ''
+            if saved_version!=mesh.review_version:
+                return np.array(d['face_labels'],dtype=np.int8),False,str(d['notes'].item())
             labels = np.array(d['face_labels'], dtype=np.int8)
             if labels.shape != (len(mesh.faces),) or not np.isin(labels, list(LABELS)).all():
                 raise ValueError('Invalid saved face labels.')
             return labels, bool(d['completed']), str(d['notes'].item())
 
     def save(self, mesh, labels, completed, notes, camera=None):
+        review=_review_module()
+        current_version,source_face_ids,source_domain=review.current_version,review.source_face_ids,review.source_domain
+        if current_version(self,mesh.path)!=mesh.review_version:
+            raise ValueError('Shared ROI changed since opening. Reopen the sample before saving labels.')
         labels = np.asarray(labels)
         if labels.shape != (len(mesh.faces),) or not np.isin(labels, list(LABELS)).all():
             raise ValueError('Labels must be one valid integer class per source face.')
         if completed and np.any(labels[mesh.active] == -2):
             raise ValueError('Unreviewed faces remain in the ROI.')
-        atomic_npz(self.path_for(mesh.path), schema_version=np.array(1), face_labels=labels,
+        previous=self.path_for(mesh.path)
+        if previous.exists():
+            with np.load(previous,allow_pickle=False) as old:
+                old_version=str(old['geometry_review_version'].item()) if 'geometry_review_version' in old else ''
+            if old_version!=mesh.review_version:
+                history=previous.parent/'.geometry_history';history.mkdir(exist_ok=True)
+                backup=history/(previous.name+'.'+(old_version or 'original')+'.npz')
+                if not backup.exists():shutil.copy2(previous,backup)
+        source_ids=source_face_ids(mesh)
+        atomic_npz(self.path_for(mesh.path), schema_version=np.array(2), face_labels=labels,
+                   source_face_ids=source_ids if source_ids is not None else np.arange(len(mesh.faces)),
+                   source_domain=np.array(source_domain(mesh)),
+                   geometry_review_version=np.array(mesh.review_version), geometry_review_status=np.array(mesh.review_status),
                    active_faces=mesh.active, face_indices=np.arange(len(mesh.faces)),
                    fingerprint=np.array(mesh.fingerprint), source_relative=np.array(str(mesh.path.relative_to(self.root))),
                    annotator=np.array(self.annotator), completed=np.array(completed), notes=np.array(notes),
@@ -331,7 +384,7 @@ def shaded_display(mesh):
     """Normals use original shared vertices, including across texture seams."""
     vertex,face=surface_normals(mesh.vertices,mesh.faces)
     p=vtk.vtkPolyData(); p.ShallowCopy(mesh.display)
-    if p.GetNumberOfPoints()!=len(mesh.vertices):
+    if p.GetNumberOfPoints()!=len(mesh.vertices) or not np.array_equal(_triangles(p),mesh.faces):
         vertex=vertex[mesh.faces.ravel()]
     a=numpy_to_vtk(vertex.astype(np.float32),deep=True); a.SetName('Normals'); p.GetPointData().SetNormals(a)
     a=numpy_to_vtk(face.astype(np.float32),deep=True); a.SetName('Normals'); p.GetCellData().SetNormals(a)
@@ -343,7 +396,7 @@ def mesh_appearance(mesh):
     data=p.GetPointData().GetScalars()
     colors=rgb8(vtk_to_numpy(data)) if data is not None and data.GetNumberOfComponents()>=3 else None
     display_faces=_triangles(p)
-    if colors is not None and len(colors)!=len(mesh.vertices):
+    if colors is not None and (len(colors)!=len(mesh.vertices) or not np.array_equal(display_faces,mesh.faces)):
         original=np.zeros((len(mesh.vertices),3),np.uint8)
         original[mesh.faces.ravel()]=colors[display_faces.ravel()]
         colors=original
@@ -376,12 +429,13 @@ def export_ply(mesh, labels, target, binary=True, face_ids=None):
     if uv is not None:dtype += [('texcoord','f4',(6,))]
     fd=np.empty(len(mesh.faces),dtype=dtype)
     fd['vertex_indices']=mesh.faces
-    fd['source_face_id']=np.arange(len(mesh.faces)) if face_ids is None else face_ids
+    fd['source_face_id']=(mesh.source_face_ids if mesh.source_face_ids is not None else np.arange(len(mesh.faces))) if face_ids is None else face_ids
     fd['roi_active']=mesh.active
     if labels is not None:
         fd['face_label']=labels; fd['quality']=labels
     if uv is not None:fd['texcoord']=uv
     comments=['BioCal3D triangle mesh; RGB preserved; source_face_id is a source mapping']
+    if mesh.source_domain:comments.append('SourceDomain '+mesh.source_domain)
     if labels is not None:
         comments.append('face_label and quality: -2 unreviewed; -1 uncertain; 0 clean; 1 plaque')
     if uv is not None and mesh.texture:
@@ -470,9 +524,11 @@ def export_vtp(mesh, labels, target):
         raise ValueError('Choose a new filename; exports must not overwrite the input mesh.')
     p = vtk.vtkPolyData(); p.DeepCopy(mesh.display)
     for name, values in [('face_label', labels.astype(np.int32)),
-                         ('source_face_id', np.arange(len(labels), dtype=np.int64)),
+                         ('source_face_id', mesh.source_face_ids if mesh.source_face_ids is not None else np.arange(len(labels), dtype=np.int64)),
                          ('roi_active', mesh.active.astype(np.uint8))]:
         a = numpy_to_vtk(values, deep=True); a.SetName(name); p.GetCellData().AddArray(a)
+    if mesh.source_domain:
+        domain=vtk.vtkStringArray();domain.SetName('SourceDomain');domain.InsertNextValue(mesh.source_domain);p.GetFieldData().AddArray(domain)
     if mesh.texture:
         a = vtk.vtkStringArray(); a.SetName('TextureFile'); a.InsertNextValue(str(mesh.texture))
         p.GetFieldData().AddArray(a)

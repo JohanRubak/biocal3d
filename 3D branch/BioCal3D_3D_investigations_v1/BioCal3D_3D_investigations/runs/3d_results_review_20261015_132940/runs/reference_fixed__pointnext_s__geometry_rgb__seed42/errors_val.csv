@@ -1,0 +1,2 @@
+﻿row_id,physical_id,group,scanner,sample_name,truth,prediction,p_baseline,p_partial,p_clean,confidence
+9ae7cd505e7eaee7,BCG2-1,2,TRIOS5,BCG2T0-1,0,1,0.25862953066825867,0.6985752582550049,0.042795196175575256,0.6985752582550049

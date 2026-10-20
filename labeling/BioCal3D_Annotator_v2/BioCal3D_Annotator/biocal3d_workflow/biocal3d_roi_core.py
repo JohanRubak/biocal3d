@@ -3,6 +3,9 @@ from pathlib import Path
 from collections import defaultdict
 import csv
 import math
+import json
+from dataclasses import asdict
+from roi_geometry import Extraction, select_surface, DEFAULT_HEIGHT_HALF_WIDTH
 import re
 import numpy as np
 import pyvista as pv
@@ -13,7 +16,7 @@ REFERENCE_SAMPLE_BY_SCANNER = {'LABscanner': 'BCG1T0-1', 'iTERO': 'BCG1T0-1', 'T
 REDEFINE_REFERENCE_SCANNERS = set()
 MIN_REFERENCE_EDGE_POINTS = 6
 ROI_RADIUS_FACTOR = 0.985
-SPECIMEN_HEIGHT_TOLERANCE = 1.5
+SPECIMEN_HEIGHT_TOLERANCE = DEFAULT_HEIGHT_HALF_WIDTH
 Z_MODE_SEARCH_RANGE = 8.0
 Z_MODE_BIN_WIDTH = 0.2
 Z_MODE_LOCAL_HALF_WIDTH = 0.5
@@ -375,14 +378,20 @@ def extract_specimen(mesh, reference):
     radial = np.sqrt(x ** 2 + y ** 2)
     z_offset = estimate_specimen_z(radial, z, reference)
     roi_radius = reference['radius'] * ROI_RADIUS_FACTOR
-    roi_mask = (radial <= roi_radius) & (np.abs(z - z_offset) <= SPECIMEN_HEIGHT_TOLERANCE)
-    specimen = mesh.extract_points(roi_mask, adjacent_cells=False, include_cells=True).extract_surface().clean(point_merging=False)
-    specimen, _ = prepare_embedded_rgb(specimen)
-    specimen, _ = activate_tcoords(specimen)
     canonical = make_canonical_transform(reference['center'], reference['u_axis'], reference['v_axis'], reference['normal'], z_offset)
-    specimen.transform(canonical, inplace=True)
+    canonical_mesh = mesh.copy(deep=True)
+    canonical_mesh.transform(canonical, inplace=True)
+    raw_faces = np.asarray(canonical_mesh.faces).reshape(-1, 4)
+    if not np.all(raw_faces[:, 0] == 3):
+        raise ValueError('ROI extraction requires triangulated source geometry.')
+    settings = Extraction(radius=roi_radius, below=SPECIMEN_HEIGHT_TOLERANCE, above=SPECIMEN_HEIGHT_TOLERANCE)
+    keep, metrics = select_surface(np.asarray(canonical_mesh.points), raw_faces[:, 1:], settings)
+    if not keep.any():
+        raise ValueError('No central top surface passed extraction; inspect the reference and plane.')
+    specimen = canonical_mesh.extract_cells(np.flatnonzero(keep)).extract_surface().clean(point_merging=False)
     specimen, _ = prepare_embedded_rgb(specimen)
     specimen, _ = activate_tcoords(specimen)
+    specimen.field_data['ROIExtractionJSON'] = [json.dumps({'settings': asdict(settings), **metrics})]
     return (specimen, z_offset, roi_radius, canonical)
 
 def assess_roi_quality(specimen, roi_radius):

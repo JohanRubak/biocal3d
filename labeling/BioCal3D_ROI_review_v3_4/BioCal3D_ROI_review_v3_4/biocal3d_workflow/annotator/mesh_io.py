@@ -212,7 +212,11 @@ def load_mesh(path):
         raise ValueError('ROI mask length is wrong or its ROI is empty.')
     if uv is not None or wedge_uv is not None:
         if texture is None and colors is None:
+<<<<<<< HEAD
+            warning = 'UVs found but no texture matched. Use Choose texture before labeling.'
+=======
             warning = 'UVs found but no texture matched. Fix the prepared texture data before labeling.'
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
     elif colors is None:
         warning = 'No vertex RGB or UV texture found. Do not judge plaque from the gray mesh.'
     # Expand only the display mesh for texture seams. Face order and source arrays remain unchanged.
@@ -244,7 +248,11 @@ def discover(root, contains=''):
     selected = []
     for files in by_dir.values():
         known = {p.name.lower(): p for p in files}
+<<<<<<< HEAD
+        preferred = next((known[n] for n in ['roi.vtp', 'roi.ply', 'geometry.npz'] if n in known), None)
+=======
         preferred = next((known[n] for n in ['roi.ply', 'roi.vtp', 'geometry.npz'] if n in known), None)
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
         if preferred:
             selected.append(preferred)
         else:

@@ -1,0 +1,26 @@
+{
+  "version": "prepared-investigations-1.0.1",
+  "index": "C:\\Users\\au662213\\repos\\biocal3d\\data\\02-09-2026-Data collected\\_development_20261013_101905_315169\\dataset_index.json",
+  "index_sha256": "cb420b8d0c9921033d4b0723f785cc7a9d1ee19ad1af0d4e929dcc71f6e84105",
+  "scans": 512,
+  "physical_specimens": 48,
+  "groups": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "scanners": [
+    "LABscanner",
+    "TRIOS3",
+    "TRIOS5",
+    "iTERO"
+  ],
+  "expected_complete_scans": 512,
+  "missing_scans": [],
+  "unexpected_scans": [],
+  "excluded_count": 0,
+  "source_hashes_missing": 0
+}

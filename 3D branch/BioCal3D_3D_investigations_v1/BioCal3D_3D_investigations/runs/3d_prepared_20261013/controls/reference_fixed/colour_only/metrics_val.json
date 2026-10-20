@@ -1,0 +1,38 @@
+{
+  "accuracy": 0.796875,
+  "balanced_accuracy": 0.7777777777777778,
+  "specimen_balanced_accuracy": 0.7777777777777778,
+  "macro_f1": 0.7751560652311417,
+  "macro_auc": 0.9049479166666666,
+  "recall": [
+    0.7083333333333334,
+    0.625,
+    1.0
+  ],
+  "class_support": [
+    24,
+    16,
+    24
+  ],
+  "confusion_matrix": [
+    [
+      17,
+      5,
+      2
+    ],
+    [
+      5,
+      10,
+      1
+    ],
+    [
+      0,
+      0,
+      24
+    ]
+  ],
+  "scans": 64,
+  "specimens": 6,
+  "partial_specimens": 4,
+  "loss": 0.5613660053574467
+}

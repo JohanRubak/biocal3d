@@ -13,6 +13,10 @@ from vtkmodules.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
 from mesh_io import (LABELS, PALETTE, AnnotationStore, area_summary, create_demo,
                      discover, manifest_queue, export_vtp, export_ply, export_label_colors, load_mesh, shaded_display)
 
+from roi_review_store import read_reviewed, current_version
+from surface_display import display_subset
+from rotation_keys import SpaceRotateFilter
+
 from annotation_features import SurfaceFeatures, AnnotatorFeatures, read_orientation
 
 class SurfaceView(SurfaceFeatures, QVTKRenderWindowInteractor):
@@ -71,10 +75,12 @@ class SurfaceView(SurfaceFeatures, QVTKRenderWindowInteractor):
         self.setMouseTracking(True); self.setFocusPolicy(QtCore.Qt.FocusPolicy.StrongFocus)
         self.installEventFilter(self)
         self.init_features()
+        self.rotation_keys=SpaceRotateFilter(self)
         self.Initialize()
 
     def set_mesh(self, mesh):
         self.mesh = mesh; self.projection_key = None
+        self.display_face_ids=np.arange(len(mesh.faces),dtype=np.int64)
         self.setup_orientation(mesh)
         self.render_data=shaded_display(mesh)
         self.cache_colors()
@@ -98,6 +104,19 @@ class SurfaceView(SurfaceFeatures, QVTKRenderWindowInteractor):
         self.picker.PickFromListOn(); self.picker.AddPickList(self.base); self.picker.AddLocator(self.locator)
         self.apply_render_options()
         self.reset_camera()
+
+    def set_display_faces(self,ids):
+        data,mapping=display_subset(self.render_data,ids)
+        self.display_face_ids=mapping
+        for mapper in (self.mapper,self.points_mapper,self.wire_mapper):mapper.SetInputData(data)
+        self.overlay_data=vtk.vtkPolyData();self.overlay_data.ShallowCopy(data)
+        self.overlay_mapper.SetInputData(self.overlay_data)
+        self.locator=vtk.vtkStaticCellLocator();self.locator.SetDataSet(data)
+        if len(mapping):self.locator.BuildLocator()
+        self.picker=vtk.vtkCellPicker();self.picker.SetTolerance(.0005)
+        self.picker.PickFromListOn();self.picker.AddPickList(self.base)
+        if len(mapping):self.picker.AddLocator(self.locator)
+        self.projection_key=None
 
     def apply_render_options(self):
         # Reassert each actor's representation: VTK's default S/W bindings can
@@ -189,6 +208,8 @@ class SurfaceView(SurfaceFeatures, QVTKRenderWindowInteractor):
             return np.empty(0, np.int64)
         if getattr(self,'top_only',False) and self.side_alignment()<=.08:
             return np.empty(0,np.int64)
+        mapping=getattr(self,'display_face_ids',None)
+        if mapping is not None and not len(mapping):return np.empty(0,np.int64)
         w, h = self.GetRenderWindow().GetSize()
         if w < 2 or h < 2:
             return np.empty(0, np.int64)
@@ -198,7 +219,7 @@ class SurfaceView(SurfaceFeatures, QVTKRenderWindowInteractor):
                           min(w-1, int(x+radius)), min(h-1, int(y+radius)))
         # Use a solid surface for visibility/picking in every display mode. Do not
         # change the IDs or allow sparse point/wire rendering to pick hidden faces.
-        actors=[self.base,self.overlay]+[getattr(self,n) for n in ('points','wire','side_text') if hasattr(self,n)]
+        actors=[self.base,self.overlay]+[getattr(self,n) for n in ('points','wire','side_text') if hasattr(self,n)]+list(getattr(self,'review_guides',[]))
         old_visibility=[a.GetVisibility() for a in actors]
         self.overlay.VisibilityOff(); self.circle.VisibilityOff(); self.base.VisibilityOn()
         for actor in actors[2:]:actor.VisibilityOff()
@@ -211,14 +232,17 @@ class SurfaceView(SurfaceFeatures, QVTKRenderWindowInteractor):
                     if node.GetProperties().Get(vtk.vtkSelectionNode.PROP()) == self.base:
                         ids.extend(vtk_to_numpy(node.GetSelectionList()).tolist())
             ids = np.unique(ids).astype(np.int64)
-            ids = ids[(ids >= 0) & (ids < len(self.mesh.faces))]
+            count=len(mapping) if mapping is not None else len(self.mesh.faces)
+            ids = ids[(ids >= 0) & (ids < count)]
+            if mapping is not None:ids=mapping[ids]
             projected = self._project_centers()
             if len(ids):
                 ids = ids[((projected[ids]-[x,y])**2).sum(axis=1) <= radius**2]
             # Always include the surface directly under the cursor (also works on large triangles).
             self.picker.Pick(x, y, 0, self.renderer)
             hit = self.picker.GetCellId()
-            if hit >= 0:
+            if 0 <= hit < count:
+                if mapping is not None:hit=int(mapping[hit])
                 ids = np.unique(np.append(ids, hit))
             return ids[self.mesh.active[ids]]
         finally:
@@ -368,6 +392,12 @@ class Annotator(AnnotatorFeatures, QtWidgets.QMainWindow):
         rendering.addWidget(self.auto_ply);main.addLayout(rendering)
         self.view = SurfaceView(); main.addWidget(self.view,1)
         self.install_feature_controls(main)
+        review_row=QtWidgets.QHBoxLayout()
+        self.roi_review_button=QtWidgets.QPushButton('Verify / correct specimen ROI…')
+        self.roi_review_button.clicked.connect(self.open_roi_review);review_row.addWidget(self.roi_review_button)
+        reload_roi=QtWidgets.QPushButton('Reload shared ROI');reload_roi.clicked.connect(self.reload_shared_roi);review_row.addWidget(reload_roi)
+        self.roi_status=QtWidgets.QLabel('Surface review: pending');review_row.addWidget(self.roi_status);review_row.addStretch()
+        main.insertLayout(main.indexOf(self.view),review_row)
         self.color_toggle.toggled.connect(self.set_scanner_color)
         for control in (self.surface_toggle,self.points_toggle,self.wire_toggle):control.toggled.connect(self.render_options_changed)
         self.shading_picker.currentIndexChanged.connect(self.render_options_changed)
@@ -383,9 +413,14 @@ class Annotator(AnnotatorFeatures, QtWidgets.QMainWindow):
             if callback==self.redo:b.setToolTip('Redo annotation: Ctrl+Y or Ctrl+Shift+Z')
         main.addLayout(tools)
         self.stats = QtWidgets.QLabel(''); main.addWidget(self.stats)
-        actions = QtWidgets.QHBoxLayout()
+        bulk_actions=QtWidgets.QHBoxLayout()
         b = QtWidgets.QPushButton('Reviewed remainder → clean'); b.setToolTip('Mark only unreviewed ROI faces clean after reviewing the full surface.')
-        b.clicked.connect(self.fill_clean); actions.addWidget(b)
+        b.clicked.connect(self.fill_clean);bulk_actions.addWidget(b)
+        self.all_plaque_button=QtWidgets.QPushButton('Entire ROI → plaque')
+        self.all_plaque_button.setToolTip('Replace every included ROI face label with Plaque. Excluded geometry is unchanged. Undo with Ctrl+Z.')
+        self.all_plaque_button.clicked.connect(self.fill_plaque);bulk_actions.addWidget(self.all_plaque_button)
+        bulk_actions.addStretch();main.addLayout(bulk_actions)
+        actions = QtWidgets.QHBoxLayout()
         self.clear_labels_button = QtWidgets.QPushButton('Clear all labels')
         self.clear_labels_button.setToolTip('Reset all ROI faces to Unreviewed and mark this sample Draft. Undo with Ctrl+Z.')
         self.clear_labels_button.clicked.connect(self.clear_labels); actions.addWidget(self.clear_labels_button)
@@ -509,7 +544,7 @@ class Annotator(AnnotatorFeatures, QtWidgets.QMainWindow):
             self.list.blockSignals(True); self.list.setCurrentRow(previous); self.list.blockSignals(False); return
         lock=None
         try:
-            mesh=load_mesh(self.queue[index]); lock=self.acquire_lock(self.store.path_for(mesh.path))
+            mesh=read_reviewed(self.store,self.queue[index]); lock=self.acquire_lock(self.store.path_for(mesh.path))
             labels,completed,notes=self.store.load(mesh)
             saved=self.store.path_for(mesh.path)
             camera={}
@@ -532,6 +567,7 @@ class Annotator(AnnotatorFeatures, QtWidgets.QMainWindow):
             self.notice.setText(mesh.warning or 'Scanner colors • adjustments affect the display only')
             self.orientation_note.setText('Top: '+self.view.top_source)
             self.last_save='Reopened annotation' if saved.exists() else 'New sample — not saved'
+            self.roi_status.setText('Surface review: '+mesh.review_status+' • '+(mesh.review_version[:8] or 'original crop'))
             self.refresh(); self.update_review_mode(); self.view.setFocus()
         except Exception as exc:
             if lock and lock != self.lock_path:
@@ -540,6 +576,43 @@ class Annotator(AnnotatorFeatures, QtWidgets.QMainWindow):
                 self.view.set_mesh(self.mesh); self.refresh()
             self.show_error(f'{self.queue[index]}\n\n{exc}')
             self.list.blockSignals(True); self.list.setCurrentRow(previous); self.list.blockSignals(False)
+
+    def open_roi_review(self):
+        if self.mesh is None or self.is_read_only() or not self.save():return
+        from roi_review_ui import ReviewDialog
+        self.timer.stop();dialog=None
+        try:
+            dialog=ReviewDialog(self)
+            if dialog.exec() and dialog.saved:self.reload_shared_roi()
+        except Exception as e:self.show_error(str(e))
+        finally:
+            if dialog is not None:dialog.deleteLater()
+            self.timer.start()
+
+    def reload_shared_roi(self):
+        if self.mesh is None:return
+        from roi_review_store import source_face_ids,source_domain,migrate_labels
+        try:
+            old=self.mesh;mesh=read_reviewed(self.store,old.path)
+            if self.is_read_only():labels,completed,notes=self.store.load(mesh)
+            elif mesh.fingerprint==old.fingerprint:
+                labels=self.labels.copy();completed=False;notes=self.notes.toPlainText()
+            else:
+                ids=source_face_ids(old)
+                data=dict(face_labels=self.labels,fingerprint=np.array(old.fingerprint),
+                          source_face_ids=ids if ids is not None else np.arange(len(old.faces)),
+                          source_domain=np.array(source_domain(old)),notes=np.array(self.notes.toPlainText()))
+                labels,completed,notes=migrate_labels(self.store,mesh,data)
+            self.mesh,self.labels,self.completed=mesh,labels,completed
+            self.undo_stack=[];self.redo_stack=[];self.stroke={}
+            self.notes.blockSignals(True);self.notes.setPlainText(notes);self.notes.blockSignals(False)
+            self.view.set_mesh(mesh)
+            normal=read_orientation(self.store,mesh)
+            if normal is not None:self.view.set_top_normal(normal);self.view.reset_camera()
+            self.roi_status.setText('Surface review: '+mesh.review_status+' • '+(mesh.review_version[:8] or 'original crop'))
+            self.dirty=not self.is_read_only();self.refresh()
+            if self.dirty:self.save()
+        except Exception as e:self.show_error('Could not reload shared ROI. Current labels are kept open.\n\n'+str(e))
 
     def set_mode(self, enabled):
         self.view.paint_mode=enabled
@@ -601,6 +674,15 @@ class Annotator(AnnotatorFeatures, QtWidgets.QMainWindow):
             self.edit(np.flatnonzero(self.mesh.active & (self.labels==-2)),0)
             self.view.setFocus()
 
+    def fill_plaque(self):
+        if self.is_read_only() or self.mesh is None or self.labels is None:return
+        if self.view.top_only and self.view.side_alignment()<=.08:
+            self.show_error('Return to the top view before marking the entire ROI plaque.');return
+        self.view.painting=False;self.view.previous=None
+        self.end_stroke()
+        self.edit(np.flatnonzero(self.mesh.active),1)
+        self.view.setFocus()
+
     def undo(self):
         if self.is_read_only():return
         if self.undo_stack:
@@ -647,6 +729,8 @@ class Annotator(AnnotatorFeatures, QtWidgets.QMainWindow):
             return True
         self.end_stroke()
         try:
+            if current_version(self.store,self.mesh.path)!=self.mesh.review_version:
+                raise ValueError('The shared ROI changed. Click Reload shared ROI before saving labels.')
             preview=self.store.path_for(self.mesh.path).parent/(self.mesh.path.name+'.label_colors.ply')
             export_label_colors(self.mesh,self.labels,preview)
             if self.auto_ply.isChecked():
@@ -667,6 +751,8 @@ class Annotator(AnnotatorFeatures, QtWidgets.QMainWindow):
         if self.mesh is None:
             return
         self.end_stroke()
+        if self.mesh.review_status!='approved':
+            self.show_error('Verify and approve the shared specimen ROI before completing plaque annotation.');return
         unreviewed=int(np.sum((self.labels==-2)&self.mesh.active))
         if unreviewed:
             self.show_error(f'{unreviewed:,} faces are still unreviewed. Review the whole ROI, then use “Reviewed remainder → clean”, or paint those faces explicitly.')

@@ -1,0 +1,14 @@
+{
+  "features": [
+    "rgb_mean_r",
+    "rgb_mean_g",
+    "rgb_mean_b",
+    "rgb_sd_r",
+    "rgb_sd_g",
+    "rgb_sd_b"
+  ],
+  "C": 1,
+  "class_weight": "balanced",
+  "fit_partition": "train",
+  "no_validation_tuning": true
+}

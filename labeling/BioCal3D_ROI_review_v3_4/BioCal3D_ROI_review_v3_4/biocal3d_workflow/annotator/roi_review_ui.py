@@ -29,7 +29,11 @@ class ReviewDialog(QtWidgets.QDialog):
         panel=QtWidgets.QWidget();left=QtWidgets.QVBoxLayout(panel);scroll.setWidget(panel);layout.addWidget(scroll)
         self.message=QtWidgets.QLabel(message);self.message.setWordWrap(True);left.addWidget(self.message)
         locate=QtWidgets.QPushButton('Locate original model…');locate.clicked.connect(self.locate);left.addWidget(locate)
+<<<<<<< HEAD
+        self.original=QtWidgets.QCheckBox('Show excluded / original model');self.original.setChecked(False)
+=======
         self.original=QtWidgets.QCheckBox('Show excluded / original model');self.original.setChecked(True)
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
         self.guides=QtWidgets.QCheckBox('Show circle, plane and height limits');self.guides.setChecked(True)
         for widget in (self.original,self.guides):left.addWidget(widget)
         self.original.toggled.connect(self.context_toggled);self.guides.toggled.connect(self.render)
@@ -46,13 +50,21 @@ class ReviewDialog(QtWidgets.QDialog):
         left.addLayout(form)
         self.connected=QtWidgets.QCheckBox('Keep central connected surface');self.connected.setChecked(self.settings.connected)
         self.connected.toggled.connect(self.parameters_changed);left.addWidget(self.connected)
+<<<<<<< HEAD
+        self.live=QtWidgets.QCheckBox('Live extraction preview');left.addWidget(self.live)
+=======
         self.live=QtWidgets.QCheckBox('Live extraction preview');self.live.setChecked(True);left.addWidget(self.live)
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
         self.live.toggled.connect(lambda enabled:(self.timer.start() if enabled else self.timer.stop()) if hasattr(self,'timer') else None)
         auto=QtWidgets.QPushButton('Apply automatic selection');auto.clicked.connect(self.automatic);left.addWidget(auto)
         note=QtWidgets.QLabel('Automatic selection replaces manual edits. All triangle corners must pass circle/height limits. The slope limit rejects exposed walls; enclosed surface detail is preserved. Geometry is never flattened.')
         note.setWordWrap(True);left.addWidget(note)
         left.addWidget(QtWidgets.QLabel('Manual surface correction'))
+<<<<<<< HEAD
+        self.operation=QtWidgets.QComboBox();self.operation.addItems(['Exclude surface','Restore surface'])
+=======
         self.operation=QtWidgets.QComboBox();self.operation.addItems(['Exclude surface','Restore surface']);self.operation.setCurrentIndex(1)
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
         left.addWidget(self.operation)
         self.paint=QtWidgets.QCheckBox('Brush enabled');self.paint.setChecked(True);left.addWidget(self.paint)
         self.radius=QtWidgets.QSlider(QtCore.Qt.Orientation.Horizontal);self.radius.setRange(3,150);self.radius.setValue(24);left.addWidget(self.radius)

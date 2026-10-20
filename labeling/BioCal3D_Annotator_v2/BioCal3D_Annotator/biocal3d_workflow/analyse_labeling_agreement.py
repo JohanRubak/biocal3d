@@ -1,9 +1,10 @@
 """Independent overlap agreement: area weighting, specimen means and cluster bootstrap."""
-import argparse,csv,json,hashlib
+import argparse,csv,json
 from pathlib import Path
 from collections import defaultdict
 import numpy as np
 from annotator.mesh_io import AnnotationStore,load_mesh
+from annotator.roi_review_store import read_reviewed
 from labeling_study import resolve_root,write_csv,re_valid_plan_root
 
 
@@ -43,37 +44,25 @@ def specimen_summary(rows,seed=42,iterations=2000):
     return out
 
 
-def analyse(root,plan,output=None,annotations=None,rater1=None,rater2=None,seed=42):
+def analyse(root,plan,output=None,annotations=None,rater1='dentist_1',rater2='dentist_2',seed=42):
     root=Path(root).resolve();plan=Path(plan)
-    config=json.loads((plan/'plan.json').read_text())
-    if config.get('portable_dataset'):
-        if plan.resolve()!=root or config.get('dataset_phase')!='agreement':raise ValueError('Select the portable agreement folder itself for analysis.')
-        if config.get('inventory_sha256')!=hashlib.sha256((root/'annotation_inventory.csv').read_bytes()).hexdigest():raise ValueError('Portable agreement inventory changed after preparation.')
-    elif not re_valid_plan_root(plan,root):raise ValueError('Plan does not match this prepared dataset.')
-    raters=config.get('raters',['dentist_1','dentist_2'])
-    if len(raters)!=2:raise ValueError('This analysis requires exactly two independent raters.')
-    rater1=rater1 or raters[0];rater2=rater2 or raters[1]
+    if not re_valid_plan_root(plan,root):raise ValueError('Plan does not match this prepared dataset.')
     if rater1==rater2:raise ValueError('Choose two distinct independent raters.')
     output=Path(output or plan/'agreement_results');output.mkdir(parents=True,exist_ok=True)
     stores=[AnnotationStore(root,annotations or root/'annotations',n) for n in (rater1,rater2)]
-    manifest=(plan/config.get('agreement_manifest','agreement_dentist_1.csv')).resolve()
-    if not manifest.is_relative_to(plan.resolve()):raise ValueError('Agreement manifest must be inside the plan directory.')
-    with manifest.open(encoding='utf-8-sig',newline='') as stream:cases=list(csv.DictReader(stream))
+    with (plan/'agreement_dentist_1.csv').open(encoding='utf-8-sig',newline='') as stream:cases=list(csv.DictReader(stream))
     results=[];issues=[]
     for row in cases:
         try:
             if row.get('study_phase')!='agreement':raise ValueError('Only independent agreement cases belong in this analysis.')
-            mesh=load_mesh(root/row['annotation_mesh']);a,adone,_=stores[0].load(mesh);b,bdone,_=stores[1].load(mesh)
+            mesh=read_reviewed(stores[0],root/row['annotation_mesh']);a,adone,_=stores[0].load(mesh);b,bdone,_=stores[1].load(mesh)
             if not(adone and bdone):issues.append({'scan_id':row.get('scan_id'),'status':'INCOMPLETE','error':'Both ratings must be complete.'});continue
-            results.append({k:row.get(k,'') for k in ('scan_id','physical_id','scanner','group','stage','split','pilot_cohort','timing_note')}|agreement_metrics(mesh,a,b))
+            results.append({k:row.get(k,'') for k in ('scan_id','physical_id','scanner','group','stage','split')}|agreement_metrics(mesh,a,b))
         except Exception as exc:issues.append({'scan_id':row.get('scan_id'),'status':'FAILED','error':str(exc)})
     write_csv(output/'agreement_by_scan.csv',results);write_csv(output/'agreement_missing_or_failed.csv',issues)
     summary={'expected_cases':len(cases),'complete_pairs':len(results),'missing_or_failed':len(issues),'raters':[rater1,rater2],
              'method':'Area-weighted binary agreement on jointly reviewed ROI faces. Empty/empty plaque Dice and IoU are undefined. Specimen means and physical-specimen bootstrap; calibration and consensus excluded.',
              'all_stages':specimen_summary(results,seed),'partial_stage_primary':specimen_summary([r for r in results if r['stage']=='partial'],seed)}
-    summary['metadata_blinded']=config.get('metadata_blinded')
-    summary['cohorts']={cohort:specimen_summary([r for r in results if r['pilot_cohort']==cohort],seed) for cohort in sorted({r['pilot_cohort'] for r in results if r['pilot_cohort']})}
-    summary['partial_stage_by_cohort']={cohort:specimen_summary([r for r in results if r['stage']=='partial' and r['pilot_cohort']==cohort],seed) for cohort in summary['cohorts']}
     scanners=[]
     for scanner in sorted({r['scanner'] for r in results}):
         subset=[r for r in results if r['scanner']==scanner];info=specimen_summary(subset,seed)
@@ -86,12 +75,10 @@ def analyse(root,plan,output=None,annotations=None,rater1=None,rater2=None,seed=
 
 def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--root',type=Path);p.add_argument('--plan',type=Path);p.add_argument('--output',type=Path)
-    p.add_argument('--annotations',type=Path);p.add_argument('--rater-1');p.add_argument('--rater-2');p.add_argument('--seed',type=int,default=42)
+    p.add_argument('--annotations',type=Path);p.add_argument('--rater-1',default='dentist_1');p.add_argument('--rater-2',default='dentist_2');p.add_argument('--seed',type=int,default=42)
     a=p.parse_args()
     try:
-        root=resolve_root(a.root)
-        plan=a.plan or (root if (root/'plan.json').is_file() else root/'labeling_plan')
-        summary=analyse(root,plan,a.output,a.annotations,a.rater_1,a.rater_2,a.seed)
+        root=resolve_root(a.root);summary=analyse(root,a.plan or root/'labeling_plan',a.output,a.annotations,a.rater_1,a.rater_2,a.seed)
         return 2 if summary['missing_or_failed'] else 0
     except Exception as exc:print('ERROR:',exc);return 2
 

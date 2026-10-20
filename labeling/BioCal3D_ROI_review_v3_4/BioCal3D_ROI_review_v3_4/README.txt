@@ -1,3 +1,6 @@
+<<<<<<< HEAD
+BioCal3D ROI review update v3.4
+=======
 BioCal3D ROI review update v3.9
 
 NEW: create_labeling_plan.bat (or .cmd) now creates portable G5 calibration
@@ -8,6 +11,7 @@ Approved geometry and shared ROI approvals are copied; plaque labels start empty
 under annotations/bruna and annotations/katrin. No dentist-specific launchers.
 Existing studies are never overwritten. Use --output with a NEW folder name.
 See biocal3d_workflow/LABELING_STUDY.md for the exact command and study sequence.
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb
 
 Start with ROI_REVIEW_GUIDE.md.
 
@@ -16,6 +20,8 @@ To update your current app: close it, run apply_update.cmd, and select the EXIST
 Do not replace your prepared dataset or rerun full preprocessing just to inspect the problem cases. Review corrections are saved separately. Use rebuild_reviewed.cmd after review to create a corrected training snapshot.
 
 For a fresh installation, see README_previous_installation.txt.
+<<<<<<< HEAD
+=======
 
 UI matches the approved compact preview. See ROI_REVIEW_GUIDE.md for renamed controls and shortcuts.
 The previously reported Windows/VTK shutdown popup has not been fixed in this UI update.
@@ -23,3 +29,4 @@ The previously reported Windows/VTK shutdown popup has not been fixed in this UI
 Fixes the VTP-versus-PLY approval lookup mismatch. Existing reviews are reused after geometry verification; see ROI_REVIEW_GUIDE.md.
 
 Fixes rebuilding T0/T1/T2 timepoint labels. After an incomplete rebuild, choose a NEW empty output folder; keep the same reviewed source snapshot.
+>>>>>>> 3dc377b2c13f84fb1a8141a5ae83a69198e2addb

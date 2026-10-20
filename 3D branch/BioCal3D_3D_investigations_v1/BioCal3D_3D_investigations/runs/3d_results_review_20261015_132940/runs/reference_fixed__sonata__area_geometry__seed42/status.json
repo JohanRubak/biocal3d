@@ -1,0 +1,6 @@
+{
+  "status": "complete",
+  "best_epoch": 30,
+  "completed_epochs": 55,
+  "final_test_evaluated": false
+}

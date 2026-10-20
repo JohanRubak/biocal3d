@@ -1,0 +1,158 @@
+[
+  {
+    "scanner": "LABscanner",
+    "accuracy": 0.75,
+    "balanced_accuracy": 0.6666666666666666,
+    "specimen_balanced_accuracy": 0.6666666666666666,
+    "macro_f1": 0.5714285714285714,
+    "macro_auc": 0.8333333333333334,
+    "recall": [
+      1.0,
+      0.0,
+      1.0
+    ],
+    "class_support": [
+      6,
+      4,
+      6
+    ],
+    "confusion_matrix": [
+      [
+        6,
+        0,
+        0
+      ],
+      [
+        2,
+        0,
+        2
+      ],
+      [
+        0,
+        0,
+        6
+      ]
+    ],
+    "scans": 16,
+    "specimens": 6,
+    "partial_specimens": 4,
+    "loss": 0.9156159162521362
+  },
+  {
+    "scanner": "TRIOS3",
+    "accuracy": 0.625,
+    "balanced_accuracy": 0.5555555555555555,
+    "specimen_balanced_accuracy": 0.5555555555555555,
+    "macro_f1": 0.48888888888888893,
+    "macro_auc": 0.6791666666666667,
+    "recall": [
+      0.6666666666666666,
+      0.0,
+      1.0
+    ],
+    "class_support": [
+      6,
+      4,
+      6
+    ],
+    "confusion_matrix": [
+      [
+        4,
+        0,
+        2
+      ],
+      [
+        0,
+        0,
+        4
+      ],
+      [
+        0,
+        0,
+        6
+      ]
+    ],
+    "scans": 16,
+    "specimens": 6,
+    "partial_specimens": 4,
+    "loss": 1.0781079530715942
+  },
+  {
+    "scanner": "TRIOS5",
+    "accuracy": 0.6875,
+    "balanced_accuracy": 0.6111111111111112,
+    "specimen_balanced_accuracy": 0.6111111111111112,
+    "macro_f1": 0.5383244206773619,
+    "macro_auc": 0.8361111111111111,
+    "recall": [
+      0.8333333333333334,
+      0.0,
+      1.0
+    ],
+    "class_support": [
+      6,
+      4,
+      6
+    ],
+    "confusion_matrix": [
+      [
+        5,
+        0,
+        1
+      ],
+      [
+        0,
+        0,
+        4
+      ],
+      [
+        0,
+        0,
+        6
+      ]
+    ],
+    "scans": 16,
+    "specimens": 6,
+    "partial_specimens": 4,
+    "loss": 0.8540348410606384
+  },
+  {
+    "scanner": "iTERO",
+    "accuracy": 0.5,
+    "balanced_accuracy": 0.4444444444444444,
+    "specimen_balanced_accuracy": 0.4444444444444444,
+    "macro_f1": 0.3586744639376218,
+    "macro_auc": 0.5833333333333333,
+    "recall": [
+      1.0,
+      0.0,
+      0.3333333333333333
+    ],
+    "class_support": [
+      6,
+      4,
+      6
+    ],
+    "confusion_matrix": [
+      [
+        6,
+        0,
+        0
+      ],
+      [
+        3,
+        0,
+        1
+      ],
+      [
+        4,
+        0,
+        2
+      ]
+    ],
+    "scans": 16,
+    "specimens": 6,
+    "partial_specimens": 4,
+    "loss": 1.0671151876449585
+  }
+]

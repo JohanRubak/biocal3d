@@ -1,0 +1,13 @@
+﻿row_id,scanner,sample_name,true_stage,explained_class,max_probability_difference,has_actual_rgb,regions
+c50beecbdac275fd,LABscanner,BCG3T1-5,partial,partial,0.0,True,16
+d902f623a3273e4b,TRIOS3,BCG3T1-5,partial,partial,0.0,True,16
+2677fb5e12b2361c,TRIOS5,BCG3T1-5,partial,partial,0.0,True,16
+67cb0c2cd5c66a1c,iTERO,BCG3T1-5,partial,partial,0.0,True,16
+d444461be204b8cf,LABscanner,BCG1T0-8,baseline,baseline,0.0,True,16
+43e7cd95c7c2fe8e,TRIOS3,BCG1T0-8,baseline,baseline,0.0,True,16
+d378c189be9a524d,TRIOS5,BCG1T0-8,baseline,partial,0.0,True,16
+dd60f0e0c755e636,iTERO,BCG1T0-8,baseline,baseline,0.0,True,16
+178ef575f58a8e66,LABscanner,BCG1T1-8,clean,clean,0.0,True,16
+2e5e36aa665d0bae,TRIOS3,BCG1T1-8,clean,clean,0.0,True,16
+2e94fa28a7ad9170,TRIOS5,BCG1T1-8,clean,partial,0.0,True,16
+7b5fdb2705a15f21,iTERO,BCG1T1-8,clean,baseline,0.0,True,16
