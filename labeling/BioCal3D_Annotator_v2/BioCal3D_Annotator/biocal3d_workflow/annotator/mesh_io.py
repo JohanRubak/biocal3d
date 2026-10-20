@@ -68,16 +68,25 @@ class Mesh:
 
     @property
     def fingerprint(self):
+        key=(id(self.vertices),id(self.faces),id(self.active))
+        stable=getattr(self,'_stable_geometry',False) and all(not a.flags.writeable for a in (self.vertices,self.faces,self.active))
+        if stable and getattr(self,'_fingerprint_key',None)==key:
+            return self._fingerprint_value
         h = hashlib.sha256()
         for a, dtype in [(self.vertices, '<f8'), (self.faces, '<i8')]:
             b = np.ascontiguousarray(a, dtype=dtype)
             h.update(str(b.shape).encode())
             h.update(b.tobytes())
         h.update(np.ascontiguousarray(self.active, dtype=np.uint8).tobytes())
-        return h.hexdigest()
+        result=h.hexdigest()
+        if stable:self._fingerprint_key=key;self._fingerprint_value=result
+        return result
 
 def find_texture(path, hint=None):
     if hint:
+        local = path.parent / Path(str(hint).strip().strip('"')).name
+        if local.is_file():
+            return local
         candidate = path.parent / str(hint).strip().strip('"')
         if candidate.is_file():
             return candidate
@@ -107,12 +116,13 @@ def _array(p, names, cell=False):
             return vtk_to_numpy(a)
     return None
 
-def load_mesh(path):
+def load_mesh(path,*,read_cache=None,progress=None):
     path = Path(path).resolve()
+    input_path=read_cache.materialize(path,progress) if read_cache is not None else path
     texture, warning, colors, uv, wedge_uv, active, imported_labels = None, '', None, None, None, None, None
     source_fids=source_vids=None; source_key=''
     if path.suffix.lower() == '.npz':
-        with np.load(path, allow_pickle=False) as d:
+        with np.load(input_path, allow_pickle=False) as d:
             def get(names, required=False):
                 for name in names:
                     if name in d:
@@ -140,15 +150,16 @@ def load_mesh(path):
             texture = find_texture(path, hint.item() if hint is not None and hint.size == 1 else None)
     elif path.suffix.lower() == '.ply':
         from plyfile import PlyData
-        d = PlyData.read(str(path))
+        d = PlyData.read(str(input_path), known_list_len={'face': {'vertex_indices': 3, 'vertex_index': 3, 'texcoord': 6}})
         if 'face' not in d:
             raise ValueError('PLY has no faces; point-cloud-only annotation is not supported.')
         vd, fd = d['vertex'].data, d['face'].data
         v = np.column_stack([vd[n] for n in ('x', 'y', 'z')])
         index_name = next((n for n in ('vertex_indices', 'vertex_index') if n in fd.dtype.names), None)
-        if index_name is None or any(len(x) != 3 for x in fd[index_name]):
+        if index_name is None or (fd[index_name].dtype.kind == 'O' and any(len(x) != 3 for x in fd[index_name])):
             raise ValueError('PLY must contain triangle faces with vertex_indices.')
-        f = np.stack(fd[index_name]).astype(np.int64)
+        indices = fd[index_name]
+        f = (np.stack(indices) if indices.dtype.kind == 'O' else np.asarray(indices)).astype(np.int64)
         if 'source_face_id' in fd.dtype.names:source_fids=np.asarray(fd['source_face_id'],np.int64)
         if 'source_vertex_id' in vd.dtype.names:source_vids=np.asarray(vd['source_vertex_id'],np.int64)
         domain=next((c.split(' ',1)[1] for c in d.comments if c.startswith('SourceDomain ')),None)
@@ -162,15 +173,16 @@ def load_mesh(path):
                 uv = np.column_stack([vd[n] for n in pair])
                 break
         if 'texcoord' in fd.dtype.names:
-            if any(len(x) != 6 for x in fd['texcoord']):
+            if fd['texcoord'].dtype.kind == 'O' and any(len(x) != 6 for x in fd['texcoord']):
                 raise ValueError('PLY face texcoord must contain six UV numbers per triangle.')
-            wedge_uv = np.stack(fd['texcoord']).reshape(-1, 2)
+            coords = fd['texcoord']
+            wedge_uv = (np.stack(coords) if coords.dtype.kind == 'O' else np.asarray(coords)).reshape(-1, 2)
         hint = next((s.split(None, 1)[1] for s in d.comments
                      if s.lower().startswith('texturefile ')), None)
         texture = find_texture(path, hint)
     elif path.suffix.lower() == '.vtp':
         reader = vtk.vtkXMLPolyDataReader()
-        reader.SetFileName(str(path)); reader.Update()
+        reader.SetFileName(str(input_path)); reader.Update()
         p = reader.GetOutput()
         if p.GetNumberOfPoints() == 0:
             raise ValueError('VTP contains no points.')
@@ -212,7 +224,7 @@ def load_mesh(path):
         raise ValueError('ROI mask length is wrong or its ROI is empty.')
     if uv is not None or wedge_uv is not None:
         if texture is None and colors is None:
-            warning = 'UVs found but no texture matched. Use Choose texture before labeling.'
+            warning = 'UVs found but no texture matched. Fix the prepared texture data before labeling.'
     elif colors is None:
         warning = 'No vertex RGB or UV texture found. Do not judge plaque from the gray mesh.'
     # Expand only the display mesh for texture seams. Face order and source arrays remain unchanged.
@@ -229,14 +241,25 @@ def load_mesh(path):
     result.source_face_ids=None if source_fids is None else np.asarray(source_fids,np.int64)
     result.source_vertex_ids=None if source_vids is None else np.asarray(source_vids,np.int64)
     result.source_domain=source_key
+    result.read_cache=read_cache
+    result._derived={}
     return result
 
-def discover(root, contains=''):
+def discover(root, contains='',*,exclude_dirs=()):
     root = Path(root).resolve()
-    candidates = [p for p in root.rglob('*') if p.is_file() and p.suffix.lower() in {'.ply', '.vtp', '.npz'}
-                  and not any(s in {'annotations', 'annotation_output', 'labels', '_roi_review', '.venv', '__pycache__'}
-                              for s in p.relative_to(root).parts[:-1])
-                  and not p.name.endswith(('.labels.npz', '.labeled.vtp', '.labeled.ply', '.label_colors.ply'))]
+    excluded={'annotations','annotation_output','labels','_roi_review','.venv','.labeling-env','__pycache__','code_backups','surface_cache','feature_cache'}
+    excluded_paths={Path(p).resolve() for p in exclude_dirs}
+    candidates=[]
+    # Prune before descent: rglob followed by a filter still walks every saved
+    # label export and every review version on a network share.
+    for directory,dirs,names in os.walk(root,followlinks=False):
+        parent=Path(directory)
+        dirs[:]=[name for name in dirs if name.casefold() not in excluded and not name.startswith('.') and parent/name not in excluded_paths]
+        for name in names:
+            path=parent/name
+            if path.suffix.lower() not in {'.ply','.vtp','.npz'}:continue
+            if name.endswith(('.labels.npz','.labeled.vtp','.labeled.ply','.label_colors.ply')):continue
+            if path.is_file():candidates.append(path)
     # Prepared sample directories: one representative input per sample.
     by_dir = {}
     for p in candidates:
@@ -244,7 +267,7 @@ def discover(root, contains=''):
     selected = []
     for files in by_dir.values():
         known = {p.name.lower(): p for p in files}
-        preferred = next((known[n] for n in ['roi.vtp', 'roi.ply', 'geometry.npz'] if n in known), None)
+        preferred = next((known[n] for n in ['roi.ply', 'roi.vtp', 'geometry.npz'] if n in known), None)
         if preferred:
             selected.append(preferred)
         else:
@@ -278,12 +301,20 @@ def manifest_queue(root, manifest, contains=''):
             if contains.lower() in str(source.relative_to(root)).lower() and source not in queue:queue.append(source)
     return queue
 
-def atomic_npz(path, **arrays):
+def atomic_npz(path, *, _compression_level=None, **arrays):
     path = Path(path); path.parent.mkdir(parents=True, exist_ok=True)
     fd, tmp = tempfile.mkstemp(prefix=path.name+'.', suffix='.tmp', dir=path.parent)
     try:
         with os.fdopen(fd, 'wb') as stream:
-            np.savez_compressed(stream, **arrays)
+            if _compression_level is None:
+                np.savez_compressed(stream, **arrays)
+            else:
+                import zipfile
+                with zipfile.ZipFile(stream, 'w', compression=zipfile.ZIP_DEFLATED,
+                                     compresslevel=_compression_level, allowZip64=True) as archive:
+                    for name, value in arrays.items():
+                        with archive.open(name+'.npy', 'w', force_zip64=True) as member:
+                            np.lib.format.write_array(member, np.asanyarray(value), allow_pickle=False)
             stream.flush(); os.fsync(stream.fileno())
         os.replace(tmp, path)
     finally:
@@ -315,12 +346,15 @@ class AnnotationStore:
             return 'error'
 
     def load(self, mesh):
+        self._last_loaded_view={}
         path = self.path_for(mesh.path)
         if not path.exists():
             labels = np.full(len(mesh.faces), -2, np.int8) if mesh.imported_labels is None else mesh.imported_labels.copy()
             labels[~mesh.active] = -1
             return labels, False, ''
         with np.load(path, allow_pickle=False) as d:
+            self._last_loaded_view={'camera':json.loads(str(d['camera'].item())) if 'camera' in d else {},
+                                    'texture':str(d['texture_path'].item()) if 'texture_path' in d else ''}
             if str(d['fingerprint'].item()) != mesh.fingerprint:
                 if mesh.review_version:
                     migrate_labels=_review_module().migrate_labels
@@ -353,7 +387,7 @@ class AnnotationStore:
                 backup=history/(previous.name+'.'+(old_version or 'original')+'.npz')
                 if not backup.exists():shutil.copy2(previous,backup)
         source_ids=source_face_ids(mesh)
-        atomic_npz(self.path_for(mesh.path), schema_version=np.array(2), face_labels=labels,
+        atomic_npz(self.path_for(mesh.path), _compression_level=1, schema_version=np.array(2), face_labels=labels,
                    source_face_ids=source_ids if source_ids is not None else np.arange(len(mesh.faces)),
                    source_domain=np.array(source_domain(mesh)),
                    geometry_review_version=np.array(mesh.review_version), geometry_review_status=np.array(mesh.review_status),
@@ -382,7 +416,12 @@ def surface_normals(vertices, faces):
 
 def shaded_display(mesh):
     """Normals use original shared vertices, including across texture seams."""
-    vertex,face=surface_normals(mesh.vertices,mesh.faces)
+    derived=getattr(mesh,'_derived',{})
+    normals=derived.get('normals') if getattr(mesh,'_stable_geometry',False) else None
+    if normals is None:
+        normals=surface_normals(mesh.vertices,mesh.faces)
+        if getattr(mesh,'_stable_geometry',False):derived['normals']=normals
+    vertex,face=normals
     p=vtk.vtkPolyData(); p.ShallowCopy(mesh.display)
     if p.GetNumberOfPoints()!=len(mesh.vertices) or not np.array_equal(_triangles(p),mesh.faces):
         vertex=vertex[mesh.faces.ravel()]
@@ -403,6 +442,42 @@ def mesh_appearance(mesh):
     data=p.GetPointData().GetTCoords()
     uv=vtk_to_numpy(data)[display_faces].reshape(-1,6).copy() if data is not None else None
     return colors,uv
+
+
+def write_binary_ply(target, vertices, faces, comments=()):
+    """Write fixed triangle/UV records in standard binary little-endian PLY.
+
+    Scalar values and field order match the existing exporter. List counts are
+    real on-disk uchar fields; no pickles, custom format or topology changes.
+    The caller owns the atomic temporary-file/replace transaction.
+    """
+    types={'i1':'char','u1':'uchar','i2':'short','u2':'ushort',
+           'i4':'int','u4':'uint','f4':'float','f8':'double'}
+    header=['ply','format binary_little_endian 1.0']
+    header += ['comment '+str(c).replace('\n',' ') for c in comments]
+    records=[]
+    for element,array in [('vertex',vertices),('face',faces)]:
+        header.append(f'element {element} {len(array)}')
+        dtype=[];counts=[]
+        for name in array.dtype.names:
+            field=array.dtype.fields[name][0]
+            if field.subdtype:
+                base,shape=field.subdtype
+                if len(shape)!=1 or not 0<shape[0]<=255:raise ValueError('Unsupported PLY list shape.')
+                count_name='_count_'+name;dtype.extend([(count_name,'u1'),(name,base.newbyteorder('<'),shape)])
+                counts.append((count_name,shape[0]))
+                header.append(f'property list uchar {types[base.str[1:]]} {name}')
+            else:
+                dtype.append((name,field.newbyteorder('<')))
+                header.append(f'property {types[field.str[1:]]} {name}')
+        packed=np.empty(len(array),dtype=dtype)
+        for name in array.dtype.names:packed[name]=array[name]
+        for name,count in counts:packed[name]=count
+        records.append(packed)
+    header.append('end_header')
+    with open(target,'wb') as stream:
+        stream.write(('\n'.join(header)+'\n').encode('ascii'))
+        for array in records:array.tofile(stream)
 
 def export_ply(mesh, labels, target, binary=True, face_ids=None):
     """Original vertices/faces, labels as separate properties, and portable texture copy."""
@@ -449,8 +524,11 @@ def export_ply(mesh, labels, target, binary=True, face_ids=None):
     fd_handle,tmp=tempfile.mkstemp(prefix=target.name+'.',suffix='.tmp',dir=target.parent)
     os.close(fd_handle)
     try:
-        PlyData([PlyElement.describe(vd,'vertex'),PlyElement.describe(fd,'face')],
-                text=not binary,byte_order='<',comments=comments).write(tmp)
+        if binary:
+            write_binary_ply(tmp, vd, fd, comments)
+        else:
+            PlyData([PlyElement.describe(vd,'vertex'),PlyElement.describe(fd,'face')],
+                    text=True,byte_order='<',comments=comments).write(tmp)
         os.replace(tmp,target)
     finally:
         if os.path.exists(tmp):os.unlink(tmp)
@@ -471,7 +549,8 @@ def export_label_colors(mesh, labels, target, binary=True):
     target.parent.mkdir(parents=True, exist_ok=True)
     source_ids = mesh.faces.reshape(-1)
     coords = mesh.vertices[source_ids]
-    colors = np.repeat(np.array([PALETTE[int(value)] for value in labels], dtype=np.uint8), 3, axis=0)
+    palette = np.asarray([PALETTE[i] for i in (-2,-1,0,1)], dtype=np.uint8)
+    colors = np.repeat(palette[labels.astype(np.intp)+2], 3, axis=0)
     vd = np.empty(len(coords), dtype=[('x','f8'),('y','f8'),('z','f8'),
                                      ('red','u1'),('green','u1'),('blue','u1'),('source_vertex_id','i4')])
     for i, name in enumerate(('x','y','z')):vd[name] = coords[:,i]
@@ -489,8 +568,11 @@ def export_label_colors(mesh, labels, target, binary=True):
     descriptor, temporary = tempfile.mkstemp(prefix=target.name+'.', suffix='.tmp', dir=target.parent)
     os.close(descriptor)
     try:
-        PlyData([PlyElement.describe(vd,'vertex'), PlyElement.describe(fd,'face')],
-                text=not binary, byte_order='<', comments=comments).write(temporary)
+        if binary:
+            write_binary_ply(temporary, vd, fd, comments)
+        else:
+            PlyData([PlyElement.describe(vd,'vertex'), PlyElement.describe(fd,'face')],
+                    text=True, byte_order='<', comments=comments).write(temporary)
         os.replace(temporary, target)
     finally:
         if os.path.exists(temporary):os.unlink(temporary)

@@ -1,0 +1,106 @@
+BioCal3D ROI review v3.12 validation — 20 October 2026
+
+PASS: 100 annotator tests run; 99 passed and one optional experimental-input
+check skipped because the file is not bundled. Includes 14 loading/cache tests.
+PASS: 10 workflow tests for preprocessing/rebuild integration, portable labeling
+study creation/relocation, independent ratings and agreement analysis.
+PASS: rendered desktop smoke test with real OpenGL on a virtual X display:
+scanner appearance, surface/points/wireframe, rotation, visible-only brushing,
+undo/redo, sorting, immediate A/D navigation after loading and consensus isolation.
+PASS: loading feedback visually inspected in the actual application style.
+PASS: installer copies all referenced update files, backs up old code and leaves
+existing environment, dataset and annotation sentinels unchanged.
+
+New checks cover:
+- Source bodies copied once; reuse across cache instances/app restarts.
+- Source replacement invalidation and repair of a damaged local copy.
+- Missing sources never silently replaced by an offline/stale cached input.
+- Unwritable local cache falls back to the original source.
+- Cache size eviction and exclusion of working labels, pointers and lock files.
+- Logical mesh paths and annotation paths remain in the selected shared dataset.
+- New shared review versions are not bypassed by local cached geometry.
+- Folder walks prune annotation history before traversal; scan manifest metadata
+  handles sibling review formats without per-sample JSON reads.
+- Frame reuse, lazy normals, and one requested initial view render.
+- Loading IO runs on a worker while Qt timers continue, progress uses real counts,
+  exceptions release loading state, and the modal indicator is retired before
+  an immediate next navigation key.
+
+Validation environment: Linux Python 3.12, VTK 9.3.1, PySide6 6.8.3,
+plyfile 1.1.3. Existing Windows Python 3.11 dependencies remain sufficient.
+No actual O: drive, server latency or user's latest dataset was available.
+No quantitative network-loading speedup is claimed. First uncached reads, shared
+label saves and shared approval checks still require access to the source drive.
+VTK view preparation/rendering still run on the main interface thread; IO workers
+and progress feedback do not imply every operation is asynchronous.
+
+BENCHMARK_RESULTS.json is the inherited synthetic v3.9/v3.10 IO comparison,
+not an O: drive or v3.12 end-to-end loading measurement. The application writes
+local loading_times.csv to aid diagnosis on the actual Windows PC.
+
+Earlier release validation follows for context.
+
+BioCal3D ROI review v3.11 validation — 20 October 2026
+
+New tests: 10 checks pass for Windows-path rebasing, exact scanner/sample matching,
+reorganized folders, checksums, ambiguous duplicates, exclusion of prepared outputs,
+index reuse/refresh, selecting a folder once and loading another specimen,
+persistence after app restart, unavailable remembered roots, unchanged ROI files,
+and rejection of incorrect source geometry even when the file checksum matches.
+
+Full annotator suite: 86 tests run; 85 pass, one optional experimental-data test
+skipped because its input is not bundled. Includes all v3.10 performance/save
+regressions, ROI review and restoration, source mapping, label transfer, exports,
+and visible-surface brush selection on a virtual X display.
+Rendered desktop smoke test: PASS for scanner appearance, surface/points/wireframe,
+rotation, painting, undo/redo, A/D navigation, sorting and consensus isolation.
+Installer check: PASS for complete copying, backup of old code and preservation
+of existing data, annotations and environment.
+
+No changes to extraction/label definitions or the performance improvements in
+v3.10. No new runtime dependencies. The recorded data root is stored locally
+in QSettings per dataset path; changing it does not save a geometry review.
+
+The user's complete original acquisitions and Windows PC were unavailable.
+Synthetic relocation fixtures retain real PLY bytes, recorded SHA256 and exact
+source-triangle mappings; actual PC paths and permissions remain a local check.
+
+Previous performance validation and benchmark information follow.
+
+BioCal3D ROI review v3.10 validation — 20 October 2026
+
+Validation environment: Linux, Python 3.12, VTK 9.3.1, PySide6 6.8.3,
+plyfile 1.1.3; virtual X display for actual rendered brush/UI checks.
+Target runtime remains the existing Windows Python 3.11 labeling environment.
+
+PASS: annotator regression suite: 75 tests, one skipped because the optional
+experimental example is not bundled. Covers binary/ASCII PLY, RGB/UV/source IDs,
+visible-face-only picking, top guard, ROI correction, source correspondence,
+stale writer protection, label transfer, rebuilds, label previews and approvals.
+PASS: 10 workflow tests: preprocessing integration, verified snapshot rebuild,
+portable 24/72 G5 study folders, relocation and independent agreement analysis.
+PASS: targeted final performance/save tests including a recovered draft whose
+PLY outputs predate its NPZ. Tests confirm failed saves block navigation,
+NPZ autosaves omit PLY writes, explicit save flushes outputs, unchanged A/D skips
+rewrites, cached meshes invalidate on changes, and raters reload their own labels.
+PASS: rendered desktop smoke test: surface/points/wireframe, scanner appearance,
+rotation, actual brush selection, undo/redo, A/D, sorting and consensus isolation.
+The smoke fixture was updated to place the pointer in Notes when testing spaces,
+and to read reviewed rather than immutable geometry for reviewed label files.
+PASS: installer verification: replacement files match the package, old code is
+backed up, and existing environment/data/annotation sentinels remain unchanged.
+
+BENCHMARK_RESULTS.json records synthetic IO measurements on 318402 triangles.
+Median of three repeats in this environment:
+  Label-colored PLY:     v3.9 12.075 s   v3.10 1.846 s
+  Original-color PLY:    v3.9  9.895 s   v3.10 0.965 s
+  Read binary PLY:       v3.9 16.100 s   v3.10 0.374 s
+Timings varied with system load. These measure IO tasks, not full application
+latency, and must not be extrapolated to the user's Windows PC or real scans.
+Automatic brush drafts now omit both PLY exports entirely.
+
+Limits: the user's latest approved experimental dataset and Windows graphics
+stack were not available. First-open texture/normal/locator setup is still
+synchronous. Rendering remains dependent on mesh size and graphics drivers.
+This update does not claim to fix the previously reported Windows/VTK shutdown
+popup. No geometry simplification or changes to segmentation rules were made.

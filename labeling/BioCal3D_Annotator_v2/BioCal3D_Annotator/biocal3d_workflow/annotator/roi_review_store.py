@@ -2,8 +2,12 @@
 from __future__ import annotations
 from dataclasses import asdict
 from pathlib import Path
-import hashlib,json,os,sys,uuid
+import csv,hashlib,json,os,sys,uuid
 from datetime import datetime,timezone
+if __package__:
+    from .performance import file_signature
+else:
+    from performance import file_signature
 import numpy as np
 import vtk
 from vtk.util.numpy_support import vtk_to_numpy
@@ -41,17 +45,38 @@ def current_version(store,path):
     return state['version'] if state else ''
 
 
-def read_reviewed(store,path):
+def read_reviewed(store,path,*,progress=None):
+    path=Path(path).resolve()
+    # Discovery chooses the review filename cheaply. Verify sibling equivalence
+    # on first opening, and again whenever any input/review dependency changes.
+    for candidate in getattr(store,'_review_alias_inputs',{}).get(path,()):
+        resolve_review_source(store,candidate)
+    path=resolve_review_source(store,path)
     state=read_state(store,path)
-    if state is None:return load_mesh(path)
-    base=load_mesh(path)
+    payload=review_dir(store,path)/'versions'/state['version']/'surface.npz' if state else None
+    dependencies=[path,path.with_name('geometry.npz'),path.with_name('metadata.json')]
+    if state:dependencies.extend([review_dir(store,path)/'current.json',payload])
+    signature=tuple(file_signature(p) for p in dependencies)
+    cache=getattr(store,'mesh_cache',None)
+    if cache is not None:
+        cached=cache.get(str(path),signature)
+        if cached is not None:return cached
+    if state is None:
+        m=load_mesh(path,read_cache=getattr(store,'read_cache',None),progress=progress)
+        if cache is not None:cache.put(str(path),signature,m)
+        return m
+    base=load_mesh(path,read_cache=getattr(store,'read_cache',None),progress=progress)
     if base.fingerprint!=state['input_fingerprint']:
         raise ValueError('The original ROI changed since its geometry review. Use the original dataset snapshot.')
     payload=review_dir(store,path)/'versions'/state['version']/'surface.npz'
-    m=load_mesh(payload)
+    m=load_mesh(payload,read_cache=getattr(store,'read_cache',None),progress=progress)
     m.path=Path(path).resolve(); m.review_version=state['version']; m.review_status=state['status']
     m.review_directory=review_dir(store,path)
-    if not m.texture and base.texture and m.display.GetPointData().GetTCoords() is not None:m.texture=base.texture
+    # Portable snapshots carry the scanner texture beside the immutable ROI.
+    # A saved payload may still name the old machine's absolute texture path.
+    if base.texture and m.display.GetPointData().GetTCoords() is not None and (not m.texture or not m.texture.is_relative_to(store.root)):
+        m.texture=base.texture
+    if cache is not None:cache.put(str(path),signature,m)
     return m
 
 
@@ -59,12 +84,69 @@ def provenance(mesh):
     """Require exact correspondence to the neighboring geometry file."""
     geo=mesh.path.with_name('geometry.npz')
     if geo.exists():
-        with np.load(geo,allow_pickle=False) as z:
+        read_cache=getattr(mesh,'read_cache',None)
+        input_geo=read_cache.materialize(geo) if read_cache is not None else geo
+        with np.load(input_geo,allow_pickle=False) as z:
             if ('vertices' in z and 'faces' in z and z['vertices'].shape==mesh.vertices.shape
                     and np.array_equal(z['faces'],mesh.faces) and np.allclose(z['vertices'],mesh.vertices,atol=1e-6,rtol=0)):
                 return {k:np.array(z[k]) for k in z.files if k in ('source_ply','source_texture','original_to_canonical','roi_radius',
                        'raw_triangle_id','raw_vertex_id','source_sha256','extraction_json')}
     return {}
+
+
+def resolve_review_source(store,path,*,verify_geometry=True):
+    """Find a saved sibling-format review without moving or rewriting it.
+
+    Old folder discovery opened roi.vtp, while manifests use roi.ply. Reuse
+    that review only after verifying the immutable input geometry and IDs.
+    Multiple independently saved histories require explicit resolution.
+    """
+    path=Path(path).resolve()
+    if path.name not in ('roi.vtp','roi.ply','geometry.npz') or not path.with_name('geometry.npz').is_file():
+        return path
+    candidates=[path.with_name(name) for name in ('roi.ply','roi.vtp','geometry.npz')]
+    saved=[p for p in candidates if p.is_file() and (review_dir(store,p)/'current.json').is_file()]
+    if not saved:return path
+    if len(saved)>1:
+        raise ValueError('Multiple ROI review histories exist for the same specimen: '+
+                         ', '.join(str(p) for p in saved)+'. No history was chosen or overwritten.')
+    reviewed=saved[0]
+    if reviewed!=path:
+        if not verify_geometry:
+            aliases=getattr(store,'_review_alias_inputs',None)
+            if aliases is None:aliases={};store._review_alias_inputs=aliases
+            aliases.setdefault(reviewed,set()).add(path)
+            return reviewed
+        checks=[path,reviewed,path.with_name('geometry.npz')]+[review_dir(store,p)/'current.json' for p in candidates]
+        signature=tuple(file_signature(p) for p in checks)
+        cache=getattr(store,'_verified_review_aliases',None)
+        if cache is None:cache={};store._verified_review_aliases=cache
+        if cache.get((path,reviewed))==signature:return reviewed
+        a,b=load_mesh(path,read_cache=getattr(store,'read_cache',None)),load_mesh(reviewed,read_cache=getattr(store,'read_cache',None))
+        same=(a.vertices.shape==b.vertices.shape and np.array_equal(a.faces,b.faces) and
+              np.allclose(a.vertices,b.vertices,rtol=0,atol=1e-6))
+        if not same:raise ValueError('Saved sibling ROI review has different input geometry: '+str(reviewed))
+        ai,bi=source_face_ids(a),source_face_ids(b)
+        if ai is not None and bi is not None and not np.array_equal(ai,bi):
+            raise ValueError('Saved sibling ROI review has different source-face IDs: '+str(reviewed))
+        if len(cache)>=2048:cache.clear()
+        cache[path,reviewed]=signature
+    return reviewed
+
+
+def manifest_reviews(store):
+    """Resolve every exported scan using the same review source as the app."""
+    manifest=store.root/'scan_manifest.csv'
+    with manifest.open(encoding='utf-8-sig',newline='') as stream:rows=list(csv.DictReader(stream))
+    result=[]
+    for row in rows:
+        canonical=(store.root/(row.get('annotation_mesh') or row['sample_dir']+'/roi.ply')).resolve()
+        if not canonical.is_relative_to(store.root) or not canonical.is_file():
+            raise ValueError('Missing/invalid manifest ROI: '+str(canonical))
+        source=resolve_review_source(store,canonical);state=read_state(store,source)
+        result.append(dict(row=row,canonical=canonical,source=source,
+                           status=state['status'] if state else 'pending',version=state['version'] if state else ''))
+    return result
 
 
 def source_face_ids(mesh):
@@ -102,12 +184,8 @@ def compact_mesh(base,mask,path):
     return m
 
 
-def load_review_context(store,mesh,raw_override=None):
-    """Return an editable source domain; missing raw data still permits local cleanup."""
-    original=load_mesh(mesh.path); state=read_state(store,mesh.path)
-    p=provenance(original); raw_hint=str(p.get('source_ply',np.array('')).item())
-    raw=Path(raw_override or raw_hint) if (raw_override or raw_hint) else None
-    if state and not raw_override and state.get('raw_path'):raw=Path(state['raw_path'])
+def extraction_settings(original,p,state):
+    """Saved review limits win; new reviews use the current height defaults."""
     settings=Extraction(radius=float(p.get('roi_radius',np.array(0.))))
     if settings.radius<=0:
         center=np.median(original.vertices,axis=0); settings.cx,settings.cy,settings.z=map(float,center)
@@ -118,16 +196,39 @@ def load_review_context(store,mesh,raw_override=None):
     if state:settings=Extraction(**state['settings'])
     else:
         settings.below=DEFAULT_HEIGHT_HALF_WIDTH;settings.above=DEFAULT_HEIGHT_HALF_WIDTH
+    return settings
+
+
+def load_review_context(store,mesh,raw_override=None,*,raw_root=None,raw_index=None,local_only=False,progress=None):
+    """Return an editable source domain; missing raw data still permits local cleanup."""
+    read_cache=getattr(store,'read_cache',None)
+    original=load_mesh(mesh.path,read_cache=read_cache,progress=progress); state=read_state(store,mesh.path)
+    p=provenance(original); raw_hint=str(p.get('source_ply',np.array('')).item())
+    raw=Path(raw_override or raw_hint) if (raw_override or raw_hint) else None
+    if state and not raw_override and state.get('raw_path'):raw=Path(state['raw_path'])
+    metadata=mesh.path.with_name('metadata.json')
+    metadata_values=json.loads(metadata.read_text(encoding='utf-8')) if metadata.exists() else {}
+    if raw_root is not None and not raw_override and not local_only:
+        if __package__:
+            from .original_models import OriginalModelIndex
+        else:
+            from original_models import OriginalModelIndex
+        index=raw_index if raw_index is not None and raw_index.root==Path(raw_root).resolve() else OriginalModelIndex(raw_root)
+        raw=index.resolve([state.get('raw_path','') if state else '',raw_hint,metadata_values.get('source','')],
+                          scanner=metadata_values.get('scanner',''),sample=metadata_values.get('sample_id',mesh.path.parent.name),
+                          checksum=metadata_values.get('source_sha256','') or str(p.get('source_sha256',np.array('')).item()))
+    if local_only:raw=None
+    settings=extraction_settings(original,p,state)
     transform=np.asarray(p.get('original_to_canonical',np.eye(4)),float)
     ids=source_face_ids(original)
     if raw and raw.is_file() and 'original_to_canonical' in p and ids is not None and np.all(ids>=0):
-        metadata=mesh.path.with_name('metadata.json'); expected=''
-        if metadata.exists():expected=json.loads(metadata.read_text(encoding='utf-8')).get('source_sha256','')
-        if expected and digest(raw)!=expected:raise ValueError('Original-model checksum differs from preparation metadata.')
+        expected=metadata_values.get('source_sha256','') or str(p.get('source_sha256',np.array('')).item())
+        input_raw=read_cache.materialize(raw,progress) if read_cache is not None else raw
+        if expected and digest(input_raw)!=expected:raise ValueError('Original-model checksum differs from preparation metadata.')
         if raw.suffix.lower()=='.ply':reader=vtk.vtkPLYReader()
         elif raw.suffix.lower()=='.vtp':reader=vtk.vtkXMLPolyDataReader()
         else:raise ValueError('Original context must be PLY or VTP.')
-        reader.SetFileName(str(raw));reader.Update()
+        reader.SetFileName(str(input_raw));reader.Update()
         triangle=vtk.vtkTriangleFilter();triangle.SetInputData(reader.GetOutput());triangle.Update()
         data=triangle.GetOutput()
         v=vtk_to_numpy(data.GetPoints().GetData()).astype(float)
@@ -143,7 +244,7 @@ def load_review_context(store,mesh,raw_override=None):
         data.GetPoints().SetData(__import__('vtk.util.numpy_support',fromlist=['numpy_to_vtk']).numpy_to_vtk(xyz,deep=True))
         # VTK defines the preparation source-face numbering. The appearance
         # loader may split/reindex texture vertices or reorder triangle corners.
-        try:full=load_mesh(raw)
+        try:full=load_mesh(raw,read_cache=read_cache,progress=progress)
         except ValueError:full=None
         if full is not None:
             rows,corners=triangle_correspondence(full.vertices[full.faces],v[f])
@@ -161,10 +262,18 @@ def load_review_context(store,mesh,raw_override=None):
             display=polydata(xyz,f,colors,uv)
         texture=full.texture if full else None
         texture_hint=str(p.get('source_texture',np.array('')).item())
-        if not texture and texture_hint and Path(texture_hint).is_file():texture=Path(texture_hint)
+        if not texture and texture_hint:
+            # Texture paths move with the original scanner file on another PC.
+            if __package__:
+                from .original_models import source_name
+            else:
+                from original_models import source_name
+            local_texture=raw.parent/source_name(texture_hint)
+            if local_texture.is_file():texture=local_texture
+            elif Path(texture_hint).is_file():texture=Path(texture_hint)
         context=Mesh(raw,xyz,f,display,np.ones(len(f),bool),texture)
         context.source_face_ids=np.arange(len(f),dtype=np.int64);context.source_vertex_ids=np.arange(len(v),dtype=np.int64)
-        context.source_domain=source_domain(original);context.context_kind='full'
+        context.source_domain=source_domain(original);context.context_kind='full';context.read_cache=read_cache;context._derived={}
         selected_ids=source_face_ids(mesh)
         mask=np.isin(context.source_face_ids,selected_ids[mesh.active])
         return context,mask,settings,'Full original model available; restore/exclude edits use verified source triangles.',str(raw)
@@ -181,7 +290,7 @@ def load_review_context(store,mesh,raw_override=None):
     return original,mask,settings,'Local ROI only. Locate the original model to restore surface outside this crop.',raw_hint
 
 
-def save_review(store,input_path,base,mask,settings,status,notes,expected_version,raw_path=''):
+def save_review(store,input_path,base,mask,settings,status,notes,expected_version,raw_path='',*,preserve_layout=False):
     from PySide6.QtCore import QLockFile
     folder=review_dir(store,input_path);folder.mkdir(parents=True,exist_ok=True)
     lock=QLockFile(str(folder/'review.lock'));lock.setStaleLockTime(0)
@@ -191,7 +300,12 @@ def save_review(store,input_path,base,mask,settings,status,notes,expected_versio
         original=load_mesh(input_path)
         if status not in ('pending','approved','flagged'):raise ValueError('Invalid review status.')
         version=uuid.uuid4().hex; dest=folder/'versions'/version;dest.mkdir(parents=True)
-        m=compact_mesh(base,mask,input_path);colors,uv=mesh_appearance(m)
+        if preserve_layout:
+            if not np.array_equal(mask,base.active):raise ValueError('Approval must preserve the displayed ROI mask.')
+            if not np.any(mask):raise ValueError('Cannot approve an empty surface.')
+            m=base
+        else:m=compact_mesh(base,mask,input_path)
+        colors,uv=mesh_appearance(m)
         data=dict(vertices=m.vertices,faces=m.faces,face_roi_mask=m.active,
                   source_face_ids=m.source_face_ids,source_vertex_ids=m.source_vertex_ids,source_domain=np.array(m.source_domain),
                   texture_path=np.array(str(m.texture) if m.texture else ''))
@@ -208,11 +322,40 @@ def save_review(store,input_path,base,mask,settings,status,notes,expected_versio
                     input_fingerprint=original.fingerprint,settings=asdict(settings),raw_path=raw_path,
                     notes=notes,reviewer=store.annotator,updated_utc=datetime.now(timezone.utc).isoformat(),
                     retained_faces=int(mask.sum()),metrics=metrics,source_domain=m.source_domain,
-                    downstream_inputs_must_be_regenerated=True)
+                    downstream_inputs_must_be_regenerated=True,review_action='approve_existing_geometry' if preserve_layout else 'surface_review')
         (dest/'review.json').write_text(json.dumps(record,indent=2),encoding='utf-8')
         temp=folder/('current.'+version+'.tmp');temp.write_text(json.dumps(record,indent=2),encoding='utf-8');os.replace(temp,folder/'current.json')
         return record
     finally:lock.unlock()
+
+
+def approve_displayed_surface(store,mesh):
+    """Approve precisely the opened geometry, with no extraction or raw load.
+
+    Preserve vertex/face layout, masks, source IDs and per-corner appearance.
+    Version checks in save_review also run under the shared write lock.
+    """
+    from copy import copy
+    state=read_state(store,mesh.path)
+    expected=mesh.review_version
+    if (state['version'] if state else '')!=expected:
+        raise RuntimeError('The shared ROI changed. Press F5 to reload the latest shared ROI before approving.')
+    if state and state['status']=='approved':return state
+    current=read_reviewed(store,mesh.path)
+    if current.fingerprint!=mesh.fingerprint or not np.array_equal(current.active,mesh.active):
+        raise ValueError('Displayed geometry differs from the saved surface. Reopen it before approving.')
+    original=load_mesh(mesh.path);p=provenance(original)
+    settings=extraction_settings(original,p,state)
+    base=copy(mesh)
+    ids=source_face_ids(mesh)
+    base.source_face_ids=np.asarray(ids if ids is not None else np.arange(len(mesh.faces)),np.int64)
+    vids=mesh.source_vertex_ids
+    if vids is None:vids=p.get('raw_vertex_id',np.arange(len(mesh.vertices)))
+    base.source_vertex_ids=np.asarray(vids,np.int64)
+    base.source_domain=source_domain(mesh)
+    raw_path=(state.get('raw_path','') if state else '') or str(p.get('source_ply',np.array('')).item())
+    return save_review(store,mesh.path,base,mesh.active.copy(),settings,'approved',
+                       state.get('notes','') if state else '',expected,raw_path,preserve_layout=True)
 
 
 def migrate_labels(store,mesh,data):

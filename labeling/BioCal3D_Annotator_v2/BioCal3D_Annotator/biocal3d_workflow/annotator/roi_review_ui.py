@@ -1,5 +1,8 @@
 """Interactive ROI verification; annotations are disabled while geometry is edited."""
 from dataclasses import asdict
+from pathlib import Path
+from loading_ui import SilentLoading
+from original_models import OriginalModelIndex,folder_setting_key
 import numpy as np
 import vtk
 from vtk.util.numpy_support import numpy_to_vtk
@@ -9,6 +12,10 @@ from roi_review_store import (load_review_context,save_review,current_version,re
 class ReviewDialog(QtWidgets.QDialog):
     def __init__(self,owner):
         super().__init__(owner)
+        with SilentLoading(owner) as feedback:
+            self._build(owner,feedback)
+
+    def _build(self,owner,feedback):
         from biocal3d_annotator import SurfaceView
         self.owner=owner;self.setWindowTitle('Verify specimen surface • shared geometry')
         self.setWindowFlags(QtCore.Qt.WindowType.Window|QtCore.Qt.WindowType.WindowTitleHint|
@@ -22,14 +29,32 @@ class ReviewDialog(QtWidgets.QDialog):
         self.setWindowState(self.windowState()|QtCore.Qt.WindowState.WindowMaximized)
         self._visible_request=None;self.preview_metrics=None
         self.version=current_version(owner.store,owner.mesh.path);self.saved=False;self.actors=[]
-        self.base,self.mask,self.settings,message,self.raw_path=load_review_context(owner.store,owner.mesh)
+        self.original_folder_key=folder_setting_key(owner.store.root)
+        self.original_folder=str(owner.settings.value(self.original_folder_key,'') or '')
+        def load_context():
+            if self.original_folder:
+                try:
+                    return load_review_context(owner.store,owner.mesh,raw_root=self.original_folder,
+                        raw_index=self.original_index(self.original_folder),progress=feedback.report)
+                except (ValueError,OSError) as error:
+                    context=list(load_review_context(owner.store,owner.mesh,local_only=True,progress=feedback.report))
+                    context[3]+='\nRemembered original data folder: '+str(error)
+                    return context
+            return load_review_context(owner.store,owner.mesh,progress=feedback.report)
+        self.base,self.mask,self.settings,message,self.raw_path=feedback.run(load_context,'Reading ROI and original model…')
+        feedback.stage('Preparing verification view…')
         self.initial=self.mask.copy();self.undo=[];self.redo=[];self.stroke=None
         layout=QtWidgets.QHBoxLayout(self)
         scroll=QtWidgets.QScrollArea();scroll.setWidgetResizable(True);scroll.setMinimumWidth(340);scroll.setMaximumWidth(390);scroll.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         panel=QtWidgets.QWidget();left=QtWidgets.QVBoxLayout(panel);scroll.setWidget(panel);layout.addWidget(scroll)
         self.message=QtWidgets.QLabel(message);self.message.setWordWrap(True);left.addWidget(self.message)
-        locate=QtWidgets.QPushButton('Locate original model…');locate.clicked.connect(self.locate);left.addWidget(locate)
-        self.original=QtWidgets.QCheckBox('Show excluded / original model');self.original.setChecked(False)
+        locate_folder=QtWidgets.QPushButton('Locate original data folder…')
+        locate_folder.setToolTip('Select the raw collection root once. Corresponding scanner models are found automatically for all samples in this dataset on this PC.')
+        locate_folder.clicked.connect(self.locate_folder);left.addWidget(locate_folder)
+        self.original_folder_label=QtWidgets.QLabel('Original data folder: '+(self.original_folder or 'not selected'))
+        self.original_folder_label.setWordWrap(True);left.addWidget(self.original_folder_label)
+        locate=QtWidgets.QPushButton('Locate original file…');locate.clicked.connect(self.locate);left.addWidget(locate)
+        self.original=QtWidgets.QCheckBox('Show excluded / original model');self.original.setChecked(True)
         self.guides=QtWidgets.QCheckBox('Show circle, plane and height limits');self.guides.setChecked(True)
         for widget in (self.original,self.guides):left.addWidget(widget)
         self.original.toggled.connect(self.context_toggled);self.guides.toggled.connect(self.render)
@@ -46,13 +71,13 @@ class ReviewDialog(QtWidgets.QDialog):
         left.addLayout(form)
         self.connected=QtWidgets.QCheckBox('Keep central connected surface');self.connected.setChecked(self.settings.connected)
         self.connected.toggled.connect(self.parameters_changed);left.addWidget(self.connected)
-        self.live=QtWidgets.QCheckBox('Live extraction preview');left.addWidget(self.live)
+        self.live=QtWidgets.QCheckBox('Live extraction preview');self.live.setChecked(True);left.addWidget(self.live)
         self.live.toggled.connect(lambda enabled:(self.timer.start() if enabled else self.timer.stop()) if hasattr(self,'timer') else None)
         auto=QtWidgets.QPushButton('Apply automatic selection');auto.clicked.connect(self.automatic);left.addWidget(auto)
         note=QtWidgets.QLabel('Automatic selection replaces manual edits. All triangle corners must pass circle/height limits. The slope limit rejects exposed walls; enclosed surface detail is preserved. Geometry is never flattened.')
         note.setWordWrap(True);left.addWidget(note)
         left.addWidget(QtWidgets.QLabel('Manual surface correction'))
-        self.operation=QtWidgets.QComboBox();self.operation.addItems(['Exclude surface','Restore surface'])
+        self.operation=QtWidgets.QComboBox();self.operation.addItems(['Exclude surface','Restore surface']);self.operation.setCurrentIndex(1)
         left.addWidget(self.operation)
         self.paint=QtWidgets.QCheckBox('Brush enabled');self.paint.setChecked(True);left.addWidget(self.paint)
         self.radius=QtWidgets.QSlider(QtCore.Qt.Orientation.Horizontal);self.radius.setRange(3,150);self.radius.setValue(24);left.addWidget(self.radius)
@@ -72,7 +97,9 @@ class ReviewDialog(QtWidgets.QDialog):
         help_text.setWordWrap(True);right.addWidget(help_text)
         self.preview_status=QtWidgets.QLabel('Adjust parameters and apply selection, or enable live preview.');self.preview_status.setWordWrap(True);right.addWidget(self.preview_status)
         self.view=SurfaceView();right.addWidget(self.view,1)
-        self.view.set_mesh(self.base);self.view.top_only=False
+        self.view.loading_feedback=feedback
+        with self.view.defer_render():self.view.set_mesh(self.base)
+        self.view.loading_feedback=None;self.view.top_only=False
         self.view.stroke_started.connect(self.start_stroke);self.view.faces_painted.connect(self.paint_faces);self.view.stroke_finished.connect(self.end_stroke)
         self.radius.valueChanged.connect(lambda v:setattr(self.view,'radius',v));self.view.brush_changed.connect(self.radius.setValue)
         self.paint.toggled.connect(lambda enabled:setattr(self.view,'paint_mode',enabled))
@@ -214,23 +241,54 @@ class ReviewDialog(QtWidgets.QDialog):
         except Exception as e:self.error(e);return False
     def preview(self):return self.automatic()
 
+    def original_index(self,root):
+        root=Path(root).expanduser().resolve()
+        index=getattr(self.owner,'_original_model_index',None)
+        if index is None or index.root!=root:
+            index=OriginalModelIndex(root);self.owner._original_model_index=index
+        return index
+
+    def locate_folder(self):
+        folder=QtWidgets.QFileDialog.getExistingDirectory(self,'Select original data folder such as 02-09-2026-Data collected',self.original_folder)
+        if not folder:return
+        try:
+            with SilentLoading(self.owner) as feedback:
+                context=feedback.run(lambda:load_review_context(self.owner.store,self.owner.mesh,raw_root=folder,
+                    raw_index=self.original_index(folder),progress=feedback.report),'Finding and verifying corresponding original…')
+                if getattr(context[0],'context_kind','local')!='full':
+                    raise ValueError('The original was found, but no verified transform/triangle mapping is available. Local cleanup remains available.')
+                feedback.stage('Preparing original model view…')
+                self.install_original_context(context,feedback=feedback)
+                self.original_folder=str(Path(folder).resolve())
+                self.owner.settings.setValue(self.original_folder_key,self.original_folder);self.owner.settings.sync()
+                self.original_folder_label.setText('Original data folder: '+self.original_folder)
+        except Exception as error:self.error(error)
+
     def locate(self):
-        path,_=QtWidgets.QFileDialog.getOpenFileName(self,'Select the original scanner mesh',self.raw_path,'Mesh (*.ply *.vtp)')
+        path,_=QtWidgets.QFileDialog.getOpenFileName(self,'Select the original scanner mesh',self.original_folder or self.raw_path,'Mesh (*.ply *.vtp)')
         if not path:return
         try:
-            base,mask,settings,message,raw_path=load_review_context(self.owner.store,self.owner.mesh,path)
-            if base.path.resolve()!=__import__('pathlib').Path(path).resolve():
-                raise ValueError('No verified original transform/triangle mapping was found. Local cleanup remains available.')
-            self.base,self.mask,self.settings,self.raw_path=base,mask,settings,raw_path
-            self.initial=mask.copy();self.undo=[];self.redo=[];self.message.setText(message)
-            for name,control in self.controls.items():
-                blocker=QtCore.QSignalBlocker(control);control.setValue(getattr(settings,name));del blocker
-            blocker=QtCore.QSignalBlocker(self.connected);self.connected.setChecked(settings.connected);del blocker
-            self._applied_settings=asdict(settings)
-            self.view.set_mesh(base);self.view.top_only=False;self._visible_request=None;self.preview_metrics=None
-            self.read_settings();self.describe_opened_surface()
-            self.initial_state=self.snapshot();self.render();self.top()
-        except Exception as e:self.error(e)
+            with SilentLoading(self.owner) as feedback:
+                context=feedback.run(lambda:load_review_context(self.owner.store,self.owner.mesh,path,progress=feedback.report),'Reading and verifying original…')
+                if context[0].path.resolve()!=Path(path).resolve() or getattr(context[0],'context_kind','local')!='full':
+                    raise ValueError('No verified original transform/triangle mapping was found. Local cleanup remains available.')
+                self.install_original_context(context,feedback=feedback)
+        except Exception as error:self.error(error)
+
+    def install_original_context(self,context,feedback=None):
+        base,mask,settings,message,raw_path=context
+        self.timer.stop();self.stroke=None
+        self.base,self.mask,self.settings,self.raw_path=base,mask,settings,raw_path
+        self.initial=mask.copy();self.undo=[];self.redo=[];self.message.setText(message)
+        for name,control in self.controls.items():
+            blocker=QtCore.QSignalBlocker(control);control.setValue(getattr(settings,name));del blocker
+        blocker=QtCore.QSignalBlocker(self.connected);self.connected.setChecked(settings.connected);del blocker
+        self._applied_settings=asdict(settings)
+        self.view.loading_feedback=feedback
+        with self.view.defer_render():self.view.set_mesh(base)
+        self.view.loading_feedback=None;self.view.top_only=False;self._visible_request=None;self.preview_metrics=None
+        self.read_settings();self.describe_opened_surface()
+        self.initial_state=self.snapshot();self.render();self.top()
 
     def context_toggled(self,checked):
         # Visibility changes must preserve position, direction and zoom.

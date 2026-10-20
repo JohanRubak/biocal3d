@@ -1,5 +1,8 @@
 """Local BioCal3D surface annotator. Run: python biocal3d_annotator.py --demo"""
 from __future__ import annotations
+import time
+from local_cache import LocalReadCache
+from loading_ui import LoadingFeedback,SilentLoading
 import argparse
 import json
 import sys
@@ -10,12 +13,13 @@ from PySide6 import QtCore, QtGui, QtWidgets
 import vtk
 from vtk.util.numpy_support import numpy_to_vtk, vtk_to_numpy
 from vtkmodules.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
-from mesh_io import (LABELS, PALETTE, AnnotationStore, area_summary, create_demo,
+from mesh_io import (LABELS, PALETTE, AnnotationStore, create_demo,
                      discover, manifest_queue, export_vtp, export_ply, export_label_colors, load_mesh, shaded_display)
 
-from roi_review_store import read_reviewed, current_version
+from roi_review_store import read_reviewed, current_version, read_state, approve_displayed_surface, resolve_review_source, manifest_reviews
 from surface_display import display_subset
 from rotation_keys import SpaceRotateFilter
+from performance import MeshCache
 
 from annotation_features import SurfaceFeatures, AnnotatorFeatures, read_orientation
 
@@ -80,9 +84,12 @@ class SurfaceView(SurfaceFeatures, QVTKRenderWindowInteractor):
 
     def set_mesh(self, mesh):
         self.mesh = mesh; self.projection_key = None
+        self._normals_ready=False
+        self._overlay_rgba=None;self._overlay_style=None
         self.display_face_ids=np.arange(len(mesh.faces),dtype=np.int64)
         self.setup_orientation(mesh)
-        self.render_data=shaded_display(mesh)
+        self.render_data=vtk.vtkPolyData();self.render_data.ShallowCopy(mesh.display)
+        if self.shading!='none':self.ensure_normals()
         self.cache_colors()
         self.mapper.SetInputData(self.render_data)
         self.mapper.SetScalarModeToUsePointData(); self.mapper.SetColorModeToDirectScalars()
@@ -98,7 +105,11 @@ class SurfaceView(SurfaceFeatures, QVTKRenderWindowInteractor):
             self.set_texture(mesh.texture)
         else:
             self.apply_color_adjustments()
-        self.centers = mesh.vertices[mesh.faces].mean(axis=1)
+        derived=getattr(mesh,'_derived',{})
+        self.centers=derived.get('centers') if getattr(mesh,'_stable_geometry',False) else None
+        if self.centers is None:
+            self.centers=mesh.vertices[mesh.faces].mean(axis=1)
+            if getattr(mesh,'_stable_geometry',False):derived['centers']=self.centers
         self.locator = vtk.vtkStaticCellLocator(); self.locator.SetDataSet(self.render_data); self.locator.BuildLocator()
         self.picker = vtk.vtkCellPicker(); self.picker.SetTolerance(.0005)
         self.picker.PickFromListOn(); self.picker.AddPickList(self.base); self.picker.AddLocator(self.locator)
@@ -118,7 +129,15 @@ class SurfaceView(SurfaceFeatures, QVTKRenderWindowInteractor):
         if len(mapping):self.picker.AddLocator(self.locator)
         self.projection_key=None
 
-    def apply_render_options(self):
+    def ensure_normals(self):
+        if self.mesh is None or getattr(self,'_normals_ready',False):return
+        prepared=shaded_display(self.mesh)
+        self.render_data.GetPointData().SetNormals(prepared.GetPointData().GetNormals())
+        self.render_data.GetCellData().SetNormals(prepared.GetCellData().GetNormals())
+        self._normals_ready=True
+
+    def apply_render_options(self,render=True):
+        if self.shading!='none':self.ensure_normals()
         # Reassert each actor's representation: VTK's default S/W bindings can
         # otherwise turn the points/wire actors into surfaces behind the UI.
         self.base.GetProperty().SetRepresentationToSurface()
@@ -137,7 +156,7 @@ class SurfaceView(SurfaceFeatures, QVTKRenderWindowInteractor):
         elif self.points_enabled:op.SetRepresentationToPoints(); op.SetPointSize(self.points.GetProperty().GetPointSize()+1)
         else:op.SetRepresentationToWireframe()
         self.overlay.SetVisibility(self.overlay_enabled and (self.surface_enabled or self.points_enabled or self.wire_enabled))
-        self.GetRenderWindow().Render()
+        if render:self.request_render()
 
     def set_texture(self, path):
         self.load_display_texture(path)
@@ -157,21 +176,26 @@ class SurfaceView(SurfaceFeatures, QVTKRenderWindowInteractor):
         c = self.renderer.GetActiveCamera()
         c.SetPosition(*state['position']); c.SetFocalPoint(*state['focal_point']); c.SetViewUp(*state['view_up'])
         c.SetParallelScale(state['parallel_scale']); self.renderer.ResetCameraClippingRange()
-        self.GetRenderWindow().Render()
+        self.request_render()
 
-    def update_labels(self, labels):
-        if self.mesh is None:
-            return
-        rgba = np.zeros((len(labels), 4), np.uint8)
-        for value, color in PALETTE.items():
-            mask = (labels == value) & self.mesh.active
-            rgba[mask, :3] = color
-            rgba[mask, 3] = 0 if value == -2 else int(self.overlay_alpha*255)
-        rgba[~self.mesh.active] = [110, 115, 125, 150]
-        a = numpy_to_vtk(rgba, deep=True); a.SetName('AnnotationOverlay')
-        self.overlay_data.GetCellData().SetScalars(a)
-        self.apply_render_options()
-        self.GetRenderWindow().Render()
+    def update_labels(self,labels,changed_ids=None,render=True):
+        if self.mesh is None:return
+        style=(len(labels),self.overlay_alpha)
+        full=getattr(self,'_overlay_rgba',None) is None or self._overlay_style!=style
+        if full:
+            self._overlay_rgba=np.empty((len(labels),4),np.uint8)
+            a=numpy_to_vtk(self._overlay_rgba,deep=False);a.SetName('AnnotationOverlay')
+            self.overlay_data.GetCellData().SetScalars(a)
+            self._overlay_style=style
+        ids=np.arange(len(labels)) if changed_ids is None or full else np.asarray(changed_ids,np.int64)
+        palette=np.asarray([PALETTE[i] for i in (-2,-1,0,1)],np.uint8)
+        rgba=self._overlay_rgba
+        rgba[ids,:3]=palette[labels[ids].astype(np.intp)+2]
+        rgba[ids,3]=np.where(labels[ids]==-2,0,int(self.overlay_alpha*255))
+        excluded=ids[~self.mesh.active[ids]];rgba[excluded]=[110,115,125,150]
+        self.overlay_data.GetCellData().GetScalars().Modified()
+        self.apply_render_options(render=False)
+        if render:self.request_render()
 
     def _position(self, event):
         w, h = self.GetRenderWindow().GetSize()
@@ -262,7 +286,7 @@ class SurfaceView(SurfaceFeatures, QVTKRenderWindowInteractor):
             if self.painting:
                 self.painting = False; self.stroke_finished.emit()
         if kind == QtCore.QEvent.Type.Leave:
-            self.circle.VisibilityOff(); self.GetRenderWindow().Render()
+            self.circle.VisibilityOff(); self.request_render()
         if kind == QtCore.QEvent.Type.MouseButtonPress and event.button() == QtCore.Qt.MouseButton.LeftButton:
             if self.paint_mode and not self.space_down and self.mesh is not None:
                 if not (self.surface_enabled or self.points_enabled or self.wire_enabled):
@@ -275,7 +299,7 @@ class SurfaceView(SurfaceFeatures, QVTKRenderWindowInteractor):
             if self.painting:
                 self._paint_event(event); return True
             if not event.buttons():
-                self.GetRenderWindow().Render()
+                self.request_render()
         if kind == QtCore.QEvent.Type.MouseButtonRelease and event.button() == QtCore.Qt.MouseButton.LeftButton and self.painting:
             self.painting = False; self.previous = None; self.stroke_finished.emit()
             return True
@@ -292,7 +316,7 @@ class SurfaceView(SurfaceFeatures, QVTKRenderWindowInteractor):
         self.setCursor(QtCore.Qt.CursorShape.OpenHandCursor if enabled else
                        (QtCore.Qt.CursorShape.CrossCursor if self.paint_mode else QtCore.Qt.CursorShape.ArrowCursor))
         if enabled:self.circle.VisibilityOff()
-        self.GetRenderWindow().Render()
+        self.request_render()
 
     def _paint_event(self, event):
         x,y,scale = self._position(event); radius = self.radius*scale
@@ -304,16 +328,20 @@ class SurfaceView(SurfaceFeatures, QVTKRenderWindowInteractor):
                 self.faces_painted.emit(np.unique(np.concatenate(ids)))
         except Exception as exc:
             self.painting = False; self.stroke_finished.emit(); self.failure.emit(str(exc))
-        self.previous = (x,y); self._circle(x,y,radius); self.GetRenderWindow().Render()
+        self.previous = (x,y); self._circle(x,y,radius); self.request_render()
 
 class Annotator(AnnotatorFeatures, QtWidgets.QMainWindow):
     def __init__(self, args):
         super().__init__()
-        self.setWindowTitle('BioCal3D • 3D surface labeling'); self.resize(1380,880)
+        self.setWindowTitle('BioCal3D • 3D surface labeling • v3.13'); self.resize(1380,880)
         self.review_owner=args.annotator if getattr(args,'review_mode',False) else None
         self.root = None; self.store = None; self.queue = []; self.queue_order=[];self.queue_info={};self.index = -1
         self.mesh = None; self.labels = None; self.completed = False; self.dirty = False
         self.undo_stack = []; self.redo_stack = []; self.stroke = {}; self.lock_path = None
+        self.exports_pending=False; self.mesh_cache=MeshCache()
+        self.read_cache=None if getattr(args,'no_local_cache',False) else LocalReadCache(getattr(args,'cache_dir',None))
+        self._loading_depth=0
+        self._queue_states={}; self._queue_roi_states={}
         self.shortcuts = []; self.last_save = 'Not saved'
         self.settings = QtCore.QSettings('BioCal3D','SurfaceAnnotator')
         central = QtWidgets.QWidget(); self.setCentralWidget(central)
@@ -341,7 +369,7 @@ class Annotator(AnnotatorFeatures, QtWidgets.QMainWindow):
         resort=QtWidgets.QPushButton('↻');resort.setToolTip('Reapply sorting, including updated annotation statuses')
         resort.setFixedWidth(34);resort.clicked.connect(self.sort_queue);sort_row.addWidget(resort);side.addLayout(sort_row)
         self.list = QtWidgets.QListWidget(); self.list.currentRowChanged.connect(self.change_sample); side.addWidget(self.list,1)
-        self.progress = QtWidgets.QLabel('0 samples'); side.addWidget(self.progress)
+        self.progress = QtWidgets.QLabel('0 samples');self.progress.setWordWrap(True); side.addWidget(self.progress)
         self.notes = QtWidgets.QPlainTextEdit(); self.notes.setPlaceholderText('Optional annotation notes')
         self.notes.setMaximumHeight(90); self.notes.textChanged.connect(self.note_changed); side.addWidget(self.notes)
         layout.addWidget(sidebar)
@@ -387,16 +415,32 @@ class Annotator(AnnotatorFeatures, QtWidgets.QMainWindow):
         rendering.addWidget(QtWidgets.QLabel('Point size'))
         self.point_size=QtWidgets.QSpinBox(); self.point_size.setRange(1,12); self.point_size.setValue(3)
         rendering.addWidget(self.point_size); rendering.addStretch()
-        self.auto_ply=QtWidgets.QCheckBox('Auto-save PLY too');self.auto_ply.setChecked(True)
-        self.auto_ply.setToolTip('Also save the original-color training PLY. A separate label-colored viewing PLY is always saved with the NPZ.')
+        self.auto_ply=QtWidgets.QCheckBox('Save PLY too');self.auto_ply.setChecked(True)
+        self.auto_ply.setToolTip('Save original-color PLY on Save draft, approval, navigation and close. Automatic draft saves write labels NPZ only; label-colored PLY is updated with explicit saves.')
         rendering.addWidget(self.auto_ply);main.addLayout(rendering)
         self.view = SurfaceView(); main.addWidget(self.view,1)
         self.install_feature_controls(main)
-        review_row=QtWidgets.QHBoxLayout()
-        self.roi_review_button=QtWidgets.QPushButton('Verify / correct specimen ROI…')
-        self.roi_review_button.clicked.connect(self.open_roi_review);review_row.addWidget(self.roi_review_button)
-        reload_roi=QtWidgets.QPushButton('Reload shared ROI');reload_roi.clicked.connect(self.reload_shared_roi);review_row.addWidget(reload_roi)
-        self.roi_status=QtWidgets.QLabel('Surface review: pending');review_row.addWidget(self.roi_status);review_row.addStretch()
+        review_row=QtWidgets.QHBoxLayout();review_row.setSpacing(6)
+        self.roi_review_button=QtWidgets.QPushButton('Verify / correct ROI…')
+        self.roi_review_button.setToolTip('Open the original-model context and extraction/manual correction window.')
+        self.roi_review_button.clicked.connect(self.open_roi_review)
+        self.approve_roi_button=QtWidgets.QPushButton('Approve ROI && Next [Ctrl+Enter]')
+        self.approve_roi_button.setObjectName('primary');self.approve_roi_button.setEnabled(False)
+        self.approve_roi_button.setToolTip('Ctrl+Enter: approve the displayed ROI as-is and open the next ROI needing review. Plaque labels are preserved.')
+        self.approve_roi_button.clicked.connect(self.approve_roi_next)
+        self.next_roi_button=QtWidgets.QPushButton('Next unapproved')
+        self.next_roi_button.setToolTip('Move to the next ROI needing review without approving this sample.')
+        self.next_roi_button.clicked.connect(self.next_roi_review)
+        for button in (self.roi_review_button,self.next_roi_button,self.approve_roi_button):
+            button.setProperty('roiControl',True);button.setFixedHeight(32)
+            review_row.addWidget(button)
+        review_row.addStretch(1)
+        self.roi_status=QtWidgets.QLabel('ROI: pending');self.roi_status.setObjectName('roiStatus')
+        self.roi_status.setToolTip('Surface review: pending • original crop. F5 reloads the latest shared ROI.')
+        review_row.addWidget(self.roi_status)
+        self.label_status=QtWidgets.QLabel('Label: pending');self.label_status.setObjectName('labelStatus')
+        self.label_status.setToolTip('Plaque-label approval for the selected annotator; independent of ROI approval.')
+        review_row.addWidget(self.label_status)
         main.insertLayout(main.indexOf(self.view),review_row)
         self.color_toggle.toggled.connect(self.set_scanner_color)
         for control in (self.surface_toggle,self.points_toggle,self.wire_toggle):control.toggled.connect(self.render_options_changed)
@@ -407,32 +451,31 @@ class Annotator(AnnotatorFeatures, QtWidgets.QMainWindow):
         self.view.stroke_started.connect(self.start_stroke); self.view.faces_painted.connect(self.paint_faces)
         self.view.stroke_finished.connect(self.end_stroke); self.view.failure.connect(self.show_error)
         tools = QtWidgets.QHBoxLayout()
-        for text, callback in [('Undo [Ctrl+Z]',self.undo),('Redo [Ctrl+Y]',self.redo),('Reset view [R]',self.view.reset_camera),
-                               ('Choose texture…',self.choose_texture),('Export mesh…',self.export),('Export all…',self.export_all)]:
+        for text, callback in [('Undo [Ctrl+Z]',self.undo),('Redo [Ctrl+Y]',self.redo),('Reset view [R]',self.view.reset_camera)]:
             b = QtWidgets.QPushButton(text); b.clicked.connect(callback); tools.addWidget(b)
             if callback==self.redo:b.setToolTip('Redo annotation: Ctrl+Y or Ctrl+Shift+Z')
-        main.addLayout(tools)
-        self.stats = QtWidgets.QLabel(''); main.addWidget(self.stats)
-        bulk_actions=QtWidgets.QHBoxLayout()
-        b = QtWidgets.QPushButton('Reviewed remainder → clean'); b.setToolTip('Mark only unreviewed ROI faces clean after reviewing the full surface.')
+        tools.addStretch(1)
+        bulk_actions=tools
+        b = QtWidgets.QPushButton('Remaining → clean'); b.setToolTip('Mark only unreviewed ROI faces clean after reviewing the full surface.')
         b.clicked.connect(self.fill_clean);bulk_actions.addWidget(b)
         self.all_plaque_button=QtWidgets.QPushButton('Entire ROI → plaque')
         self.all_plaque_button.setToolTip('Replace every included ROI face label with Plaque. Excluded geometry is unchanged. Undo with Ctrl+Z.')
         self.all_plaque_button.clicked.connect(self.fill_plaque);bulk_actions.addWidget(self.all_plaque_button)
-        bulk_actions.addStretch();main.addLayout(bulk_actions)
+        main.addLayout(tools)
         actions = QtWidgets.QHBoxLayout()
         self.clear_labels_button = QtWidgets.QPushButton('Clear all labels')
         self.clear_labels_button.setToolTip('Reset all ROI faces to Unreviewed and mark this sample Draft. Undo with Ctrl+Z.')
         self.clear_labels_button.clicked.connect(self.clear_labels); actions.addWidget(self.clear_labels_button)
         b = QtWidgets.QPushButton('Save draft [Ctrl+S]'); b.clicked.connect(self.save); actions.addWidget(b)
         b = QtWidgets.QPushButton('Next unfinished'); b.clicked.connect(self.next_unfinished); actions.addWidget(b)
-        b = QtWidgets.QPushButton('Save & Next [N]'); b.setObjectName('primary'); b.clicked.connect(self.complete_next); actions.addWidget(b)
+        b = QtWidgets.QPushButton('Approve Label && Next [N]'); b.setObjectName('primary'); b.clicked.connect(self.complete_next); actions.addWidget(b)
         main.addLayout(actions)
         help_text = QtWidgets.QLabel('Paint: left drag  •  Hold Space + left drag: rotate  •  Middle drag: pan  •  Wheel: zoom  •  Ctrl+wheel: brush size  •  A/D: previous/next sample')
         help_text.setWordWrap(True); help_text.setStyleSheet('color:#9daec4'); main.addWidget(help_text)
         for key, callback in [('1',lambda:self.class_picker.setCurrentIndex(0)),('2',lambda:self.class_picker.setCurrentIndex(1)),
                               ('3',lambda:self.class_picker.setCurrentIndex(2)),('4',lambda:self.class_picker.setCurrentIndex(3)),
                               ('Ctrl+Z',self.undo),('Ctrl+Y',self.redo),('Ctrl+Shift+Z',self.redo),('Ctrl+S',self.save),('N',self.complete_next),
+                              ('Ctrl+Return',self.approve_roi_next),('Ctrl+Enter',self.approve_roi_next),('F5',self.reload_shared_roi),
                               ('R',self.view.reset_camera),('O',self.show_overlay.toggle),('B',self.mode.toggle),
                               ('S',self.surface_toggle.toggle),('W',self.wire_toggle.toggle),('P',self.points_toggle.toggle),
                               ('A',lambda:self.navigate_sample(-1)),('D',lambda:self.navigate_sample(1)),
@@ -441,15 +484,21 @@ class Annotator(AnnotatorFeatures, QtWidgets.QMainWindow):
             if key in ('1','2','3','4'):
                 shortcut.setKeys([QtGui.QKeySequence(key),QtGui.QKeySequence('Num+'+key)])
             shortcut.setContext(QtCore.Qt.ShortcutContext.WindowShortcut)
+            if key in ('Ctrl+Return','Ctrl+Enter'):shortcut.setAutoRepeat(False)
             shortcut.activated.connect(callback); self.shortcuts.append(shortcut)
         QtWidgets.QApplication.instance().focusChanged.connect(self.update_shortcuts)
         # Capture the held rotation key even when sliders/buttons have focus.
         QtWidgets.QApplication.instance().installEventFilter(self)
+        self.draft_timer=QtCore.QTimer(self);self.draft_timer.setSingleShot(True)
+        self.draft_timer.setInterval(2000);self.draft_timer.timeout.connect(self.autosave)
         self.timer = QtCore.QTimer(self); self.timer.setInterval(10000); self.timer.timeout.connect(self.autosave); self.timer.start()
         self.setStyleSheet('''QWidget {background:#111923;color:#dfe8f5;font-size:13px;}
             QLineEdit,QPlainTextEdit,QListWidget,QComboBox {background:#192534;border:1px solid #344359;border-radius:5px;padding:6px;}
             QPushButton {background:#24354a;border:1px solid #3c516b;border-radius:5px;padding:9px;}
             QPushButton:hover {background:#314a65;} QPushButton#primary {background:#16675b;border-color:#269d89;}
+            QPushButton#primary:hover {background:#238574;border-color:#54c7ae;}
+            QPushButton[roiControl="true"] {padding:4px 10px;}
+            QLabel#roiStatus,QLabel#labelStatus {color:#c4cfde;padding:4px 8px;border:1px solid #344359;border-radius:5px;}
             QListWidget::item {padding:8px;} QListWidget::item:selected {background:#304c6b;}
             QSlider::groove:horizontal {height:5px;background:#344359;} QSlider::handle:horizontal {width:12px;background:#6ed6bc;margin:-4px 0;border-radius:6px;}''')
         self.statusBar().showMessage('Ready'); self.view.setCursor(QtCore.Qt.CursorShape.CrossCursor)
@@ -501,29 +550,37 @@ class Annotator(AnnotatorFeatures, QtWidgets.QMainWindow):
         if folder:
             self.load_folder(Path(folder))
 
-    def load_folder(self, root, output=None, manifest=None):
-        if not self.save():
-            return
-        try:
-            root = root.resolve()
-            store = AnnotationStore(root, output or root/'annotations', self.rater.currentText().strip())
-            queue = manifest_queue(root,manifest,self.filter.text().strip()) if manifest else discover(root,self.filter.text().strip())
-            queue = [p for p in queue if not p.is_relative_to(store.output)]
-            if not queue:
-                raise ValueError('No supported meshes found. Select the prepared ROI folder; accepted files are roi.vtp, geometry.npz, or triangle PLY/VTP.')
-            self.release_lock()
-            info=self.queue_metadata(root,queue,manifest)
-            self.root,self.store,self.queue = root,store,queue
-            self.queue_order=list(queue);self.queue_info=info
-            self.mesh=None; self.labels=None; self.index=-1; self.dirty=False
-            self.sort_queue()
-            self.refresh_annotators(store.annotator); self.filter.setEnabled(False)
-            self.folder_label.setText(str(root)); self.settings.setValue('root',str(root)); self.settings.setValue('annotator',store.annotator)
-            self.refresh_queue()
-            first = next((i for i,p in enumerate(self.queue) if store.status(p)!='done'),0)
-            self.list.setCurrentRow(first)
-        except Exception as exc:
-            self.show_error(str(exc))
+    def load_folder(self,root,output=None,manifest=None):
+        if self._loading_depth:return
+        with LoadingFeedback(self,'Opening dataset') as feedback:
+            feedback.stage('Saving current annotation…')
+            if not self.save():return
+            try:
+                path_filter=self.filter.text().strip();rater=self.rater.currentText().strip()
+                def read_dataset():
+                    resolved=Path(root).resolve()
+                    store=AnnotationStore(resolved,output or resolved/'annotations',rater)
+                    store.mesh_cache=self.mesh_cache;store.read_cache=self.read_cache
+                    queue=manifest_queue(resolved,manifest,path_filter) if manifest else discover(resolved,path_filter,exclude_dirs=[store.output])
+                    queue=list(dict.fromkeys(resolve_review_source(store,p,verify_geometry=False) for p in queue if not p.is_relative_to(store.output)))
+                    if not queue:raise ValueError('No supported meshes found. Select the prepared ROI folder; accepted files are roi.vtp, geometry.npz, or triangle PLY/VTP.')
+                    info=self.queue_metadata(resolved,queue,manifest)
+                    states={};rois={}
+                    for i,path in enumerate(queue,1):
+                        states[path]=store.status(path);rois[path]=(read_state(store,path) or {}).get('status','pending')
+                        feedback.report('Checking saved labels',i,len(queue))
+                    return resolved,store,queue,info,states,rois
+                resolved,store,queue,info,states,rois=feedback.run(read_dataset,'Finding samples and reading dataset metadata…')
+                feedback.stage('Preparing sample list…')
+                self.release_lock();self.root,self.store,self.queue=resolved,store,queue
+                self.queue_order=list(queue);self.queue_info=info;self._queue_states=states;self._queue_roi_states=rois
+                self.mesh=None;self.labels=None;self.index=-1;self.dirty=False
+                self.sort_queue(refresh=False);self.refresh_annotators(store.annotator);self.filter.setEnabled(False)
+                self.folder_label.setText(str(resolved));self.settings.setValue('root',str(resolved));self.settings.setValue('annotator',store.annotator)
+                first=next((i for i,p in enumerate(self.queue) if states[p]!='done'),0)
+                self.list.blockSignals(True);self.list.setCurrentRow(first);self.list.blockSignals(False)
+                self._change_sample(first,feedback)
+            except Exception as error:self.show_error(str(error))
 
     def acquire_lock(self, path):
         lock = QtCore.QLockFile(str(path)+'.lock'); lock.setStaleLockTime(30000)
@@ -536,46 +593,79 @@ class Annotator(AnnotatorFeatures, QtWidgets.QMainWindow):
         if self.lock_path:
             self.lock_path.unlock(); self.lock_path=None
 
-    def change_sample(self, index):
-        if index<0 or index==self.index:
-            return
-        previous=self.index
-        if not self.save():
-            self.list.blockSignals(True); self.list.setCurrentRow(previous); self.list.blockSignals(False); return
+    def change_sample(self,index):
+        if index<0 or index==self.index or self._loading_depth:return
+        with SilentLoading(self) as feedback:
+            self._change_sample(index,feedback)
+
+    def _change_sample(self,index,feedback):
+        if index<0 or index==self.index:return
+        started=time.perf_counter();previous=self.index;timing_start=len(feedback.stage_timings)
+        feedback.stage('Saving current annotation…')
+        if not self.save(only_if_dirty=True):
+            self.list.blockSignals(True);self.list.setCurrentRow(previous);self.list.blockSignals(False);return
         lock=None
         try:
-            mesh=read_reviewed(self.store,self.queue[index]); lock=self.acquire_lock(self.store.path_for(mesh.path))
-            labels,completed,notes=self.store.load(mesh)
-            saved=self.store.path_for(mesh.path)
-            camera={}
-            if saved.exists():
-                with np.load(saved,allow_pickle=False) as d:
-                    camera=json.loads(str(d['camera'].item()))
-                    texture=str(d['texture_path'].item()) if 'texture_path' in d else ''
-                    if texture and Path(texture).is_file() and mesh.display.GetPointData().GetTCoords() is not None:
-                        mesh.texture=Path(texture); mesh.warning=''
-            self.view.set_mesh(mesh)
-            normal=read_orientation(self.store,mesh)
-            if normal is not None:
-                self.view.set_top_normal(normal); self.view.top_source='saved shared top direction'; self.view.reset_camera()
-            self.view.restore_camera(camera)
-            self.release_lock(); self.lock_path=lock
-            self.mesh,self.labels,self.completed,self.index=mesh,labels,completed,index
-            self.undo_stack=[]; self.redo_stack=[]; self.stroke={}; self.dirty=False
-            self.notes.blockSignals(True); self.notes.setPlainText(notes); self.notes.blockSignals(False)
-            self.sample_title.setText(f'{index+1} / {len(self.queue)}  •  {mesh.path.parent.name} / {mesh.path.name}')
-            self.notice.setText(mesh.warning or 'Scanner colors • adjustments affect the display only')
-            self.orientation_note.setText('Top: '+self.view.top_source)
-            self.last_save='Reopened annotation' if saved.exists() else 'New sample — not saved'
-            self.roi_status.setText('Surface review: '+mesh.review_status+' • '+(mesh.review_version[:8] or 'original crop'))
-            self.refresh(); self.update_review_mode(); self.view.setFocus()
-        except Exception as exc:
-            if lock and lock != self.lock_path:
-                lock.unlock()
+            store=self.store
+            mesh=feedback.run(lambda:read_reviewed(store,self.queue[index],progress=feedback.report),'Reading specimen surface…')
+            feedback.stage('Opening your annotation…')
+            lock=self.acquire_lock(store.path_for(mesh.path))
+            def read_labels():
+                labels,completed,notes=store.load(mesh)
+                view_state=dict(getattr(store,'_last_loaded_view',{}));saved=store.path_for(mesh.path)
+                return labels,completed,notes,view_state,saved.exists()
+            labels,completed,notes,view_state,saved=feedback.run(read_labels,'Reading your saved labels…')
+            camera=view_state.get('camera',{});texture=view_state.get('texture','')
+            if texture and Path(texture).is_file() and mesh.display.GetPointData().GetTCoords() is not None:
+                mesh.texture=Path(texture);mesh.warning=''
+            feedback.stage('Preparing texture and 3D view…')
+            self.view.loading_feedback=feedback
+            with self.view.defer_render():
+                self.view.set_mesh(mesh)
+                normal=read_orientation(store,mesh)
+                if normal is not None:
+                    self.view.set_top_normal(normal);self.view.top_source='saved shared top direction';self.view.reset_camera()
+                self.view.restore_camera(camera);self._saved_camera=json.dumps(self.view.camera_state(),sort_keys=True)
+                self.release_lock();self.lock_path=lock
+                self.mesh,self.labels,self.completed,self.index=mesh,labels,completed,index
+                self.undo_stack=[];self.redo_stack=[];self.stroke={};self.dirty=False;self.exports_pending=False
+                self.notes.blockSignals(True);self.notes.setPlainText(notes);self.notes.blockSignals(False)
+                self.sample_title.setText(f'{index+1} / {len(self.queue)}  •  {mesh.path.parent.name} / {mesh.path.name}')
+                self.notice.setText(mesh.warning or 'Scanner colors • adjustments affect the display only')
+                self.last_save='Reopened annotation' if saved else 'New sample — not saved'
+                self.update_roi_status(mesh)
+                self._queue_states[mesh.path]='done' if completed else 'draft' if saved else 'new'
+                self._queue_roi_states[mesh.path]=mesh.review_status
+                self.refresh_queue(changed_sources=[mesh.path],cached=True)
+                self.refresh();self.update_review_mode();self.view.setFocus()
+                feedback.stage('Drawing specimen…')
+            self.mesh_cache.recount()
+            self.last_load_seconds=time.perf_counter()-started
+            self.last_save+=f'  •  Loaded {self.last_load_seconds:.2f} s';self.refresh_status()
+            self.record_loading_time(feedback,self.last_load_seconds,timing_start)
+        except Exception as error:
+            if lock and lock!=self.lock_path:lock.unlock()
             if self.mesh is not None and self.view.mesh is not self.mesh:
-                self.view.set_mesh(self.mesh); self.refresh()
-            self.show_error(f'{self.queue[index]}\n\n{exc}')
-            self.list.blockSignals(True); self.list.setCurrentRow(previous); self.list.blockSignals(False)
+                self.view.set_mesh(self.mesh);self.refresh()
+            self.show_error(f'{self.queue[index]}\n\n{error}')
+            self.list.blockSignals(True);self.list.setCurrentRow(previous);self.list.blockSignals(False)
+        finally:self.view.loading_feedback=None
+
+    def record_loading_time(self,feedback,total,timing_start=0):
+        try:
+            import csv
+            from datetime import datetime,timezone
+            from local_cache import default_cache_root
+            folder=(self.read_cache.root if self.read_cache is not None else default_cache_root()).parent
+            folder.mkdir(parents=True,exist_ok=True);path=folder/'loading_times.csv'
+            if path.exists() and path.stat().st_size>1024*1024:path.replace(path.with_suffix('.previous.csv'))
+            new=not path.exists()
+            with path.open('a',encoding='utf-8',newline='') as out:
+                writer=csv.writer(out)
+                if new:writer.writerow(['utc','dataset','sample','total_seconds','background_steps_seconds'])
+                writer.writerow([datetime.now(timezone.utc).isoformat(),str(self.root),self.mesh.path.parent.name,round(total,4),json.dumps(feedback.stage_timings[timing_start:])])
+            self.loading_log_path=path
+        except OSError:pass
 
     def open_roi_review(self):
         if self.mesh is None or self.is_read_only() or not self.save():return
@@ -588,6 +678,46 @@ class Annotator(AnnotatorFeatures, QtWidgets.QMainWindow):
         finally:
             if dialog is not None:dialog.deleteLater()
             self.timer.start()
+
+    def update_roi_status(self,mesh):
+        self.roi_status.setText('ROI: '+mesh.review_status)
+        self.roi_status.setToolTip('Surface review: '+mesh.review_status+' • '+(mesh.review_version or 'original crop')+'. F5 reloads the latest shared ROI.')
+
+    def approve_roi_next(self):
+        if self.mesh is None or self.is_read_only() or not self.save():return
+        self.timer.stop()
+        try:
+            record=approve_displayed_surface(self.store,self.mesh)
+            # Approval preserves exact layout. Keep labels, completion, history,
+            # notes and camera; adopt only the new shared review identity.
+            self.mesh.review_version=record['version'];self.mesh.review_status='approved'
+            self.update_roi_status(self.mesh)
+            self.dirty=True
+            if not self.save():return
+            self.refresh_queue()
+            self.next_roi_review()
+        except Exception as e:self.show_error('ROI approval failed. The current sample is kept open.\n\n'+str(e))
+        finally:self.timer.start()
+
+    def next_roi_review(self):
+        if not self.queue:return
+        # Geometry review has its own queue, independent of plaque completion.
+        order=list(range(self.index+1,len(self.queue)))+list(range(0,max(self.index,0)))
+        target=next((i for i in order if (read_state(self.store,self.queue[i]) or {}).get('status')!='approved'),None)
+        if target is not None:self.list.setCurrentRow(target)
+        else:
+            self.refresh_queue()
+            current_pending=self.mesh is not None and (read_state(self.store,self.mesh.path) or {}).get('status')!='approved'
+            message=('No other ROI needs review; the current ROI still needs approval.' if current_pending else
+                     'All ROIs in this queue are approved. Run rebuild_reviewed.cmd to export the verified dataset.')
+            if not current_pending and (self.root/'scan_manifest.csv').is_file():
+                try:
+                    scans=manifest_reviews(self.store);remaining=sum(r['status']!='approved' for r in scans)
+                    message=(f'Queue approved, but {remaining}/{len(scans)} exported ROIs still need review. Open the complete snapshot without a manifest/filter.' if remaining else
+                             f'All {len(scans)} exported ROIs are approved. Run rebuild_reviewed.cmd. Reviews: {self.store.output}')
+                except Exception as e:
+                    self.show_error('Could not verify the complete dataset review status.\n\n'+str(e));return
+            self.statusBar().showMessage(message)
 
     def reload_shared_roi(self):
         if self.mesh is None:return
@@ -609,7 +739,7 @@ class Annotator(AnnotatorFeatures, QtWidgets.QMainWindow):
             self.view.set_mesh(mesh)
             normal=read_orientation(self.store,mesh)
             if normal is not None:self.view.set_top_normal(normal);self.view.reset_camera()
-            self.roi_status.setText('Surface review: '+mesh.review_status+' • '+(mesh.review_version[:8] or 'original crop'))
+            self.update_roi_status(mesh)
             self.dirty=not self.is_read_only();self.refresh()
             if self.dirty:self.save()
         except Exception as e:self.show_error('Could not reload shared ROI. Current labels are kept open.\n\n'+str(e))
@@ -624,6 +754,7 @@ class Annotator(AnnotatorFeatures, QtWidgets.QMainWindow):
         self.view.radius=value; self.radius_text.setText(f'{value} px')
 
     def start_stroke(self):
+        self.draft_timer.stop()
         self.stroke={}
 
     def paint_faces(self,ids):
@@ -635,7 +766,7 @@ class Annotator(AnnotatorFeatures, QtWidgets.QMainWindow):
         for i in ids:
             self.stroke.setdefault(int(i),int(self.labels[i]))
         if len(ids):
-            self.labels[ids]=value; self.completed=False; self.dirty=True; self.refresh()
+            self.labels[ids]=value; self.completed=False; self.dirty=True; self.refresh(changed_ids=ids,render=False)
 
     def end_stroke(self):
         if self.stroke:
@@ -646,7 +777,7 @@ class Annotator(AnnotatorFeatures, QtWidgets.QMainWindow):
                 self.undo_stack.append((ids[changed],before[changed],after[changed]))
                 self.undo_stack=self.undo_stack[-100:]; self.redo_stack=[]
             self.stroke={}
-            QtCore.QTimer.singleShot(1000,self.autosave)
+            self.draft_timer.start()
 
     def edit(self,ids,value):
         if self.is_read_only():return
@@ -657,7 +788,7 @@ class Annotator(AnnotatorFeatures, QtWidgets.QMainWindow):
             return
         before=self.labels[ids].copy(); self.labels[ids]=value
         self.undo_stack.append((ids,before,self.labels[ids].copy())); self.redo_stack=[]
-        self.completed=False; self.dirty=True; self.refresh(); self.autosave()
+        self.completed=False; self.dirty=True; self.refresh(changed_ids=ids); self.autosave()
 
     def clear_labels(self):
         if self.is_read_only() or self.mesh is None or self.labels is None:return
@@ -669,7 +800,7 @@ class Annotator(AnnotatorFeatures, QtWidgets.QMainWindow):
     def fill_clean(self):
         if self.is_read_only():return
         if self.view.top_only and self.mesh is not None and self.view.side_alignment()<=.08:
-            self.show_error("Return to the top view before marking the reviewed remainder clean.");return
+            self.show_error("Return to the top view before marking the remaining unreviewed faces clean.");return
         if self.mesh is not None:
             self.edit(np.flatnonzero(self.mesh.active & (self.labels==-2)),0)
             self.view.setFocus()
@@ -688,63 +819,86 @@ class Annotator(AnnotatorFeatures, QtWidgets.QMainWindow):
         if self.undo_stack:
             change=self.undo_stack.pop(); ids,before,after=change
             self.labels[ids]=before; self.redo_stack.append(change)
-            self.completed=False; self.dirty=True; self.refresh(); self.autosave()
+            self.completed=False; self.dirty=True; self.refresh(changed_ids=ids); self.autosave()
 
     def redo(self):
         if self.is_read_only():return
         if self.redo_stack:
             change=self.redo_stack.pop(); ids,before,after=change
             self.labels[ids]=after; self.undo_stack.append(change)
-            self.completed=False; self.dirty=True; self.refresh(); self.autosave()
+            self.completed=False; self.dirty=True; self.refresh(changed_ids=ids); self.autosave()
 
     def note_changed(self):
         if self.mesh is not None and not self.is_read_only():
             self.dirty=True
 
-    def refresh(self,*args):
+    def refresh(self,*args,changed_ids=None,render=True):
         self.view.overlay_enabled=self.show_overlay.isChecked(); self.view.overlay_alpha=self.opacity.value()/100
         if self.mesh is None:
             return
-        self.view.update_labels(self.labels)
-        counts={name:int(np.sum((self.labels==value)&self.mesh.active)) for value,name in LABELS.items()}
-        areas=area_summary(self.mesh,self.labels)
-        valid_area=areas['clean']+areas['plaque']
-        burden=100*areas['plaque']/valid_area if valid_area else 0
-        self.stats.setText(f'Plaque: {counts["plaque"]:,} faces  |  Clean: {counts["clean"]:,}  |  Uncertain: {counts["uncertain"]:,}  |  Unreviewed: {counts["unreviewed"]:,}\n'
-                           f'Plaque area / reviewed clean + plaque area: {burden:.1f}%  •  {"Completed" if self.completed else "Draft"}')
+        self.view.update_labels(self.labels,changed_ids=changed_ids,render=render)
+        self.refresh_status()
+
+    def refresh_status(self):
+        self.label_status.setText('Label: '+('approved' if self.completed else 'pending'))
         self.statusBar().showMessage(self.last_save+('  •  Unsaved edits' if self.dirty else ''))
 
-    def refresh_queue(self):
-        if self.store is None:
-            return
-        done=0
-        for i,p in enumerate(self.queue):
-            status=self.store.status(p); done+=status=='done'
-            self.list.item(i).setText(f'[{status.upper()}] {p.relative_to(self.root)}')
-        self.progress.setText(f'{done} / {len(self.queue)} completed  •  {self.store.annotator}')
+    def refresh_queue(self,changed_sources=None,*,cached=False):
+        if self.store is None:return
+        # Local saves update just their row. Re-sort/refresh still rereads the
+        # full queue, and every actual open/save verifies shared ROI identity.
+        if changed_sources is None:
+            if not cached:self._queue_states={};self._queue_roi_states={}
+            indices=range(len(self.queue))
+        else:
+            changed=set(changed_sources)
+            indices=[i for i,p in enumerate(self.queue) if p in changed]
+        for i in indices:
+            path=self.queue[i]
+            status=self._queue_states.get(path,'new') if cached else self.store.status(path)
+            roi_status=self._queue_roi_states.get(path,'pending') if cached else (read_state(self.store,path) or {}).get('status','pending')
+            self._queue_states[path]=status;self._queue_roi_states[path]=roi_status
+            self.list.item(i).setText(f'[ROI {roi_status.upper()} | {status.upper()}] {path.relative_to(self.root)}')
+        done=sum(s=='done' for s in self._queue_states.values())
+        approved=sum(s=='approved' for s in self._queue_roi_states.values())
+        self.progress.setText(f'ROI: {approved}/{len(self.queue)} approved  •  Plaque: {done}/{len(self.queue)} completed  •  {self.store.annotator}')
 
-    def save(self,*args):
-        if self.is_read_only():return True
-        if self.mesh is None:
-            return True
-        self.end_stroke()
+    def save(self,*args,exports=True,only_if_dirty=False):
+        if self.is_read_only() or self.mesh is None:return True
+        self.end_stroke();self.draft_timer.stop()
         try:
             if current_version(self.store,self.mesh.path)!=self.mesh.review_version:
-                raise ValueError('The shared ROI changed. Click Reload shared ROI before saving labels.')
-            preview=self.store.path_for(self.mesh.path).parent/(self.mesh.path.name+'.label_colors.ply')
-            export_label_colors(self.mesh,self.labels,preview)
-            if self.auto_ply.isChecked():
-                target=self.store.path_for(self.mesh.path).parent/(self.mesh.path.name+'.labeled.ply')
-                export_ply(self.mesh,self.labels,target)
-            self.store.save(self.mesh,self.labels,self.completed,self.notes.toPlainText(),self.view.camera_state())
-            self.dirty=False; self.last_save='Saved '+QtCore.QTime.currentTime().toString('HH:mm:ss')
-            self.refresh_queue(); self.refresh(); return True
+                raise ValueError('The shared ROI changed. Press F5 to reload the latest shared ROI before saving labels.')
+            path=self.store.path_for(self.mesh.path)
+            preview=path.parent/(self.mesh.path.name+'.label_colors.ply')
+            target=path.parent/(self.mesh.path.name+'.labeled.ply')
+            camera=self.view.camera_state();camera_json=json.dumps(camera,sort_keys=True)
+            content_changed=self.dirty or not path.exists()
+            need_labels=content_changed or camera_json!=getattr(self,'_saved_camera',None)
+            outputs=[preview]+([target] if self.auto_ply.isChecked() else [])
+            stale_exports=path.exists() and any(not p.exists() or p.stat().st_mtime_ns<path.stat().st_mtime_ns for p in outputs)
+            need_exports=exports and (not only_if_dirty or content_changed or self.exports_pending or stale_exports)
+            if only_if_dirty and not need_labels and not need_exports:return True
+            # Persist resumable labels first. Derived meshes are intentionally
+            # deferred during brush autosaves; they never gate draft recovery.
+            if need_labels:
+                self.store.save(self.mesh,self.labels,self.completed,self.notes.toPlainText(),camera)
+                self._saved_camera=camera_json
+                if content_changed:self.exports_pending=True
+            if need_exports:
+                export_label_colors(self.mesh,self.labels,preview)
+                if self.auto_ply.isChecked():export_ply(self.mesh,self.labels,target)
+                self.exports_pending=False
+            self.dirty=False
+            self.last_save=('Saved ' if exports else 'Draft saved ')+QtCore.QTime.currentTime().toString('HH:mm:ss')
+            if need_labels:self.refresh_queue(changed_sources=[self.mesh.path])
+            self.refresh_status();return True
         except Exception as exc:
-            self.show_error('Saving failed. The current sample has been kept open.\n\n'+str(exc)); return False
+            self.show_error('Saving failed. The current sample has been kept open.\n\n'+str(exc));return False
 
     def autosave(self):
-        if self.dirty and not self.view.painting:
-            self.save()
+        if getattr(self,'_loading_depth',0):return
+        if self.dirty and not self.view.painting:self.save(exports=False)
 
     def complete_next(self):
         if self.is_read_only():return
@@ -755,10 +909,10 @@ class Annotator(AnnotatorFeatures, QtWidgets.QMainWindow):
             self.show_error('Verify and approve the shared specimen ROI before completing plaque annotation.');return
         unreviewed=int(np.sum((self.labels==-2)&self.mesh.active))
         if unreviewed:
-            self.show_error(f'{unreviewed:,} faces are still unreviewed. Review the whole ROI, then use “Reviewed remainder → clean”, or paint those faces explicitly.')
+            self.show_error(f'{unreviewed:,} faces are still unreviewed. Review the whole ROI, then use “Remaining → clean”, or paint those faces explicitly.')
             return
         if self.mesh.warning:
-            self.show_error('The mesh has no verified color display. Load its correct texture or a colored ROI before completing it.'); return
+            self.show_error('The mesh has no verified color display. Fix its prepared texture/RGB data and reopen it before approving labels.'); return
         self.completed=True; self.dirty=True
         if self.save():
             self.next_unfinished()
@@ -832,6 +986,8 @@ def main():
     parser.add_argument('--manifest',help='Optional preparation annotation_inventory.csv to load only approved scans')
     parser.add_argument('--lock-annotator',action='store_true',help='Disable rater switching during independent study labeling')
     parser.add_argument('--review-mode',action='store_true',help='Other raters are read-only while editing the initial consensus rater')
+    parser.add_argument('--no-local-cache',action='store_true',help='Disable the local read-only mesh/texture cache')
+    parser.add_argument('--cache-dir',type=Path,help='Optional local cache directory; labels remain in the dataset')
     parser.add_argument('--demo',action='store_true',help='Generate and open three synthetic disk samples')
     args=parser.parse_args()
     app=QtWidgets.QApplication(sys.argv); app.setApplicationName('BioCal3D Annotator')

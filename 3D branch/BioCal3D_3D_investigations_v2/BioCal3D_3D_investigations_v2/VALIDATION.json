@@ -1,0 +1,51 @@
+{
+  "package": "BioCal3D_3D_investigations_v2",
+  "date": "2026-10-20",
+  "environment": {
+    "python": "3.12.14",
+    "numpy": "2.3.5",
+    "scipy": "1.17.0",
+    "scikit-learn": "1.8.0",
+    "pandas": "2.2.3",
+    "matplotlib": "3.10.8"
+  },
+  "regression_tests": {
+    "command": "python -m unittest -v test_approved test_pathway_routing",
+    "total": 14,
+    "passed": 13,
+    "skipped": 1,
+    "skipped_reason": "Torch unavailable; official-backend / gradient-routing test must run on training PC"
+  },
+  "integration": {
+    "512_scan_synthetic_snapshot": true,
+    "specimens": 48,
+    "partition_scans": {
+      "train": 384,
+      "val": 64,
+      "test": 64
+    },
+    "planned_jobs": {
+      "baseline": 23,
+      "colour": 36,
+      "interior": 18,
+      "cv": 20,
+      "loso": 80
+    },
+    "planning_without_mesh_arrays": true,
+    "audit_without_reserved_test_arrays": true,
+    "full_cpu_audit_and_five_controls": true,
+    "source_files_unchanged": 514,
+    "portable_relocation": true,
+    "oof_completeness_and_interior_full_summary_separation": true,
+    "compileall": true,
+    "cli_help": true
+  },
+  "not_executed": [
+    "actual user approved dataset",
+    "Torch/official-backend forward passes",
+    "CUDA neural training",
+    "checkpoint resume on GPU",
+    "Windows CMD execution"
+  ],
+  "results_note": "Synthetic fixtures validate software behaviour; no biological/model accuracy result is inferred."
+}

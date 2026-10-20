@@ -1,0 +1,11 @@
+{
+  "source_zip": "3d_approved_review_20261020_140827_821306.zip",
+  "source_sha256": "c3b4ae5d52222647e0a7a6ee6267924e4ae541ed912de4f63d3ac72e7ff6bdb9",
+  "completed_runs": 68,
+  "prediction_metrics_recomputed_for_runs": 68,
+  "shared_validation_scans": 64,
+  "shared_validation_specimens": 6,
+  "reserved_test_evaluation_files_present": false,
+  "cv_or_loso_evaluation_files_present": false,
+  "scope": "Descriptive analysis of uploaded validation results; no significance testing or model retraining. Error bars are fitting-seed SD, not a generalization confidence interval."
+}

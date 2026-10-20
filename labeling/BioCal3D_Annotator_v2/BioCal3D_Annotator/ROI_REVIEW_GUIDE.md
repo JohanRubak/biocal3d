@@ -1,6 +1,111 @@
-# BioCal3D specimen surface verification — v3.4
+# BioCal3D specimen surface verification — v3.13
+
+## Loading feedback in v3.13
+
+The loading window appears only when opening a dataset, including preparation
+of its first sample. Switching samples, opening ROI verification and locating
+original models show no loading popup. Persistent local input caching and the
+v3.12 performance improvements remain enabled. Labels, shared review pointers
+and locks stay in the selected dataset. See README.txt for cache locations and
+diagnostic timings.
+
+## Original data folder lookup in v3.11
+
+In Verify / correct ROI, click **Locate original data folder…** and select the
+raw collection root such as **02-09-2026-Data collected**. The app finds and
+verifies this sample's original model, remembers that root locally for the
+opened dataset, and automatically uses it for subsequent samples and after
+restarting on this PC. Use the corresponding local path on each PC. No ROI
+reapproval or rebuild is required. If multiple candidates remain, use a narrower
+root or the optional **Locate original file…** button. A missing/invalid root
+falls back to local ROI viewing with an explanation. See README.txt.
+
+## Performance changes in v3.10
+
+See README.txt for installation and timing details. Automatic drafts save NPZ only;
+Save draft, approval, navigation and close update PLY files. The geometry review
+and portable G5 study workflow below remain the v3.9 workflow.
+
+## Portable G5 study folders in v3.9
+
+After a successful rebuild, use `create_labeling_plan.bat` in the app root.
+It asks for the rebuilt snapshot and makes `G5_labeling_study` beside it.
+For an existing older study, choose a new output using `--output`.
+The same launcher name in `biocal3d_workflow` and the compatibility launcher
+`prepare_pilot_study.bat` run the same folder builder. The dedicated labeling
+environment is reused. The complete instructions are in
+`biocal3d_workflow/LABELING_STUDY.md`.
+
+Both subsets retain approved, frozen ROI geometry and local scanner textures.
+Plaque ratings start empty for bruna and katrin. Labels and approval histories
+in the source snapshot remain untouched. Original full scanner models are
+not included in the study folders; the ROI inputs are sufficient for labeling.
 
 This update adds shared ROI review to the existing annotator and uses the same face-selection algorithm in new preprocessing runs. The existing scanner-colour display, label classes, rater selection, brush controls, reset-label action and coloured PLY exports remain available.
+
+## Changes in v3.8
+
+- Fixes the rebuild error **invalid literal for int() with base 10: 'T0'**. Prepare-all uses a string timepoint label (**T0/T1/T2**) and a separate numeric **time_idx**. The rebuild preserves those fields in their proper types instead of converting the label to an integer.
+- Group, time index and sample number are normalized from CSV text; legacy numeric timepoints are accepted and normalized to T-labels. Conflicting label/index fields are rejected before creating output.
+- Adds an integration check using the actual prepare-all metadata schema for both vertex-RGB and UV-textured samples at T0, T1 and T2, followed by VTP approvals/manual correction, a verified rebuild, and another rebuild of that verified snapshot. Geometry corrections, saved labels and approvals survive both exports.
+
+After this failure, install the update and run rebuild_reviewed.cmd with the
+same source snapshot and a **new empty output folder**, for example
+**Approved ROIs_v2**. The previous failed output contains INCOMPLETE_REBUILD.json
+and must not be used for training. Do not repeat preprocessing or ROI approval.
+
+## Changes in v3.7
+
+- Fixes existing approvals stored for **roi.vtp** being missed when the rebuild manifest names **roi.ply**. The app and rebuild locate the existing sibling-format review only after checking the original vertices, triangles and available source-face IDs; the approved review supplies the retained-face mask. Existing review records, corrections and labels remain in place and are used directly; no reapproval is required for this mismatch.
+- New folder discovery prefers **roi.ply**, matching preparation manifests. If a valid existing VTP review exists, the app opens that source instead and uses its original labels/history.
+- Different geometry, different source IDs or multiple saved sibling review histories block automatic reuse. Nothing is silently selected or overwritten when the review history is ambiguous.
+- Completing a queue checks the full scan manifest before claiming the entire dataset is approved. Filtered/inventory-only queues report any exported samples still needing review.
+- Rebuild preflight lists all pending/flagged exported ROIs and prints the annotation output folder being read. It reports when an existing VTP review is used for a PLY manifest entry. The rebuild audit records that source.
+- Both green approval buttons now brighten on hover.
+
+### Recover the failed rebuild
+
+1. Close the app and apply this code update to the existing installation. The existing folder name (for example v3_4) can remain unchanged after an in-place update.
+2. Run **rebuild_reviewed.cmd** again with the same prepared snapshot and an empty/new corrected output folder. A preflight-only failure created no output, so that proposed folder can be reused if still empty.
+3. Existing compatible approvals/corrections under **annotations/_roi_review/.../roi.vtp** are used automatically. Do not rename those folders or use --allow-pending to work around this filename mismatch.
+4. If the app used a custom annotation output directory, pass it as the third argument to rebuild_reviewed.cmd, or use the Python script's **--annotations** option.
+
+For a read-only full-manifest status check from the app folder:
+
+```bat
+.labeling-env\python.exe biocal3d_workflow\rebuild_reviewed_snapshot.py --root "C:\path\to\prepared_snapshot" --check-only
+```
+
+## Changes in v3.6
+
+- Compact review toolbar: **Verify / correct ROI…**, **Next unapproved**, **Approve ROI & Next [Ctrl+Enter]**, followed by separate **ROI** and **Label** status badges.
+- **Label: pending** becomes **Label: approved** after approving plaque labels, and returns to pending when labels change. This status is specific to the selected annotator and independent of ROI approval.
+- **Remaining → clean** replaces the longer remainder button name. It still changes only unreviewed included faces. **Approve Label & Next [N]** replaces Save & Next, with the same completion checks.
+- The face-count/area summary, orientation control row, Choose texture, Export mesh and Export all buttons have been removed. Normal label/PLY saves continue. Missing scanner colors/textures must be fixed in the prepared data.
+- Main plaque painting always uses the top-only guard. **R** or **Reset view [R]** returns to the top. The ROI correction window retains its own surface-correction interactions.
+- The Reload ROI button has been removed. **F5** reloads the latest shared geometry while preserving labels on verified matching source faces; a geometry revision resets label completion.
+- Undo/Redo/Reset and the two bulk-label actions share one row. The native Qt preview at 1380×880 gains 180 logical pixels of viewer height compared with v3.5; controls were also checked at 1280×800 and 1600×1000.
+- These are UI changes. You do not need to preprocess again or reapprove saved ROI reviews. Use the existing prepared data and annotation output paths.
+
+Known limitation: the previously reported intermittent Windows/VTK shutdown
+popup has not been fixed by this UI release. Windows native desktop rendering
+was not available for verification. This release does not claim a shutdown fix.
+
+## Changes in v3.5
+
+- **Approve ROI & Next [Ctrl+Enter]** approves the exact currently displayed surface directly in the main window. It does not rerun extraction, change the crop, or complete plaque labeling. Existing plaque labels, notes, annotation completion, camera and label Undo/Redo history are preserved; advancing loads the next sample normally.
+- **Next ROI needing review** skips approved surfaces independently of plaque-label completion. The sample list shows ROI status, and progress counts ROI approvals separately from completed plaque annotations.
+- Quick approval saves a normal shared review version, using the same review directory and concurrency checks as the correction window. Existing corrected/pending surfaces can be approved as displayed. Repeated approval of an already approved surface does not create another version.
+- Review-window defaults: **Show excluded / original model** on, **Live extraction preview** on, and **Restore surface** selected. Opening retains the saved surface; editing extraction parameters triggers the live proposal. Disable live preview before adjusting parameters if you want to keep manual changes while moving the guides.
+- Rebuilding still requires explicit approval of every exported scan. Geometry review never approves unseen samples in bulk.
+
+## Fast verification workflow
+
+1. Open the newly preprocessed snapshot with the main annotator's **Open dataset folder**. Do not restrict the queue to the plaque-labeling inventory when checking all exported scans.
+2. Inspect the displayed ROI. If it is correct, click **Approve ROI & Next**, or press **Ctrl+Enter** while the viewport/buttons have focus. The next unapproved ROI opens automatically, including pending/flagged samples. Already approved ROIs are skipped.
+3. For a sample needing correction, use **Verify / correct specimen ROI…**. Full original context, live preview and Restore surface are selected by default. Review/correct the crop and click **Approve shared surface**, then use **Next ROI needing review** in the main window.
+4. Confirm all exported scans are approved. A filtered queue's progress refers only to that queue; the rebuild checks the complete scan manifest.
+5. Run **rebuild_reviewed.cmd**, choose the reviewed snapshot and a separate new verified output folder, then use that verified output for labeling and investigations. There is no need to rerun raw preprocessing after installing v3.5.
 
 ## Changes in v3.4
 
@@ -25,7 +130,7 @@ Undo/redo restores both the surface selection and its extraction parameters. A p
 
 ## Changes in v3.2
 
-**Entire ROI → plaque** labels every included ROI face as Plaque, replacing any Clean, Uncertain or Unreviewed labels in that ROI. Excluded geometry remains unchanged. It saves a draft, supports Undo/Redo, and is disabled for read-only annotations. The existing **Reviewed remainder → clean** button still changes only unreviewed faces.
+**Entire ROI → plaque** labels every included ROI face as Plaque, replacing any Clean, Uncertain or Unreviewed labels in that ROI. Excluded geometry remains unchanged. It saves a draft, supports Undo/Redo, and is disabled for read-only annotations. The existing **Remaining → clean** button still changes only unreviewed faces.
 
 ## Changes in v3.1
 
@@ -59,9 +164,9 @@ Do not run the setup script again merely to apply this update. The full bundle i
 6. Rotate and inspect from several directions. Use **Exclude surface** to brush away side walls or holder remnants; use **Restore surface** for valid specimen surface. With the original model hidden, excluded faces cannot be picked for restoration; show it again first. Brushes affect visible faces only. Disable **Brush enabled** to navigate normally, or hold Space + left drag to rotate. Undo/redo/reset operate on geometry selections.
 7. Save as **pending**, **approved**, or **flagged**. A flagged case is retained for investigation and blocks final snapshot rebuilding. Cancel discards the current review edits. No smoothing, flattening, remeshing or hole filling is performed.
 8. The annotator reloads the selected surface. Existing plaque labels transfer only through verified source-face identity. Newly restored faces are unreviewed, and completion resets for review. Removed faces are excluded from the analysed surface; they are not counted as clean.
-9. Complete plaque annotation normally. **Save & Next** now requires an approved specimen surface. Draft saves remain available before approval.
+9. Complete plaque annotation normally. **Approve Label & Next** now requires an approved specimen surface. Draft saves remain available before approval.
 
-If someone changes a shared surface while you have it open, saving is blocked. Click **Reload shared ROI** to transfer your in-memory labels to the current surface. Old label files are archived when a different geometry revision is saved.
+If someone changes a shared surface while you have it open, saving is blocked. Press **F5** to transfer your in-memory labels to the current surface. Old label files are archived when a different geometry revision is saved.
 
 ## Shared geometry and independent raters
 

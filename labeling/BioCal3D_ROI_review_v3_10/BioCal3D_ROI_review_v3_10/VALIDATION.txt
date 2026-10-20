@@ -1,0 +1,37 @@
+BioCal3D ROI review v3.10 validation — 20 October 2026
+
+Validation environment: Linux, Python 3.12, VTK 9.3.1, PySide6 6.8.3,
+plyfile 1.1.3; virtual X display for actual rendered brush/UI checks.
+Target runtime remains the existing Windows Python 3.11 labeling environment.
+
+PASS: annotator regression suite: 75 tests, one skipped because the optional
+experimental example is not bundled. Covers binary/ASCII PLY, RGB/UV/source IDs,
+visible-face-only picking, top guard, ROI correction, source correspondence,
+stale writer protection, label transfer, rebuilds, label previews and approvals.
+PASS: 10 workflow tests: preprocessing integration, verified snapshot rebuild,
+portable 24/72 G5 study folders, relocation and independent agreement analysis.
+PASS: targeted final performance/save tests including a recovered draft whose
+PLY outputs predate its NPZ. Tests confirm failed saves block navigation,
+NPZ autosaves omit PLY writes, explicit save flushes outputs, unchanged A/D skips
+rewrites, cached meshes invalidate on changes, and raters reload their own labels.
+PASS: rendered desktop smoke test: surface/points/wireframe, scanner appearance,
+rotation, actual brush selection, undo/redo, A/D, sorting and consensus isolation.
+The smoke fixture was updated to place the pointer in Notes when testing spaces,
+and to read reviewed rather than immutable geometry for reviewed label files.
+PASS: installer verification: replacement files match the package, old code is
+backed up, and existing environment/data/annotation sentinels remain unchanged.
+
+BENCHMARK_RESULTS.json records synthetic IO measurements on 318402 triangles.
+Median of three repeats in this environment:
+  Label-colored PLY:     v3.9 12.075 s   v3.10 1.846 s
+  Original-color PLY:    v3.9  9.895 s   v3.10 0.965 s
+  Read binary PLY:       v3.9 16.100 s   v3.10 0.374 s
+Timings varied with system load. These measure IO tasks, not full application
+latency, and must not be extrapolated to the user's Windows PC or real scans.
+Automatic brush drafts now omit both PLY exports entirely.
+
+Limits: the user's latest approved experimental dataset and Windows graphics
+stack were not available. First-open texture/normal/locator setup is still
+synchronous. Rendering remains dependent on mesh size and graphics drivers.
+This update does not claim to fix the previously reported Windows/VTK shutdown
+popup. No geometry simplification or changes to segmentation rules were made.

@@ -25,12 +25,14 @@ class HeadlessEditor:
         self.labels=np.array([1,0,-1,-1],np.int8)
         self.completed=True; self.dirty=True; self.stroke={}
         self.undo_stack=[];self.redo_stack=[];self.readonly=False;self.errors=[]
+        self.exports_pending=False;self.draft_timer=SimpleNamespace(stop=lambda:None,start=lambda:None)
         self.view=SimpleNamespace(painting=False,previous=None,setFocus=lambda:None,camera_state=lambda:{})
         self.notes=SimpleNamespace(toPlainText=lambda:'keep these notes')
         self.auto_ply=SimpleNamespace(isChecked=lambda:True)
     def is_read_only(self):return self.readonly
-    def refresh(self):pass
-    def refresh_queue(self):pass
+    def refresh(self,*args,**kwargs):pass
+    def refresh_status(self):pass
+    def refresh_queue(self,*args,**kwargs):pass
     def show_error(self,message):self.errors.append(message)
 
 
@@ -84,6 +86,7 @@ class LabelFeatureTests(unittest.TestCase):
         np.testing.assert_array_equal(self.store.load(self.mesh)[0],original)
         editor.redo();np.testing.assert_array_equal(editor.labels,[-2,-2,-2,-1])
         self.assertEqual(self.path.read_bytes(),source_bytes);self.assertFalse(editor.errors,editor.errors)
+        editor.save()
         preview=self.store.path_for(self.path).parent/(self.path.name+'.label_colors.ply')
         np.testing.assert_array_equal(PlyData.read(preview)['face']['face_label'],editor.labels)
     def test_readonly_reset_does_nothing(self):

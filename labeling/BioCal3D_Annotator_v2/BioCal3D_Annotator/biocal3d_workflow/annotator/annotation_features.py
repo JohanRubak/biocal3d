@@ -1,4 +1,6 @@
 """Display-only appearance controls, orientation cues and rater switching."""
+from contextlib import contextmanager
+from performance import file_signature
 import re
 import csv
 import json
@@ -24,6 +26,11 @@ def adjust_rgb(colors, brightness=0., contrast=1., gamma=1., saturation=1.):
 
 
 def sample_frame(mesh):
+    derived=getattr(mesh,'_derived',{})
+    geometry=mesh.path.with_name('geometry.npz');signature=file_signature(geometry)
+    key=(mesh.fingerprint,signature)
+    saved=derived.get('sample_frame') if getattr(mesh,'_stable_geometry',False) else None
+    if saved is not None and saved[0]==key:return tuple(np.array(v,copy=True) if isinstance(v,np.ndarray) else v for v in saved[1])
     v=mesh.vertices[np.unique(mesh.faces[mesh.active])];center=v.mean(axis=0)
     _,_,axes=np.linalg.svd(v-center,full_matrices=False);normal=axes[-1].copy()
     canonical=False;geometry=mesh.path.with_name('geometry.npz')
@@ -35,7 +42,9 @@ def sample_frame(mesh):
         if np.dot(normal,normals[mesh.active].sum(axis=0))<0:normal=-normal
     up=axes[1]-np.dot(axes[1],normal)*normal
     if np.linalg.norm(up)<1e-8:up=np.array([0.,1.,0.])
-    return center,normal,up/np.linalg.norm(up),'canonical reference +Z' if canonical else 'inferred mesh direction'
+    result=(center,normal,up/np.linalg.norm(up),'canonical reference +Z' if canonical else 'inferred mesh direction')
+    if getattr(mesh,'_stable_geometry',False):derived['sample_frame']=(key,result)
+    return result
 
 
 def orientation_path(store,mesh):
@@ -60,6 +69,19 @@ def read_orientation(store,mesh):
 
 
 class SurfaceFeatures:
+    def request_render(self):
+        if getattr(self,'_render_depth',0):self._render_pending=True
+        else:self.GetRenderWindow().Render()
+
+    @contextmanager
+    def defer_render(self):
+        self._render_depth=getattr(self,'_render_depth',0)+1
+        try:yield
+        finally:
+            self._render_depth-=1
+            if not self._render_depth and getattr(self,'_render_pending',False):
+                self._render_pending=False;self.request_render()
+
     def init_features(self):
         self.color_adjustments=dict(brightness=0.,contrast=1.,gamma=1.,saturation=1.)
         self.color_enabled=True
@@ -125,20 +147,32 @@ class SurfaceFeatures:
         self.apply_point_style()
         for actor,mapper in ((self.base,self.mapper),(self.points,self.points_mapper)):
             actor.GetProperty().Modified();actor.Modified();mapper.Modified()
-        self.GetRenderWindow().Render()
+        self.request_render()
 
     def load_display_texture(self,path):
         if self.mesh is None or self.mesh.display.GetPointData().GetTCoords() is None:raise ValueError('Mesh has no UV coordinates.')
-        reader=vtk.vtkImageReader2Factory().CreateImageReader2(str(path))
-        if reader is None:raise ValueError('Cannot read this texture.')
-        reader.SetFileName(str(path));reader.Update()
-        if reader.GetOutput().GetNumberOfPoints()==0:raise ValueError('Texture is empty or unreadable.')
-        self.original_texture=vtk.vtkImageData();self.original_texture.DeepCopy(reader.GetOutput())
-        a=vtk_to_numpy(self.original_texture.GetPointData().GetScalars()).copy()
-        if a.ndim==1:a=a[:,None]
-        if a.shape[1]<3:a=np.repeat(a[:,:1],3,axis=1)
-        self.texture_pixels=a.astype(np.uint8)
-        self.mesh.texture=Path(path).resolve();self.mesh.warning='';self.apply_color_adjustments()
+        path=Path(path).resolve();signature=file_signature(path)
+        derived=getattr(self.mesh,'_derived',{})
+        cached=derived.get('decoded_texture') if getattr(self.mesh,'_stable_geometry',False) else None
+        if cached is not None and cached[0]==signature:
+            _,self.original_texture,self.texture_pixels=cached
+        else:
+            read_cache=getattr(self.mesh,'read_cache',None)
+            feedback=getattr(self,'loading_feedback',None)
+            def decode():
+                input_path=read_cache.materialize(path,feedback.report if feedback is not None else None) if read_cache is not None else path
+                reader=vtk.vtkImageReader2Factory().CreateImageReader2(str(input_path))
+                if reader is None:raise ValueError('Cannot read this texture.')
+                reader.SetFileName(str(input_path));reader.Update()
+                if reader.GetOutput().GetNumberOfPoints()==0:raise ValueError('Texture is empty or unreadable.')
+                image=vtk.vtkImageData();image.DeepCopy(reader.GetOutput())
+                pixels=vtk_to_numpy(image.GetPointData().GetScalars()).copy()
+                if pixels.ndim==1:pixels=pixels[:,None]
+                if pixels.shape[1]<3:pixels=np.repeat(pixels[:,:1],3,axis=1)
+                return image,pixels.astype(np.uint8)
+            self.original_texture,self.texture_pixels=feedback.run(decode,'Loading scanner texture…') if feedback is not None else decode()
+            if getattr(self.mesh,'_stable_geometry',False):derived['decoded_texture']=(signature,self.original_texture,self.texture_pixels)
+        self.mesh.texture=path;self.mesh.warning='';self.apply_color_adjustments()
 
     def set_top_normal(self,normal):
         self.top_normal=np.asarray(normal,float)/np.linalg.norm(normal)
@@ -175,19 +209,28 @@ class SurfaceFeatures:
         extent=max(float(np.linalg.norm(np.ptp(v,axis=0))),.01);camera=self.renderer.GetActiveCamera()
         camera.SetFocalPoint(*self.surface_center);camera.SetPosition(*(self.surface_center+self.top_normal*extent*2))
         camera.SetViewUp(*self.surface_up);camera.ParallelProjectionOn();camera.SetParallelScale(extent/2.4)
-        self.renderer.ResetCameraClippingRange();self.GetRenderWindow().Render()
+        self.renderer.ResetCameraClippingRange();self.request_render()
 
 
 class AnnotatorFeatures:
     def queue_metadata(self,root,queue,manifest=None):
+        rows_by_dir={};source=Path(manifest) if manifest else root/'scan_manifest.csv'
+        if source.is_file():
+            with source.open(encoding='utf-8-sig',newline='') as stream:
+                for row in csv.DictReader(stream):
+                    relative=row.get('sample_dir')
+                    parent=(root/relative).resolve() if relative else (root/row['annotation_mesh']).resolve().parent if row.get('annotation_mesh') else None
+                    if parent is not None:rows_by_dir[parent]={k:v for k,v in row.items() if v is not None and v!=''}
         metadata={}
         for path in queue:
-            info={};source=path.with_name('metadata.json')
-            if source.is_file():
-                try:
-                    value=json.loads(source.read_text(encoding='utf-8'))
-                    if isinstance(value,dict):info=value
-                except (OSError,ValueError):pass
+            info=dict(rows_by_dir.get(path.parent,{}))
+            if not info:
+                source=path.with_name('metadata.json')
+                if source.is_file():
+                    try:
+                        value=json.loads(source.read_text(encoding='utf-8'))
+                        if isinstance(value,dict):info=value
+                    except (OSError,ValueError):pass
             sample=path.parent.name if path.name.lower() in ('roi.ply','roi.vtp','geometry.npz') else path.stem
             match=re.search(r'BCG(\d+)T(\d+)[-_](\d+)',sample,re.I)
             if match:
@@ -195,15 +238,9 @@ class AnnotatorFeatures:
             info.setdefault('sample_id',sample)
             scanner=next((part for part in path.relative_to(root).parts[:-1] if part.lower() in ('trios3','trios5','itero','labscanner','primescan')),'')
             info.setdefault('scanner',scanner);metadata[path]=info
-        if manifest:
-            with Path(manifest).open(encoding='utf-8-sig',newline='') as stream:
-                for row in csv.DictReader(stream):
-                    candidates=[(root/row['annotation_mesh']).resolve()] if row.get('annotation_mesh') else [p for p in queue if row.get('sample_dir') and p.parent==(root/row['sample_dir']).resolve()]
-                    for path in candidates:
-                        if path in metadata:metadata[path].update({k:v for k,v in row.items() if v is not None and v!=''})
         return metadata
 
-    def sort_queue(self,*args):
+    def sort_queue(self,*args,refresh=True):
         if not self.queue:return
         mode=self.sort_picker.currentData();current=self.mesh.path if self.mesh else None
         def natural(value):return tuple((0,int(part)) if part.isdigit() else (1,part) for part in re.split(r'(\d+)',str(value).casefold()))
@@ -213,14 +250,14 @@ class AnnotatorFeatures:
             if mode=='scanner':return natural(info.get('scanner','')),sample,relative
             if mode=='group':return natural(info.get('group','')),natural(info.get('physical_id','')),sample,relative
             if mode=='stage':return {'partial':0,'baseline':1,'clean':2}.get(info.get('stage'),3),sample,relative
-            if mode=='status':return {'draft':0,'new':1,'error':2,'done':3}[self.store.status(path)],sample,relative
+            if mode=='status':return {'draft':0,'new':1,'geometry_changed':2,'error':3,'done':4}.get(self.store.status(path) if refresh else self._queue_states.get(path,'new'),3),sample,relative
             return relative
         self.queue=list(self.queue_order) if mode=='original' else sorted(self.queue_order,key=key,reverse=mode=='sample_desc')
         self.index=self.queue.index(current) if current in self.queue else -1
         self.list.blockSignals(True);self.list.clear()
         for path in self.queue:self.list.addItem(str(path.relative_to(self.root)))
         if self.index>=0:self.list.setCurrentRow(self.index)
-        self.list.blockSignals(False);self.refresh_queue()
+        self.list.blockSignals(False);self.refresh_queue(cached=not refresh)
         if self.mesh:self.sample_title.setText(f'{self.index+1} / {len(self.queue)}  •  {self.mesh.path.parent.name} / {self.mesh.path.name}')
 
     def set_scanner_color(self,enabled):
@@ -249,12 +286,7 @@ class AnnotatorFeatures:
         self.color_timer.timeout.connect(self.update_display_colors)
         # Throttle rendering while dragging, so long drags still update the view.
         for control in self.color_controls.values():control.valueChanged.connect(self.schedule_color_update)
-        row=QtWidgets.QHBoxLayout();self.top_guard=QtWidgets.QCheckBox('Paint from top only');self.top_guard.setChecked(True)
-        self.top_guard.toggled.connect(self.set_top_guard);row.addWidget(self.top_guard)
-        button=QtWidgets.QPushButton('Top view [R]');button.clicked.connect(self.view.reset_camera);row.addWidget(button)
-        button=QtWidgets.QPushButton('Flip top/bottom');button.clicked.connect(self.flip_top);row.addWidget(button)
-        self.orientation_note=QtWidgets.QLabel('TOP axis follows the sample');row.addWidget(self.orientation_note);row.addStretch()
-        main.insertLayout(main.indexOf(self.view),row)
+        self.view.top_only=True
 
     def schedule_color_update(self,*args):
         if not self.color_timer.isActive():self.color_timer.start()
@@ -269,15 +301,12 @@ class AnnotatorFeatures:
             control.blockSignals(True);control.setValue(0 if name=='brightness' else 100);control.blockSignals(False)
         self.color_timer.stop();self.update_display_colors();self.view.setFocus()
 
-    def set_top_guard(self,enabled):
-        self.view.top_only=enabled;self.view.update_side_indicator();self.view.GetRenderWindow().Render()
-
     def flip_top(self):
         if self.mesh is None:return
         normal=-self.view.top_normal
         try:
             atomic_npz(orientation_path(self.store,self.mesh),fingerprint=np.array(self.mesh.fingerprint),top_normal=normal)
-            self.view.set_top_normal(normal);self.orientation_note.setText('Shared top direction corrected')
+            self.view.set_top_normal(normal);self.statusBar().showMessage('Shared top direction corrected')
             self.view.reset_camera();self.dirty=True;self.autosave()
         except Exception as exc:self.show_error(str(exc))
 
@@ -307,10 +336,13 @@ class AnnotatorFeatures:
         lock=None
         try:
             store=AnnotationStore(self.root,self.store.output,name)
+            store.mesh_cache=self.mesh_cache
+            store.read_cache=self.read_cache
+            store._review_alias_inputs=getattr(self.store,"_review_alias_inputs",{})
             if self.mesh is not None:lock=self.acquire_lock(store.path_for(self.mesh.path));labels,completed,notes=store.load(self.mesh)
             self.release_lock();self.lock_path=lock;self.store=store
             if self.mesh is not None:
-                self.labels,self.completed=labels,completed;self.undo_stack=[];self.redo_stack=[];self.stroke={};self.dirty=False
+                self.labels,self.completed=labels,completed;self.undo_stack=[];self.redo_stack=[];self.stroke={};self.dirty=False;self.exports_pending=False
                 self.notes.blockSignals(True);self.notes.setPlainText(notes);self.notes.blockSignals(False)
                 self.last_save=f'Loaded {name} annotation';self.refresh()
             self.settings.setValue('annotator',name);self.refresh_queue();self.update_review_mode();self.view.setFocus()
@@ -326,6 +358,7 @@ class AnnotatorFeatures:
         self.clear_labels_button.setEnabled(not readonly)
         self.all_plaque_button.setEnabled(not readonly)
         self.roi_review_button.setEnabled(not readonly)
+        self.approve_roi_button.setEnabled(not readonly and self.mesh is not None)
         self.mode.setChecked(not readonly)
         if readonly:self.notice.setText('READ ONLY: independent labels. Select '+self.review_owner+' to edit consensus.')
         elif self.mesh:self.notice.setText(self.mesh.warning or 'Scanner colors • adjustments affect the display only')

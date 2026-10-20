@@ -1,0 +1,3 @@
+run,protocol,tag,model,variant,seed,partition,specimen_balanced_accuracy,partial_recall,transform,changed_predictions,mean_probability_difference,perturbed_specimen_BA
+reference_followup__concerto__rgb_combined__seed42,reference,followup,concerto,rgb_combined,42,val,0.9513888888888888,0.9375,rotate_z_90,7,0.0749839842319488,0.8541666666666666
+reference_followup__pointnext_s__rgb_combined__seed42,reference,followup,pointnext_s,rgb_combined,42,val,1.0,1.0,rotate_z_90,9,0.0944786444306373,0.8541666666666666

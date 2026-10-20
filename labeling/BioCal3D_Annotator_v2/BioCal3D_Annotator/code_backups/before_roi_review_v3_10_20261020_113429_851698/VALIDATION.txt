@@ -1,0 +1,27 @@
+BioCal3D ROI review v3.9 — validation, 16 October 2026
+
+PASS: 65 annotator/extraction/rebuild regressions and 10 workflow/study checks.
+- Portable study builder defaults to G5, 2 calibration and 6 agreement physical
+  specimens. Four scanners x three timepoints yield 24 and 72 scans respectively.
+  All scans of a specimen stay in one subset. No production cases are exported.
+- A completed rebuilt snapshot is required. Pending, incomplete, modified-since-
+  rebuild and inventory-excluded inputs are rejected before publication.
+- Tests create 96 G5 scans plus G4 controls. Geometry, masks, source-face IDs,
+  RGB, UVs, review versions and byte-identical review payloads survive copying.
+- Existing Johan/Bruna ratings and stray labeled exports are not transferred.
+  New Bruna/Katrin labels are unreviewed. Source file hashes remain unchanged.
+- Portable ROI textures take priority over old absolute paths in review payloads.
+  A moved study opens with the source unavailable, saves independent labels and
+  passes agreement analysis on 72/72 synthetic pairs. Calibration is excluded.
+- Existing output folders are protected; selection is reproducible. The CLI
+  succeeds with spaces in source/output paths. Source input hashes are recorded.
+- Existing v3.8 real prepare-all metadata, RGB/UV review/rebuild and repeated
+  rebuild tests remain passing, including T0/T1/T2 schema normalization.
+PASS: installer copies every listed update file, backs up old code, and preserves
+  data, review, label and environment markers. Compilation and ZIP CRC/hashes checked.
+
+Runtime: Linux Python 3.12, PySide6 6.8.3, VTK 9.5.2, PyVista 0.49.1.
+Qt UI tests disable native rendering; standalone VTK tests render offscreen.
+Windows launchers and the actual 512-scan dataset were not executed here.
+The original full scanner models are not bundled in the portable study.
+Registration was not rerun. The prior Windows shutdown popup is not fixed.

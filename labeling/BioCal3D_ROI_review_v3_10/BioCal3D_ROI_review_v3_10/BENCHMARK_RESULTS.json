@@ -1,0 +1,58 @@
+{
+  "version": "3.10",
+  "kind": "synthetic IO only; not Windows interaction latency",
+  "updated": {
+    "faces": 318402,
+    "vertices": 160000,
+    "repeats": 3,
+    "seconds": {
+      "label_color_ply": 1.845526,
+      "original_color_ply": 0.965091,
+      "read_original_color_ply": 0.373851
+    },
+    "individual_seconds": {
+      "label_color_ply": [
+        5.7337886479999725,
+        1.8455255779999789,
+        0.5487137850004729
+      ],
+      "original_color_ply": [
+        0.9650907710001775,
+        0.3383491579998008,
+        1.1334044940003878
+      ],
+      "read_original_color_ply": [
+        0.5321793330003857,
+        0.09060374300042895,
+        0.3738512250001804
+      ]
+    }
+  },
+  "baseline": {
+    "faces": 318402,
+    "vertices": 160000,
+    "repeats": 3,
+    "seconds": {
+      "label_color_ply": 12.074688,
+      "original_color_ply": 9.894574,
+      "read_original_color_ply": 16.099824
+    },
+    "individual_seconds": {
+      "label_color_ply": [
+        12.074688442000479,
+        14.509560888000124,
+        7.565050647000135
+      ],
+      "original_color_ply": [
+        9.863858396000069,
+        35.43385076100003,
+        9.894574028000534
+      ],
+      "read_original_color_ply": [
+        23.461765695000395,
+        8.74315815799946,
+        16.099824142000216
+      ]
+    }
+  }
+}

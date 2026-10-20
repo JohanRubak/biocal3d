@@ -9,6 +9,7 @@ from PySide6 import QtCore,QtGui,QtWidgets,QtTest
 from biocal3d_annotator import Annotator
 from mesh_io import create_demo,load_mesh,atomic_npz,AnnotationStore,export_ply
 from annotation_features import read_orientation
+from roi_review_store import read_reviewed
 from vtk.util.numpy_support import numpy_to_vtk
 from vtk.util.numpy_support import vtk_to_numpy
 
@@ -71,7 +72,7 @@ def run():
         assert window.class_picker.currentData()==0
         QtTest.QTest.keyClick(window.class_picker,QtCore.Qt.Key.Key_3)
         assert window.class_picker.currentData()==-1
-        window.notes.setFocus();app.processEvents();QtTest.QTest.keyClicks(window.notes,'1234')
+        window.notes.setFocus();QtTest.QTest.mouseMove(window.notes,QtCore.QPoint(8,8));app.processEvents();QtTest.QTest.keyClicks(window.notes,'1234')
         assert window.notes.toPlainText()=='1234' and window.class_picker.currentData()==-1
         QtTest.QTest.keyClicks(window.notes,' test');assert window.notes.toPlainText()=='1234 test'
         assert not window.view.space_down
@@ -120,7 +121,7 @@ def run():
         window.color_controls['brightness'].setFocus();app.processEvents()
         QtTest.QTest.keyClick(window.color_controls['brightness'],QtCore.Qt.Key.Key_D)
         assert window.index==1 and window.store.status(original_queue[0])=='draft'
-        assert window.store.load(load_mesh(original_queue[0]))[2]=='Saved before keyboard navigation'
+        assert window.store.load(read_reviewed(window.store,original_queue[0]))[2]=='Saved before keyboard navigation'
         QtTest.QTest.keyClick(window.view,QtCore.Qt.Key.Key_A);assert window.index==0
         np.testing.assert_array_equal(window.labels,painted)
         QtTest.QTest.keyClick(window.view,QtCore.Qt.Key.Key_A);assert window.index==0
