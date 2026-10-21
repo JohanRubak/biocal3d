@@ -1,0 +1,324 @@
+{
+  "browser_version": "1.2.0",
+  "exported_utc": "2026-10-21T13:24:05.161998+00:00",
+  "dataset_root": "C:\\Users\\au662213\\repos\\biocal3d\\data\\Approved ROIs",
+  "physical_id": "BCG6-4",
+  "group": 6,
+  "cultivation_hours": 24,
+  "stages": [
+    "baseline",
+    "partial",
+    "clean"
+  ],
+  "render_mode": "colour",
+  "original_texture_requested": false,
+  "individual_image_pixels": [
+    1600,
+    1600
+  ],
+  "dpi_metadata": 300,
+  "model_representation": "approved_roi",
+  "original_data_root": "C:\\Users\\au662213\\repos\\biocal3d\\data\\02-09-2026-Data collected",
+  "camera": {
+    "position": [
+      0.0,
+      0.0,
+      51.30594174937292
+    ],
+    "focal_point": [
+      0,
+      0,
+      0
+    ],
+    "view_up": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "parallel_scale": 9.235069514887126
+  },
+  "projection": "parallel",
+  "note": "",
+  "overview_layout": "Four scanner panels (2 by 2), with stage columns inside each panel",
+  "scanner_panel_images": {
+    "iTERO": "iTERO_stages.png",
+    "TRIOS3": "TRIOS3_stages.png",
+    "TRIOS5": "TRIOS5_stages.png",
+    "LABscanner": "LABscanner_stages.png"
+  },
+  "fit_full_roi_on_export": true,
+  "display_policy": "No colour correction, smoothing or decimation. Approved ROI coordinates centred for display. Original models use the saved original_to_canonical transform and ROI centre where available; otherwise they use their own centred scanner coordinates. No new registration is performed. Source coordinate units retained.",
+  "missing_or_failed_panels": [],
+  "errors": [],
+  "scans": [
+    {
+      "sample_name": "BCG6T0-4",
+      "scanner": "iTERO",
+      "stage": "baseline",
+      "source_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\Approved ROIs\\samples\\iTERO\\G6\\BCG6T0-4\\geometry.npz",
+      "source_sha256": "dd539d40fb101a1dec2a6f5bea71f236ee46d08aef63abf223ddb0691f801c1e",
+      "image": "BCG6T0-4_iTERO_baseline.png",
+      "colour_source": "Saved vertex RGB",
+      "texture_path": null,
+      "approved_roi_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\Approved ROIs\\samples\\iTERO\\G6\\BCG6T0-4\\geometry.npz",
+      "coordinate_frame": "centred approved ROI",
+      "original_to_canonical": null,
+      "texture_sha256": null,
+      "display_center_translation": [
+        0.002929210662841797,
+        0.00886392593383789,
+        0.02940082550048828
+      ],
+      "rotation_z_degrees": 0.0,
+      "vertices": 2456,
+      "faces": 3987
+    },
+    {
+      "sample_name": "BCG6T0-4",
+      "scanner": "TRIOS3",
+      "stage": "baseline",
+      "source_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\Approved ROIs\\samples\\TRIOS3\\G6\\BCG6T0-4\\geometry.npz",
+      "source_sha256": "276fa3c7e70c0f8b6776305ffc31a90cf1cb514f523465e1732bc1926e523afa",
+      "image": "BCG6T0-4_TRIOS3_baseline.png",
+      "colour_source": "Saved vertex RGB",
+      "texture_path": null,
+      "approved_roi_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\Approved ROIs\\samples\\TRIOS3\\G6\\BCG6T0-4\\geometry.npz",
+      "coordinate_frame": "centred approved ROI",
+      "original_to_canonical": null,
+      "texture_sha256": null,
+      "display_center_translation": [
+        -0.015717744827270508,
+        -0.02744889259338379,
+        -0.013788394629955292
+      ],
+      "rotation_z_degrees": 0.0,
+      "vertices": 551,
+      "faces": 1006
+    },
+    {
+      "sample_name": "BCG6T0-4",
+      "scanner": "TRIOS5",
+      "stage": "baseline",
+      "source_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\Approved ROIs\\samples\\TRIOS5\\G6\\BCG6T0-4\\geometry.npz",
+      "source_sha256": "df2aac1223c9fc0654f82101bc088e6067b190679d9dc28230813d6418292494",
+      "image": "BCG6T0-4_TRIOS5_baseline.png",
+      "colour_source": "Saved vertex RGB",
+      "texture_path": null,
+      "approved_roi_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\Approved ROIs\\samples\\TRIOS5\\G6\\BCG6T0-4\\geometry.npz",
+      "coordinate_frame": "centred approved ROI",
+      "original_to_canonical": null,
+      "texture_sha256": null,
+      "display_center_translation": [
+        0.030239105224609375,
+        -0.0025310516357421875,
+        -0.022771820425987244
+      ],
+      "rotation_z_degrees": 0.0,
+      "vertices": 580,
+      "faces": 1060
+    },
+    {
+      "sample_name": "BCG6T0-4",
+      "scanner": "LABscanner",
+      "stage": "baseline",
+      "source_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\Approved ROIs\\samples\\LABscanner\\G6\\BCG6T0-4\\geometry.npz",
+      "source_sha256": "f77ae041936e7c65c098344cdd6a975ef085218f35d0a7b026088f0b323c6c61",
+      "image": "BCG6T0-4_LABscanner_baseline.png",
+      "colour_source": "Saved vertex RGB",
+      "texture_path": null,
+      "approved_roi_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\Approved ROIs\\samples\\LABscanner\\G6\\BCG6T0-4\\geometry.npz",
+      "coordinate_frame": "centred approved ROI",
+      "original_to_canonical": null,
+      "texture_sha256": null,
+      "display_center_translation": [
+        -1.6927719116210938e-05,
+        -0.010640859603881836,
+        0.008404292166233063
+      ],
+      "rotation_z_degrees": 0.0,
+      "vertices": 7856,
+      "faces": 15357
+    },
+    {
+      "sample_name": "BCG6T1-4",
+      "scanner": "iTERO",
+      "stage": "partial",
+      "source_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\Approved ROIs\\samples\\iTERO\\G6\\BCG6T1-4\\geometry.npz",
+      "source_sha256": "9ac6ed8b1dc61d6e95990026e923c51d1eb75903b601a4f24f8b5179db42aaee",
+      "image": "BCG6T1-4_iTERO_partial.png",
+      "colour_source": "Saved vertex RGB",
+      "texture_path": null,
+      "approved_roi_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\Approved ROIs\\samples\\iTERO\\G6\\BCG6T1-4\\geometry.npz",
+      "coordinate_frame": "centred approved ROI",
+      "original_to_canonical": null,
+      "texture_sha256": null,
+      "display_center_translation": [
+        -0.02641749382019043,
+        -0.06975317001342773,
+        -0.0007956549525260925
+      ],
+      "rotation_z_degrees": 0.0,
+      "vertices": 1423,
+      "faces": 2436
+    },
+    {
+      "sample_name": "BCG6T1-4",
+      "scanner": "TRIOS3",
+      "stage": "partial",
+      "source_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\Approved ROIs\\samples\\TRIOS3\\G6\\BCG6T1-4\\geometry.npz",
+      "source_sha256": "89c885e3579f5b4a6f04b4402e93794133ea1ec95661a4b1283af336d4e44639",
+      "image": "BCG6T1-4_TRIOS3_partial.png",
+      "colour_source": "Saved vertex RGB",
+      "texture_path": null,
+      "approved_roi_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\Approved ROIs\\samples\\TRIOS3\\G6\\BCG6T1-4\\geometry.npz",
+      "coordinate_frame": "centred approved ROI",
+      "original_to_canonical": null,
+      "texture_sha256": null,
+      "display_center_translation": [
+        0.008941888809204102,
+        -0.011943817138671875,
+        -0.008826859295368195
+      ],
+      "rotation_z_degrees": 0.0,
+      "vertices": 495,
+      "faces": 881
+    },
+    {
+      "sample_name": "BCG6T1-4",
+      "scanner": "TRIOS5",
+      "stage": "partial",
+      "source_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\Approved ROIs\\samples\\TRIOS5\\G6\\BCG6T1-4\\geometry.npz",
+      "source_sha256": "0cf34eb448346a4b47969490890e3293f33adf9fdbc733f143fc72ced83884b1",
+      "image": "BCG6T1-4_TRIOS5_partial.png",
+      "colour_source": "Saved vertex RGB",
+      "texture_path": null,
+      "approved_roi_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\Approved ROIs\\samples\\TRIOS5\\G6\\BCG6T1-4\\geometry.npz",
+      "coordinate_frame": "centred approved ROI",
+      "original_to_canonical": null,
+      "texture_sha256": null,
+      "display_center_translation": [
+        -0.01023101806640625,
+        -0.05438685417175293,
+        0.002948351204395294
+      ],
+      "rotation_z_degrees": 0.0,
+      "vertices": 434,
+      "faces": 783
+    },
+    {
+      "sample_name": "BCG6T1-4",
+      "scanner": "LABscanner",
+      "stage": "partial",
+      "source_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\Approved ROIs\\samples\\LABscanner\\G6\\BCG6T1-4\\geometry.npz",
+      "source_sha256": "fda69c96b44c7fd1526f87732f6b884a45164946ab4ad0848f23d8948b9f1d4c",
+      "image": "BCG6T1-4_LABscanner_partial.png",
+      "colour_source": "Saved vertex RGB",
+      "texture_path": null,
+      "approved_roi_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\Approved ROIs\\samples\\LABscanner\\G6\\BCG6T1-4\\geometry.npz",
+      "coordinate_frame": "centred approved ROI",
+      "original_to_canonical": null,
+      "texture_sha256": null,
+      "display_center_translation": [
+        0.005252361297607422,
+        -0.0019130706787109375,
+        -0.002120375633239746
+      ],
+      "rotation_z_degrees": 0.0,
+      "vertices": 5623,
+      "faces": 10961
+    },
+    {
+      "sample_name": "BCG6T2-4",
+      "scanner": "iTERO",
+      "stage": "clean",
+      "source_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\Approved ROIs\\samples\\iTERO\\G6\\BCG6T2-4\\geometry.npz",
+      "source_sha256": "54ed12ac57a180222f2d56c9e0ee2a358b68b10e316aeed71f06bf4cb9e95a10",
+      "image": "BCG6T2-4_iTERO_clean.png",
+      "colour_source": "Saved vertex RGB",
+      "texture_path": null,
+      "approved_roi_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\Approved ROIs\\samples\\iTERO\\G6\\BCG6T2-4\\geometry.npz",
+      "coordinate_frame": "centred approved ROI",
+      "original_to_canonical": null,
+      "texture_sha256": null,
+      "display_center_translation": [
+        -0.01842212677001953,
+        -0.005457401275634766,
+        0.019145376980304718
+      ],
+      "rotation_z_degrees": 0.0,
+      "vertices": 2632,
+      "faces": 3196
+    },
+    {
+      "sample_name": "BCG6T2-4",
+      "scanner": "TRIOS3",
+      "stage": "clean",
+      "source_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\Approved ROIs\\samples\\TRIOS3\\G6\\BCG6T2-4\\geometry.npz",
+      "source_sha256": "1edf63fd875158b848e0a2b85b9647ab0a1c45c45439a7cd3b818f845d3393af",
+      "image": "BCG6T2-4_TRIOS3_clean.png",
+      "colour_source": "Saved vertex RGB",
+      "texture_path": null,
+      "approved_roi_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\Approved ROIs\\samples\\TRIOS3\\G6\\BCG6T2-4\\geometry.npz",
+      "coordinate_frame": "centred approved ROI",
+      "original_to_canonical": null,
+      "texture_sha256": null,
+      "display_center_translation": [
+        0.0009453296661376953,
+        -0.017787456512451172,
+        -0.0009617060422897339
+      ],
+      "rotation_z_degrees": 0.0,
+      "vertices": 398,
+      "faces": 702
+    },
+    {
+      "sample_name": "BCG6T2-4",
+      "scanner": "TRIOS5",
+      "stage": "clean",
+      "source_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\Approved ROIs\\samples\\TRIOS5\\G6\\BCG6T2-4\\geometry.npz",
+      "source_sha256": "efc6e737cb78647583d3f5707fb9af99c4f5dca64479be87092c30d8820be400",
+      "image": "BCG6T2-4_TRIOS5_clean.png",
+      "colour_source": "Saved vertex RGB",
+      "texture_path": null,
+      "approved_roi_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\Approved ROIs\\samples\\TRIOS5\\G6\\BCG6T2-4\\geometry.npz",
+      "coordinate_frame": "centred approved ROI",
+      "original_to_canonical": null,
+      "texture_sha256": null,
+      "display_center_translation": [
+        0.002432584762573242,
+        0.00316619873046875,
+        -0.008554968982934952
+      ],
+      "rotation_z_degrees": 0.0,
+      "vertices": 343,
+      "faces": 606
+    },
+    {
+      "sample_name": "BCG6T2-4",
+      "scanner": "LABscanner",
+      "stage": "clean",
+      "source_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\Approved ROIs\\samples\\LABscanner\\G6\\BCG6T2-4\\geometry.npz",
+      "source_sha256": "63d611c0ed4dedd553d92a45981b1b3238fa1f1f9029aa892ea0adeb63d1b98d",
+      "image": "BCG6T2-4_LABscanner_clean.png",
+      "colour_source": "Saved vertex RGB",
+      "texture_path": null,
+      "approved_roi_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\Approved ROIs\\samples\\LABscanner\\G6\\BCG6T2-4\\geometry.npz",
+      "coordinate_frame": "centred approved ROI",
+      "original_to_canonical": null,
+      "texture_sha256": null,
+      "display_center_translation": [
+        -0.0036170482635498047,
+        -0.019587039947509766,
+        0.004482075572013855
+      ],
+      "rotation_z_degrees": 0.0,
+      "vertices": 4578,
+      "faces": 8890
+    }
+  ],
+  "runtime": {
+    "python": "3.11.16",
+    "numpy": "2.4.6",
+    "vtk": "9.3.1"
+  }
+}

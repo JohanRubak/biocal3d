@@ -1,0 +1,189 @@
+{
+  "sources": [
+    {
+      "asset": "mature_full_partial.png",
+      "source_archive_path": "BCG6-4_20261021_152353_039123/BCG6T1-4_TRIOS5_partial.png",
+      "source_png_sha256": "2089a9f4b66c5db10f71a4f54437643fcc0aec31b9d805ddc87b4b5d5f6d7dbb",
+      "sample_name": "BCG6T1-4",
+      "scanner": "TRIOS5",
+      "stage": "partial",
+      "colour_source": "PLY point RGB",
+      "model_representation": "original",
+      "camera": {
+        "position": [
+          0.0,
+          0.0,
+          253.53810011608027
+        ],
+        "focal_point": [
+          0,
+          0,
+          0
+        ],
+        "view_up": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "parallel_scale": 45.63685802089445
+      },
+      "source_rotation_degrees": 0.0
+    },
+    {
+      "asset": "fresh_baseline.png",
+      "source_archive_path": "BCG1-2_20261021_152418_606843/BCG1T0-2_TRIOS5_baseline.png",
+      "source_png_sha256": "a1cfbd19c3890e2cf27f12c01803ebe11220b3804f502517a9cef47491ac4f52",
+      "sample_name": "BCG1T0-2",
+      "scanner": "TRIOS5",
+      "stage": "baseline",
+      "colour_source": "Saved vertex RGB",
+      "model_representation": "approved_roi",
+      "camera": {
+        "position": [
+          0.0,
+          0.0,
+          51.21608641477263
+        ],
+        "focal_point": [
+          0,
+          0,
+          0
+        ],
+        "view_up": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "parallel_scale": 9.218895554659076
+      },
+      "source_rotation_degrees": 0.0
+    },
+    {
+      "asset": "fresh_final.png",
+      "source_archive_path": "BCG1-2_20261021_152418_606843/BCG1T1-2_TRIOS5_clean.png",
+      "source_png_sha256": "4801392f82be8a9cb5b975df002c64485c03d566f157d82bf61c18b12ce8f833",
+      "sample_name": "BCG1T1-2",
+      "scanner": "TRIOS5",
+      "stage": "clean",
+      "colour_source": "Saved vertex RGB",
+      "model_representation": "approved_roi",
+      "camera": {
+        "position": [
+          0.0,
+          0.0,
+          51.21608641477263
+        ],
+        "focal_point": [
+          0,
+          0,
+          0
+        ],
+        "view_up": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "parallel_scale": 9.218895554659076
+      },
+      "source_rotation_degrees": 0.0
+    },
+    {
+      "asset": "mature_baseline.png",
+      "source_archive_path": "BCG6-4_20261021_152401_334361/BCG6T0-4_TRIOS5_baseline.png",
+      "source_png_sha256": "0c340c8b370f24a51a1abaf279f39d499a1878754e3cc42448ec272d2acd06f7",
+      "sample_name": "BCG6T0-4",
+      "scanner": "TRIOS5",
+      "stage": "baseline",
+      "colour_source": "Saved vertex RGB",
+      "model_representation": "approved_roi",
+      "camera": {
+        "position": [
+          0.0,
+          0.0,
+          51.30594174937292
+        ],
+        "focal_point": [
+          0,
+          0,
+          0
+        ],
+        "view_up": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "parallel_scale": 9.235069514887126
+      },
+      "source_rotation_degrees": 0.0
+    },
+    {
+      "asset": "mature_partial.png",
+      "source_archive_path": "BCG6-4_20261021_152401_334361/BCG6T1-4_TRIOS5_partial.png",
+      "source_png_sha256": "5b9f1c488845e272cbf699116b12087763ab4ca3a4256716ce6116dbcf143862",
+      "sample_name": "BCG6T1-4",
+      "scanner": "TRIOS5",
+      "stage": "partial",
+      "colour_source": "Saved vertex RGB",
+      "model_representation": "approved_roi",
+      "camera": {
+        "position": [
+          0.0,
+          0.0,
+          51.30594174937292
+        ],
+        "focal_point": [
+          0,
+          0,
+          0
+        ],
+        "view_up": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "parallel_scale": 9.235069514887126
+      },
+      "source_rotation_degrees": 0.0
+    },
+    {
+      "asset": "mature_final.png",
+      "source_archive_path": "BCG6-4_20261021_152401_334361/BCG6T2-4_TRIOS5_clean.png",
+      "source_png_sha256": "646c6a2854d2e82672d6c3a89a6ae8e38d80b1ccd557ebfd064cf7c2f9825853",
+      "sample_name": "BCG6T2-4",
+      "scanner": "TRIOS5",
+      "stage": "clean",
+      "colour_source": "Saved vertex RGB",
+      "model_representation": "approved_roi",
+      "camera": {
+        "position": [
+          0.0,
+          0.0,
+          51.30594174937292
+        ],
+        "focal_point": [
+          0,
+          0,
+          0
+        ],
+        "view_up": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "parallel_scale": 9.235069514887126
+      },
+      "source_rotation_degrees": 0.0
+    },
+    {
+      "asset": "fresh_full_baseline.png",
+      "source_archive_path": "BCG1-2_20261021_152309_758837/BCG1T0-2_TRIOS5_baseline.png",
+      "source_png_sha256": "2c2fa90d64d6a552be18ba0fe74028cec7b8ed63be927fb543f00f631bf9b86c",
+      "sample_name": "BCG1T0-2",
+      "scanner": "TRIOS5",
+      "stage": "baseline",
+      "model_representation": "original",
+      "use": "Figure 1 mounting arrangement"
+    }
+  ],
+  "image_policy": "Original PNG colours preserved. Common square crop for all ROI stages within each example. White margins cropped from full-model image. No smoothing, colour adjustment or segmentation overlay."
+}

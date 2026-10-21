@@ -1,0 +1,13 @@
+Approved ROI browser startup
+Python: C:\Users\au662213\AppData\Local\anaconda3\envs\biocal3d\python.exe
+Python: C:\Users\au662213\AppData\Local\anaconda3\envs\biocal3d\python.exe
+Prefix: C:\Users\au662213\AppData\Local\anaconda3\envs\biocal3d
+PySide6: 6.8.3
+PySide6-Essentials: 6.8.3
+PySide6-Addons: 6.8.3
+shiboken6: 6.8.3
+Qt path setup: {"binding_directory": "C:\\Users\\au662213\\AppData\\Local\\anaconda3\\envs\\biocal3d\\Lib\\site-packages\\PySide6", "plugins": "C:\\Users\\au662213\\AppData\\Local\\anaconda3\\envs\\biocal3d\\Lib\\site-packages\\PySide6\\plugins", "replaced_environment": {}}
+Qt runtime: 6.8.3
+Qt plugin search: ['C:\\Users\\au662213\\AppData\\Local\\anaconda3\\envs\\biocal3d\\Lib\\site-packages\\PySide6\\plugins']
+Qt platform: windows
+QApplication startup passed

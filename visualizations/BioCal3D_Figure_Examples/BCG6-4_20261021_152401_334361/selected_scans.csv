@@ -1,0 +1,13 @@
+﻿physical_id,sample_name,group,specimen,scanner,stage,timepoint,mesh_path
+BCG6-4,BCG6T0-4,6,4,iTERO,baseline,0,C:\Users\au662213\repos\biocal3d\data\Approved ROIs\samples\iTERO\G6\BCG6T0-4\geometry.npz
+BCG6-4,BCG6T0-4,6,4,TRIOS3,baseline,0,C:\Users\au662213\repos\biocal3d\data\Approved ROIs\samples\TRIOS3\G6\BCG6T0-4\geometry.npz
+BCG6-4,BCG6T0-4,6,4,TRIOS5,baseline,0,C:\Users\au662213\repos\biocal3d\data\Approved ROIs\samples\TRIOS5\G6\BCG6T0-4\geometry.npz
+BCG6-4,BCG6T0-4,6,4,LABscanner,baseline,0,C:\Users\au662213\repos\biocal3d\data\Approved ROIs\samples\LABscanner\G6\BCG6T0-4\geometry.npz
+BCG6-4,BCG6T1-4,6,4,iTERO,partial,1,C:\Users\au662213\repos\biocal3d\data\Approved ROIs\samples\iTERO\G6\BCG6T1-4\geometry.npz
+BCG6-4,BCG6T1-4,6,4,TRIOS3,partial,1,C:\Users\au662213\repos\biocal3d\data\Approved ROIs\samples\TRIOS3\G6\BCG6T1-4\geometry.npz
+BCG6-4,BCG6T1-4,6,4,TRIOS5,partial,1,C:\Users\au662213\repos\biocal3d\data\Approved ROIs\samples\TRIOS5\G6\BCG6T1-4\geometry.npz
+BCG6-4,BCG6T1-4,6,4,LABscanner,partial,1,C:\Users\au662213\repos\biocal3d\data\Approved ROIs\samples\LABscanner\G6\BCG6T1-4\geometry.npz
+BCG6-4,BCG6T2-4,6,4,iTERO,clean,2,C:\Users\au662213\repos\biocal3d\data\Approved ROIs\samples\iTERO\G6\BCG6T2-4\geometry.npz
+BCG6-4,BCG6T2-4,6,4,TRIOS3,clean,2,C:\Users\au662213\repos\biocal3d\data\Approved ROIs\samples\TRIOS3\G6\BCG6T2-4\geometry.npz
+BCG6-4,BCG6T2-4,6,4,TRIOS5,clean,2,C:\Users\au662213\repos\biocal3d\data\Approved ROIs\samples\TRIOS5\G6\BCG6T2-4\geometry.npz
+BCG6-4,BCG6T2-4,6,4,LABscanner,clean,2,C:\Users\au662213\repos\biocal3d\data\Approved ROIs\samples\LABscanner\G6\BCG6T2-4\geometry.npz

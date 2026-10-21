@@ -1,0 +1,435 @@
+{
+  "browser_version": "1.2.0",
+  "exported_utc": "2026-10-21T13:23:13.090687+00:00",
+  "dataset_root": "C:\\Users\\au662213\\repos\\biocal3d\\data\\Approved ROIs",
+  "physical_id": "BCG1-2",
+  "group": 1,
+  "cultivation_hours": 12,
+  "stages": [
+    "baseline",
+    "clean"
+  ],
+  "render_mode": "colour",
+  "original_texture_requested": false,
+  "individual_image_pixels": [
+    1600,
+    1600
+  ],
+  "dpi_metadata": 300,
+  "model_representation": "original",
+  "original_data_root": "C:\\Users\\au662213\\repos\\biocal3d\\data\\02-09-2026-Data collected",
+  "camera": {
+    "position": [
+      0.0,
+      0.0,
+      239.00437092549265
+    ],
+    "focal_point": [
+      0,
+      0,
+      0
+    ],
+    "view_up": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "parallel_scale": 43.020786766588685
+  },
+  "projection": "parallel",
+  "note": "",
+  "overview_layout": "Four scanner panels (2 by 2), with stage columns inside each panel",
+  "scanner_panel_images": {
+    "iTERO": "iTERO_stages.png",
+    "TRIOS3": "TRIOS3_stages.png",
+    "TRIOS5": "TRIOS5_stages.png",
+    "LABscanner": "LABscanner_stages.png"
+  },
+  "fit_full_roi_on_export": true,
+  "display_policy": "No colour correction, smoothing or decimation. Approved ROI coordinates centred for display. Original models use the saved original_to_canonical transform and ROI centre where available; otherwise they use their own centred scanner coordinates. No new registration is performed. Source coordinate units retained.",
+  "missing_or_failed_panels": [],
+  "errors": [],
+  "scans": [
+    {
+      "sample_name": "BCG1T0-2",
+      "scanner": "iTERO",
+      "stage": "baseline",
+      "source_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\02-09-2026-Data collected\\iTERO\\G1-OK\\BCG1T0-2\\315555324_shell_occlusion_l.ply",
+      "source_sha256": "966c6cc1ff3c97eadb459477280d66c1b14874b4f8d999a3c24f9890ca43d6d5",
+      "image": "BCG1T0-2_iTERO_baseline.png",
+      "colour_source": "PLY point RGB",
+      "texture_path": null,
+      "approved_roi_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\Approved ROIs\\samples\\iTERO\\G1\\BCG1T0-2\\geometry.npz",
+      "coordinate_frame": "aligned to approved ROI using saved transform",
+      "original_to_canonical": [
+        [
+          0.06606485399495511,
+          0.9975103697370287,
+          0.024667738723279046,
+          25.94474971368892
+        ],
+        [
+          -0.9535057385411367,
+          0.05582663054515721,
+          0.29615906856129787,
+          -19.73987397585375
+        ],
+        [
+          0.2940446252454656,
+          -0.04308653605326399,
+          0.9548200399945453,
+          -2.9033847523831025
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "texture_sha256": null,
+      "display_center_translation": [
+        -0.01801300048828125,
+        -0.03403210639953613,
+        0.014424555003643036
+      ],
+      "rotation_z_degrees": 0.0,
+      "vertices": 135431,
+      "faces": 166920
+    },
+    {
+      "sample_name": "BCG1T0-2",
+      "scanner": "TRIOS3",
+      "stage": "baseline",
+      "source_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\02-09-2026-Data collected\\TRIOS3\\G1-OK\\bcg1t0-2_TRIOS3.ply",
+      "source_sha256": "add5dcd17fbc1c4462816840c25348eed64e8fa162928c2dd3137a9bc94af668",
+      "image": "BCG1T0-2_TRIOS3_baseline.png",
+      "colour_source": "PLY point RGB",
+      "texture_path": null,
+      "approved_roi_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\Approved ROIs\\samples\\TRIOS3\\G1\\BCG1T0-2\\geometry.npz",
+      "coordinate_frame": "aligned to approved ROI using saved transform",
+      "original_to_canonical": [
+        [
+          0.017075273093191422,
+          0.11915581828101954,
+          -0.9927287273059916,
+          -1.498911301546712
+        ],
+        [
+          -0.9747098759920768,
+          0.22324882699436824,
+          0.010030896727064165,
+          0.8222140763923864
+        ],
+        [
+          0.22282076360228034,
+          0.9674512143852111,
+          0.11995438754909049,
+          -18.797659289524237
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "texture_sha256": null,
+      "display_center_translation": [
+        -0.044121503829956055,
+        0.009154081344604492,
+        0.024116050451993942
+      ],
+      "rotation_z_degrees": 0.0,
+      "vertices": 66679,
+      "faces": 131231
+    },
+    {
+      "sample_name": "BCG1T0-2",
+      "scanner": "TRIOS5",
+      "stage": "baseline",
+      "source_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\02-09-2026-Data collected\\TRIOS5\\G1-OK\\bcg1t0-2_TRIOS5.ply",
+      "source_sha256": "99289cbd096171ccb51bdab88d48d0d07f1d11e74f6820120c041a0ae5406c3f",
+      "image": "BCG1T0-2_TRIOS5_baseline.png",
+      "colour_source": "PLY point RGB",
+      "texture_path": null,
+      "approved_roi_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\Approved ROIs\\samples\\TRIOS5\\G1\\BCG1T0-2\\geometry.npz",
+      "coordinate_frame": "aligned to approved ROI using saved transform",
+      "original_to_canonical": [
+        [
+          -0.045434879883847964,
+          0.09396845618687295,
+          -0.9945378831054117,
+          -0.5463497695336894
+        ],
+        [
+          -0.9894821329722173,
+          -0.14110023568000207,
+          0.031872119788314786,
+          2.197740702564377
+        ],
+        [
+          -0.13733455580695314,
+          0.9855255718310425,
+          0.0993909807195967,
+          -19.39650884978677
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "texture_sha256": null,
+      "display_center_translation": [
+        -0.0052923534330817645,
+        -0.005927440116158866,
+        0.01541891041497756
+      ],
+      "rotation_z_degrees": 0.0,
+      "vertices": 72291,
+      "faces": 142360
+    },
+    {
+      "sample_name": "BCG1T0-2",
+      "scanner": "LABscanner",
+      "stage": "baseline",
+      "source_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\02-09-2026-Data collected\\LABscanner\\G1-OK\\BCG1T0-2.ply",
+      "source_sha256": "1b6a0a7ee905ed6512ec35617abb623985f24f5776e86d10ae7ad232ff50bd50",
+      "image": "BCG1T0-2_LABscanner_baseline.png",
+      "colour_source": "Original texture: BCG1T0-2.jpg",
+      "texture_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\02-09-2026-Data collected\\LABscanner\\G1-OK\\BCG1T0-2.jpg",
+      "approved_roi_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\Approved ROIs\\samples\\LABscanner\\G1\\BCG1T0-2\\geometry.npz",
+      "coordinate_frame": "aligned to approved ROI using saved transform",
+      "original_to_canonical": [
+        [
+          -0.02145130368439832,
+          0.021053128819347292,
+          -0.9995482016076842,
+          3.426405820208482
+        ],
+        [
+          -0.9992267216062504,
+          -0.033403236711273536,
+          0.020740843889200205,
+          0.15911147664098696
+        ],
+        [
+          -0.032951485524407936,
+          0.9992201907208071,
+          0.02175339186444581,
+          -3.7013272801193917
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "texture_sha256": "66db5aa73389ed3fb4fb75582a3bd8a2db876e80fafc317b47dd907e80afc070",
+      "display_center_translation": [
+        -0.018710613250732422,
+        -0.0015790462493896484,
+        0.017635010182857513
+      ],
+      "rotation_z_degrees": 0.0,
+      "vertices": 72886,
+      "faces": 129101
+    },
+    {
+      "sample_name": "BCG1T1-2",
+      "scanner": "iTERO",
+      "stage": "clean",
+      "source_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\02-09-2026-Data collected\\iTERO\\G1-OK\\Bcg1t1-2\\315677107_shell_occlusion_l.ply",
+      "source_sha256": "24abf4176a07079ab26814b1462c0f2b32ff796894c0da62642e7e8b7f732455",
+      "image": "BCG1T1-2_iTERO_clean.png",
+      "colour_source": "PLY point RGB",
+      "texture_path": null,
+      "approved_roi_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\Approved ROIs\\samples\\iTERO\\G1\\BCG1T1-2\\geometry.npz",
+      "coordinate_frame": "aligned to approved ROI using saved transform",
+      "original_to_canonical": [
+        [
+          0.14734287919377154,
+          0.9867073989178323,
+          -0.06854622434310864,
+          28.729206595245042
+        ],
+        [
+          -0.9562840006884613,
+          0.15981357903161633,
+          0.2449092280506732,
+          -16.816173993236735
+        ],
+        [
+          0.25260836482223004,
+          0.02946402684480647,
+          0.9671198918148296,
+          -3.615410255273474
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "texture_sha256": null,
+      "display_center_translation": [
+        -0.017651376252237228,
+        -0.010665087065294898,
+        -0.008219618193890277
+      ],
+      "rotation_z_degrees": 0.0,
+      "vertices": 123698,
+      "faces": 152096
+    },
+    {
+      "sample_name": "BCG1T1-2",
+      "scanner": "TRIOS3",
+      "stage": "clean",
+      "source_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\02-09-2026-Data collected\\TRIOS3\\G1-OK\\bcg1t1-2_TRIOS3.ply",
+      "source_sha256": "af3f680607578e83b13c576586997730415315bb09bd98de38ccd8e77ae9bbd1",
+      "image": "BCG1T1-2_TRIOS3_clean.png",
+      "colour_source": "PLY point RGB",
+      "texture_path": null,
+      "approved_roi_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\Approved ROIs\\samples\\TRIOS3\\G1\\BCG1T1-2\\geometry.npz",
+      "coordinate_frame": "aligned to approved ROI using saved transform",
+      "original_to_canonical": [
+        [
+          -0.011630321099336653,
+          0.019480405357564314,
+          -0.9997425915895701,
+          -0.7795349321918528
+        ],
+        [
+          -0.9676911884130494,
+          0.2516199635408095,
+          0.016160377949272844,
+          -2.5787306470210334
+        ],
+        [
+          0.25187000515914554,
+          0.9676300469470897,
+          0.015924595640246342,
+          -17.466322816484034
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "texture_sha256": null,
+      "display_center_translation": [
+        -0.024152755737304688,
+        -0.13732051849365234,
+        0.005780734121799469
+      ],
+      "rotation_z_degrees": 0.0,
+      "vertices": 62074,
+      "faces": 122448
+    },
+    {
+      "sample_name": "BCG1T1-2",
+      "scanner": "TRIOS5",
+      "stage": "clean",
+      "source_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\02-09-2026-Data collected\\TRIOS5\\G1-OK\\bcg1t1-2_TRIOS5.ply",
+      "source_sha256": "bf5facfa178b1a42ffb619b41f8565cf902cc82dfc8f79a66a49b20f8c56f7b7",
+      "image": "BCG1T1-2_TRIOS5_clean.png",
+      "colour_source": "PLY point RGB",
+      "texture_path": null,
+      "approved_roi_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\Approved ROIs\\samples\\TRIOS5\\G1\\BCG1T1-2\\geometry.npz",
+      "coordinate_frame": "aligned to approved ROI using saved transform",
+      "original_to_canonical": [
+        [
+          -0.009674001038615314,
+          0.024586562909493757,
+          -0.9996508963774313,
+          0.4761799399475827
+        ],
+        [
+          -0.9870691397166512,
+          -0.16019680669205608,
+          0.0056121782489269596,
+          3.202211957038537
+        ],
+        [
+          -0.16000289723293945,
+          0.9867788425224591,
+          0.025818381573985215,
+          -18.05272892026815
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "texture_sha256": null,
+      "display_center_translation": [
+        -0.002076387405395508,
+        -0.03208637237548828,
+        0.011522948741912842
+      ],
+      "rotation_z_degrees": 0.0,
+      "vertices": 64233,
+      "faces": 126780
+    },
+    {
+      "sample_name": "BCG1T1-2",
+      "scanner": "LABscanner",
+      "stage": "clean",
+      "source_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\02-09-2026-Data collected\\LABscanner\\G1-OK\\BCG1T1-2.ply",
+      "source_sha256": "4d7fbc09d76aae387ed7f64fe579dad412e6d28ac53db2f31dadf9c15accac7e",
+      "image": "BCG1T1-2_LABscanner_clean.png",
+      "colour_source": "Original texture: BCG1T1-2.jpg",
+      "texture_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\02-09-2026-Data collected\\LABscanner\\G1-OK\\BCG1T1-2.jpg",
+      "approved_roi_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\Approved ROIs\\samples\\LABscanner\\G1\\BCG1T1-2\\geometry.npz",
+      "coordinate_frame": "aligned to approved ROI using saved transform",
+      "original_to_canonical": [
+        [
+          -0.085880886084455,
+          -0.014075930801790036,
+          -0.9962059734700508,
+          3.808885812764003
+        ],
+        [
+          -0.9962568267476483,
+          -0.008661357991931167,
+          0.08600765103432223,
+          0.18679925696713284
+        ],
+        [
+          -0.009839134314308011,
+          0.9998634151971957,
+          -0.013279397055069076,
+          -4.089304528318669
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "texture_sha256": "316b31ee7b474b46ed9d0cc544918e621583ba5edd6f6345360e4f9abdf9ec92",
+      "display_center_translation": [
+        -0.007551431655883789,
+        0.012372016906738281,
+        0.026409640908241272
+      ],
+      "rotation_z_degrees": 0.0,
+      "vertices": 67113,
+      "faces": 118529
+    }
+  ],
+  "runtime": {
+    "python": "3.11.16",
+    "numpy": "2.4.6",
+    "vtk": "9.3.1"
+  }
+}

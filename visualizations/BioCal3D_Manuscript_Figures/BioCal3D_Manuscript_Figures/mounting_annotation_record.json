@@ -1,0 +1,24 @@
+{
+  "source": "assets/fresh_full_baseline.png",
+  "crop": [
+    185,
+    480,
+    1440,
+    1060
+  ],
+  "leader_targets_in_source_pixels": {
+    "dental_model": [
+      440,
+      770
+    ],
+    "specimen_holder": [
+      670,
+      690
+    ],
+    "circular_specimen": [
+      855,
+      815
+    ]
+  },
+  "policy": "No colour correction or reconstruction. Labels and arrows overlaid on the supplied scan rendering."
+}

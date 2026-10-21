@@ -1,0 +1,624 @@
+{
+  "browser_version": "1.2.0",
+  "exported_utc": "2026-10-21T13:23:57.726341+00:00",
+  "dataset_root": "C:\\Users\\au662213\\repos\\biocal3d\\data\\Approved ROIs",
+  "physical_id": "BCG6-4",
+  "group": 6,
+  "cultivation_hours": 24,
+  "stages": [
+    "baseline",
+    "partial",
+    "clean"
+  ],
+  "render_mode": "colour",
+  "original_texture_requested": false,
+  "individual_image_pixels": [
+    1600,
+    1600
+  ],
+  "dpi_metadata": 300,
+  "model_representation": "original",
+  "original_data_root": "C:\\Users\\au662213\\repos\\biocal3d\\data\\02-09-2026-Data collected",
+  "camera": {
+    "position": [
+      0.0,
+      0.0,
+      253.53810011608027
+    ],
+    "focal_point": [
+      0,
+      0,
+      0
+    ],
+    "view_up": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "parallel_scale": 45.63685802089445
+  },
+  "projection": "parallel",
+  "note": "",
+  "overview_layout": "Four scanner panels (2 by 2), with stage columns inside each panel",
+  "scanner_panel_images": {
+    "iTERO": "iTERO_stages.png",
+    "TRIOS3": "TRIOS3_stages.png",
+    "TRIOS5": "TRIOS5_stages.png",
+    "LABscanner": "LABscanner_stages.png"
+  },
+  "fit_full_roi_on_export": true,
+  "display_policy": "No colour correction, smoothing or decimation. Approved ROI coordinates centred for display. Original models use the saved original_to_canonical transform and ROI centre where available; otherwise they use their own centred scanner coordinates. No new registration is performed. Source coordinate units retained.",
+  "missing_or_failed_panels": [],
+  "errors": [],
+  "scans": [
+    {
+      "sample_name": "BCG6T0-4",
+      "scanner": "iTERO",
+      "stage": "baseline",
+      "source_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\02-09-2026-Data collected\\iTERO\\G6-OK\\Bcg6t0-4\\320656417_shell_occlusion_l.ply",
+      "source_sha256": "331512f33cf64c04d2a560607f1085ec6235888352ae635d525ec1f9a315aa10",
+      "image": "BCG6T0-4_iTERO_baseline.png",
+      "colour_source": "PLY point RGB",
+      "texture_path": null,
+      "approved_roi_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\Approved ROIs\\samples\\iTERO\\G6\\BCG6T0-4\\geometry.npz",
+      "coordinate_frame": "aligned to approved ROI using saved transform",
+      "original_to_canonical": [
+        [
+          0.21955599390397418,
+          0.9682550249055665,
+          -0.11948795874881765,
+          27.956417999835175
+        ],
+        [
+          -0.8813902074725315,
+          0.2493699821984605,
+          0.4012055759207087,
+          -14.331311592004774
+        ],
+        [
+          0.41826602505148064,
+          0.017228427771002083,
+          0.9081611715792377,
+          0.6869382635402523
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "texture_sha256": null,
+      "display_center_translation": [
+        0.002929210662841797,
+        0.00886392593383789,
+        0.02940082550048828
+      ],
+      "rotation_z_degrees": 0.0,
+      "vertices": 135834,
+      "faces": 160267
+    },
+    {
+      "sample_name": "BCG6T0-4",
+      "scanner": "TRIOS3",
+      "stage": "baseline",
+      "source_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\02-09-2026-Data collected\\TRIOS3\\G6-OK\\BCG6T0-4 LowerJawScan LowerJawScan LowerJawScan.ply",
+      "source_sha256": "7a99f3724c25a7fc6ec515a173c1713c7da7770771d8cebaacf744e6dd647fec",
+      "image": "BCG6T0-4_TRIOS3_baseline.png",
+      "colour_source": "PLY point RGB",
+      "texture_path": null,
+      "approved_roi_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\Approved ROIs\\samples\\TRIOS3\\G6\\BCG6T0-4\\geometry.npz",
+      "coordinate_frame": "aligned to approved ROI using saved transform",
+      "original_to_canonical": [
+        [
+          0.07726580533186828,
+          -0.16290730740714077,
+          -0.9836113076412726,
+          -2.25424239589156
+        ],
+        [
+          -0.9662586725661515,
+          0.23090069499587965,
+          -0.1141448498230246,
+          0.45622471130690334
+        ],
+        [
+          0.24571156467923708,
+          0.9592424501885731,
+          -0.13956987045600486,
+          -19.70576428120928
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "texture_sha256": null,
+      "display_center_translation": [
+        -0.015717744827270508,
+        -0.02744889259338379,
+        -0.013788394629955292
+      ],
+      "rotation_z_degrees": 0.0,
+      "vertices": 66444,
+      "faces": 130409
+    },
+    {
+      "sample_name": "BCG6T0-4",
+      "scanner": "TRIOS5",
+      "stage": "baseline",
+      "source_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\02-09-2026-Data collected\\TRIOS5\\G6-OK\\bcg6t0-4 LowerJawScan LowerJawScan LowerJawScan LowerJawScan.ply",
+      "source_sha256": "067079f83d723949d37d5de0ea92ed98c78955f26648fff7e9f293134d14b3e2",
+      "image": "BCG6T0-4_TRIOS5_baseline.png",
+      "colour_source": "PLY point RGB",
+      "texture_path": null,
+      "approved_roi_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\Approved ROIs\\samples\\TRIOS5\\G6\\BCG6T0-4\\geometry.npz",
+      "coordinate_frame": "aligned to approved ROI using saved transform",
+      "original_to_canonical": [
+        [
+          -0.03736578150652359,
+          0.08854554972644928,
+          -0.9953710283085636,
+          -0.08036700996543361
+        ],
+        [
+          -0.9830807490300718,
+          -0.18199767926128943,
+          0.020714382201213365,
+          2.7969497789155136
+        ],
+        [
+          -0.17932105079683158,
+          0.979304105151789,
+          0.09384791086632888,
+          -19.155618787092237
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "texture_sha256": null,
+      "display_center_translation": [
+        0.030239105224609375,
+        -0.0025310516357421875,
+        -0.022771820425987244
+      ],
+      "rotation_z_degrees": 0.0,
+      "vertices": 64986,
+      "faces": 128119
+    },
+    {
+      "sample_name": "BCG6T0-4",
+      "scanner": "LABscanner",
+      "stage": "baseline",
+      "source_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\02-09-2026-Data collected\\LABscanner\\G6-OK\\BCG6T0-4.ply",
+      "source_sha256": "d3badbe3a747332d6d4c1e4d83d89b97b7d05469070c032c21ead096b16a828b",
+      "image": "BCG6T0-4_LABscanner_baseline.png",
+      "colour_source": "Original texture: BCG6T0-4.jpg",
+      "texture_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\02-09-2026-Data collected\\LABscanner\\G6-OK\\BCG6T0-4.jpg",
+      "approved_roi_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\Approved ROIs\\samples\\LABscanner\\G6\\BCG6T0-4\\geometry.npz",
+      "coordinate_frame": "aligned to approved ROI using saved transform",
+      "original_to_canonical": [
+        [
+          0.014167168761489407,
+          -0.041065415655460465,
+          -0.9990560159302019,
+          0.7302827875431555
+        ],
+        [
+          -0.9998306052612717,
+          -0.01232262194082767,
+          -0.013671641137114797,
+          0.15856838062020936
+        ],
+        [
+          -0.011749557956029482,
+          0.9990804695446442,
+          -0.0412330360547245,
+          -3.972946565106211
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "texture_sha256": "ac8981fdaf15949112be8689431e9ce809537112f86992b92d09b47d923fd132",
+      "display_center_translation": [
+        -1.6927719116210938e-05,
+        -0.010640859603881836,
+        0.008404292166233063
+      ],
+      "rotation_z_degrees": 0.0,
+      "vertices": 64003,
+      "faces": 113700
+    },
+    {
+      "sample_name": "BCG6T1-4",
+      "scanner": "iTERO",
+      "stage": "partial",
+      "source_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\02-09-2026-Data collected\\iTERO\\G6-OK\\BCG6T1-4\\320697475_shell_occlusion_l.ply",
+      "source_sha256": "cc86a1ca22f06e8da6a4f3507b4fb9017538e12816a511156c239e604fd586a2",
+      "image": "BCG6T1-4_iTERO_partial.png",
+      "colour_source": "PLY point RGB",
+      "texture_path": null,
+      "approved_roi_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\Approved ROIs\\samples\\iTERO\\G6\\BCG6T1-4\\geometry.npz",
+      "coordinate_frame": "aligned to approved ROI using saved transform",
+      "original_to_canonical": [
+        [
+          0.12073213783882603,
+          0.9917251886692082,
+          -0.04364517214871158,
+          28.25588697018474
+        ],
+        [
+          -0.9651276736163106,
+          0.12755474339782208,
+          0.22860087720016253,
+          -17.493899681442908
+        ],
+        [
+          0.23227639680526016,
+          0.014523690844262848,
+          0.9725413810689119,
+          -3.2679194307843975
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "texture_sha256": null,
+      "display_center_translation": [
+        -0.02641749382019043,
+        -0.06975317001342773,
+        -0.0007956549525260925
+      ],
+      "rotation_z_degrees": 0.0,
+      "vertices": 132746,
+      "faces": 164063
+    },
+    {
+      "sample_name": "BCG6T1-4",
+      "scanner": "TRIOS3",
+      "stage": "partial",
+      "source_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\02-09-2026-Data collected\\TRIOS3\\G6-OK\\BCG6T1-4 LowerJawScan LowerJawScan LowerJawScan LowerJawScan LowerJawScan.ply",
+      "source_sha256": "16ee91c2a4ba55997154d12bc1b37a5445f7ae5d8d2d4e9e4e4c24667c53ac5e",
+      "image": "BCG6T1-4_TRIOS3_partial.png",
+      "colour_source": "PLY point RGB",
+      "texture_path": null,
+      "approved_roi_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\Approved ROIs\\samples\\TRIOS3\\G6\\BCG6T1-4\\geometry.npz",
+      "coordinate_frame": "aligned to approved ROI using saved transform",
+      "original_to_canonical": [
+        [
+          0.030338854950494806,
+          -0.1501248856435194,
+          -0.9882014332062126,
+          -1.4822092168049443
+        ],
+        [
+          -0.9824213105829138,
+          0.17771111718243376,
+          -0.05715879059533615,
+          -3.4560185156649967
+        ],
+        [
+          0.1841953375980049,
+          0.9725642793873792,
+          -0.14209433509772815,
+          -18.385829112830038
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "texture_sha256": null,
+      "display_center_translation": [
+        0.008941888809204102,
+        -0.011943817138671875,
+        -0.008826859295368195
+      ],
+      "rotation_z_degrees": 0.0,
+      "vertices": 65252,
+      "faces": 128424
+    },
+    {
+      "sample_name": "BCG6T1-4",
+      "scanner": "TRIOS5",
+      "stage": "partial",
+      "source_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\02-09-2026-Data collected\\TRIOS5\\G6-OK\\bcg6t1-4 LowerJawScan LowerJawScan LowerJawScan LowerJawScan LowerJawScan.ply",
+      "source_sha256": "9492031d9538987720641c2915041189b0cb95811e51f3907de8a4013143ab29",
+      "image": "BCG6T1-4_TRIOS5_partial.png",
+      "colour_source": "PLY point RGB",
+      "texture_path": null,
+      "approved_roi_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\Approved ROIs\\samples\\TRIOS5\\G6\\BCG6T1-4\\geometry.npz",
+      "coordinate_frame": "aligned to approved ROI using saved transform",
+      "original_to_canonical": [
+        [
+          0.0004121752330891846,
+          0.125703249433701,
+          -0.9920678017118514,
+          0.13418537337969805
+        ],
+        [
+          -0.9819139190557132,
+          -0.18777483049572993,
+          -0.024200590838860142,
+          2.4570023833972088
+        ],
+        [
+          -0.1893274562133745,
+          0.9741351580320406,
+          0.12335237415495531,
+          -19.113598865485425
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "texture_sha256": null,
+      "display_center_translation": [
+        -0.01023101806640625,
+        -0.05438685417175293,
+        0.002948351204395294
+      ],
+      "rotation_z_degrees": 0.0,
+      "vertices": 65742,
+      "faces": 129422
+    },
+    {
+      "sample_name": "BCG6T1-4",
+      "scanner": "LABscanner",
+      "stage": "partial",
+      "source_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\02-09-2026-Data collected\\LABscanner\\G6-OK\\BCG6T1-4.ply",
+      "source_sha256": "fa03b00f16400aebc6414f76c01971b53df1db7b4e78eb24b69499f5e665b05b",
+      "image": "BCG6T1-4_LABscanner_partial.png",
+      "colour_source": "Original texture: BCG6T1-4.jpg",
+      "texture_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\02-09-2026-Data collected\\LABscanner\\G6-OK\\BCG6T1-4.jpg",
+      "approved_roi_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\Approved ROIs\\samples\\LABscanner\\G6\\BCG6T1-4\\geometry.npz",
+      "coordinate_frame": "aligned to approved ROI using saved transform",
+      "original_to_canonical": [
+        [
+          0.01380606263458178,
+          -0.04141900131877462,
+          -0.9990464748770627,
+          0.7497608115981689
+        ],
+        [
+          -0.9998237535965895,
+          -0.013284333921925894,
+          -0.013266055038227129,
+          0.15001365435338737
+        ],
+        [
+          -0.012722200224666583,
+          0.9990535485157969,
+          -0.04159510571494417,
+          -4.269581595143873
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "texture_sha256": "fe1c288d943c89430a0a0640199d734629f86bae9f7a3f764f4aeb84d705b238",
+      "display_center_translation": [
+        0.005252361297607422,
+        -0.0019130706787109375,
+        -0.002120375633239746
+      ],
+      "rotation_z_degrees": 0.0,
+      "vertices": 65626,
+      "faces": 116562
+    },
+    {
+      "sample_name": "BCG6T2-4",
+      "scanner": "iTERO",
+      "stage": "clean",
+      "source_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\02-09-2026-Data collected\\iTERO\\G6-OK\\BCG6T2-4\\324047152_shell_occlusion_l.ply",
+      "source_sha256": "b7a43131867f68d1285007355a246f3a097306b79d08584fe38c89333349d5b3",
+      "image": "BCG6T2-4_iTERO_clean.png",
+      "colour_source": "PLY point RGB",
+      "texture_path": null,
+      "approved_roi_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\Approved ROIs\\samples\\iTERO\\G6\\BCG6T2-4\\geometry.npz",
+      "coordinate_frame": "aligned to approved ROI using saved transform",
+      "original_to_canonical": [
+        [
+          0.1538787214863567,
+          0.9830678907746113,
+          -0.09949302086920504,
+          25.611117563053604
+        ],
+        [
+          -0.9548486065205635,
+          0.17384426340947293,
+          0.24091971838219778,
+          -17.859452053207995
+        ],
+        [
+          0.2541367303233909,
+          0.057928354089976035,
+          0.9654319386124345,
+          -3.403612658939471
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "texture_sha256": null,
+      "display_center_translation": [
+        -0.01842212677001953,
+        -0.005457401275634766,
+        0.019145376980304718
+      ],
+      "rotation_z_degrees": 0.0,
+      "vertices": 121320,
+      "faces": 151345
+    },
+    {
+      "sample_name": "BCG6T2-4",
+      "scanner": "TRIOS3",
+      "stage": "clean",
+      "source_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\02-09-2026-Data collected\\TRIOS3\\G6-OK\\BCG6T2-4 LowerJawScan LowerJawScan LowerJawScan LowerJawScan LowerJawScan.ply",
+      "source_sha256": "9b6e4a2beb0e75debe98e7c60f95737969f4357b333c3942f6c2e6553ff4fd2c",
+      "image": "BCG6T2-4_TRIOS3_clean.png",
+      "colour_source": "PLY point RGB",
+      "texture_path": null,
+      "approved_roi_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\Approved ROIs\\samples\\TRIOS3\\G6\\BCG6T2-4\\geometry.npz",
+      "coordinate_frame": "aligned to approved ROI using saved transform",
+      "original_to_canonical": [
+        [
+          0.0008494194228772415,
+          -0.12806078097557277,
+          -0.9917659577050277,
+          -0.2805032908246835
+        ],
+        [
+          -0.9908765545919797,
+          0.13355253285935592,
+          -0.018093494045614486,
+          -3.0883270995636996
+        ],
+        [
+          0.13476992263324947,
+          0.9827330040976429,
+          -0.1267789833160484,
+          -18.828532259687282
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "texture_sha256": null,
+      "display_center_translation": [
+        0.0009453296661376953,
+        -0.017787456512451172,
+        -0.0009617060422897339
+      ],
+      "rotation_z_degrees": 0.0,
+      "vertices": 66800,
+      "faces": 131387
+    },
+    {
+      "sample_name": "BCG6T2-4",
+      "scanner": "TRIOS5",
+      "stage": "clean",
+      "source_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\02-09-2026-Data collected\\TRIOS5\\G6-OK\\bcg6t2-4 LowerJawScan LowerJawScan LowerJawScan LowerJawScan LowerJawScan.ply",
+      "source_sha256": "e9092b19527cbef267165b637691c9f11f95f62a8438b5bf747b2f191922f26f",
+      "image": "BCG6T2-4_TRIOS5_clean.png",
+      "colour_source": "PLY point RGB",
+      "texture_path": null,
+      "approved_roi_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\Approved ROIs\\samples\\TRIOS5\\G6\\BCG6T2-4\\geometry.npz",
+      "coordinate_frame": "aligned to approved ROI using saved transform",
+      "original_to_canonical": [
+        [
+          -0.008454614639854276,
+          0.08373112772574265,
+          -0.9964525165511235,
+          1.204665808628114
+        ],
+        [
+          -0.9897640729180381,
+          -0.14266810719805859,
+          -0.0035904246573423043,
+          2.7461789390268905
+        ],
+        [
+          -0.14246262475466448,
+          0.9862225455941976,
+          0.08408026587560842,
+          -18.937210084894396
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "texture_sha256": null,
+      "display_center_translation": [
+        0.002432584762573242,
+        0.00316619873046875,
+        -0.008554968982934952
+      ],
+      "rotation_z_degrees": 0.0,
+      "vertices": 60801,
+      "faces": 119411
+    },
+    {
+      "sample_name": "BCG6T2-4",
+      "scanner": "LABscanner",
+      "stage": "clean",
+      "source_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\02-09-2026-Data collected\\LABscanner\\G6-OK\\BCG6T2-4.ply",
+      "source_sha256": "8ab49ba9ba472fdbb81a608e8e7c81825bbb9f3ae1fa2f909e8622450c44ac27",
+      "image": "BCG6T2-4_LABscanner_clean.png",
+      "colour_source": "Original texture: BCG6T2-4.jpg",
+      "texture_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\02-09-2026-Data collected\\LABscanner\\G6-OK\\BCG6T2-4.jpg",
+      "approved_roi_path": "C:\\Users\\au662213\\repos\\biocal3d\\data\\Approved ROIs\\samples\\LABscanner\\G6\\BCG6T2-4\\geometry.npz",
+      "coordinate_frame": "aligned to approved ROI using saved transform",
+      "original_to_canonical": [
+        [
+          0.0006690266881191132,
+          -0.01776442060058742,
+          -0.9998419763962768,
+          3.7204164130266513
+        ],
+        [
+          -0.9999386166442858,
+          -0.011069768298285767,
+          -0.000472412253300847,
+          0.3587239909212654
+        ],
+        [
+          -0.011059626883642457,
+          0.9997809187969866,
+          -0.017770736131261417,
+          -4.082349707791863
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "texture_sha256": "fed280c38e40483317fc6db5b2391ecd178d8fb6411d38133f0a530606155bb2",
+      "display_center_translation": [
+        -0.0036170482635498047,
+        -0.019587039947509766,
+        0.004482075572013855
+      ],
+      "rotation_z_degrees": 0.0,
+      "vertices": 66989,
+      "faces": 117149
+    }
+  ],
+  "runtime": {
+    "python": "3.11.16",
+    "numpy": "2.4.6",
+    "vtk": "9.3.1"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "fresh_roi_crop": [
+    236,
+    236,
+    1364,
+    1364
+  ],
+  "mature_roi_crop": [
+    246,
+    246,
+    1354,
+    1354
+  ],
+  "panel_A_full_model_crop": [
+    234,
+    589,
+    1414,
+    983
+  ],
+  "note": "ROI stages within each example share an identical crop. A and B have different magnifications."
+}
