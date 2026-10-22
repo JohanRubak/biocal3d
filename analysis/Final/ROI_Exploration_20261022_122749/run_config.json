@@ -1,0 +1,52 @@
+{
+  "data_root": "C:\\Users\\au662213\\repos\\biocal3d\\data\\Approved ROIs",
+  "output": "C:\\Users\\au662213\\repos\\biocal3d\\data\\ROI_Exploration_20261022_122749",
+  "scope": "all",
+  "splits": null,
+  "examples": [
+    "BCG1-4",
+    "BCG6-8"
+  ],
+  "pitches_mm": [
+    0.05,
+    0.1,
+    0.2
+  ],
+  "min_cell_coverage": 0.75,
+  "surface_samples": 50000,
+  "colour_stride": 1,
+  "bootstrap": 1000,
+  "seed": 42,
+  "dpi": 300,
+  "mesh_zoom_mm": 4.0,
+  "relief_exaggeration": 20.0,
+  "height_limit_um": null,
+  "verify_hashes": false,
+  "resume": false,
+  "tables_only": false,
+  "version": "1.0.0",
+  "input_root": "C:\\Users\\au662213\\repos\\biocal3d\\data\\Approved ROIs",
+  "started": "2026-10-22T12:27:49.816238+02:00",
+  "python": "3.11.16",
+  "numpy": "2.4.6",
+  "scipy": "1.17.1",
+  "pandas": "3.0.5",
+  "matplotlib": "3.11.1",
+  "scikit_image": "0.26.0",
+  "pillow": "12.3.0",
+  "colour_encoding": "Assumed sRGB/D65/2-degree; no calibration",
+  "native_roughness": "Plane-detrended unfiltered scanner topography",
+  "common_scale": "Surface-area-weighted physical cell averaging; no hole filling; re-level at each scale",
+  "decision_scope": "Use training-only outputs for preprocessing/model decisions.",
+  "script_sha256": "af59afcdc81ea702a4a4908561b2c528d70d76b73bebf3f3742e3c3766ee2ec0",
+  "finished": "2026-10-22T12:32:47.969186+02:00",
+  "seconds": 298.75882350001484,
+  "discovered_scans": 512,
+  "analysed_scans": 512,
+  "analysed_specimens": 48,
+  "failed_scans": 0,
+  "fov_values_mm": [
+    13.4
+  ],
+  "status": "complete"
+}

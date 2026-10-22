@@ -1,0 +1,14 @@
+{
+  "source_run": "ROI_Exploration_20261022_122749",
+  "specimen": "BCG6-4",
+  "main_example_stage": "partial",
+  "height_limit_um": 20.289596557617188,
+  "height_cell_width_mm": 0.05,
+  "height_colour_clipped": true,
+  "relief_exaggeration": 20,
+  "RGB_source": "320x320 cached unlit preview; no colour correction",
+  "neutral_geometry_source": "50 um height grid, NOT native mesh",
+  "cross_scanner_pointwise_alignment": false,
+  "main_1_error_bars": "95% bootstrap CI of median, from supplied specimen-level summaries",
+  "main_2_error_bars": "IQR, individual scans shown, specimens paired across stages in source tables"
+}

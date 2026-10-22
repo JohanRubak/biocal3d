@@ -1,0 +1,97 @@
+[
+  {
+    "name": "01_Lab_distributions_fresh",
+    "title": "CIELAB distributions: fresh",
+    "caption": "Within each scan, colour histograms are weighted by visible 3D surface area and normalised. Curves average scan histograms with one equal contribution per specimen. Assumed sRGB/D65/2\u00b0; these describe exported appearance. Background pixels are excluded."
+  },
+  {
+    "name": "01_Lab_distributions_mature",
+    "title": "CIELAB distributions: mature",
+    "caption": "Within each scan, colour histograms are weighted by visible 3D surface area and normalised. Curves average scan histograms with one equal contribution per specimen. Assumed sRGB/D65/2\u00b0; these describe exported appearance. Background pixels are excluded."
+  },
+  {
+    "name": "02_Lab_scan_centroids",
+    "title": "Colour centroids by scanner and stage",
+    "caption": "Each point is one scan's surface-area-weighted mean CIELAB colour. Colours identify scanners; symbols identify experimental stages. Separation is descriptive, not a classification result."
+  },
+  {
+    "name": "03_paired_scanner_colour",
+    "title": "Paired colour differences between scanners",
+    "caption": "Each comparison matches the same physical specimen and experimental stage. Cells show median \u0394E\u2080\u2080 between area-weighted scan mean Lab colours and the number of paired specimens. This is a centroid difference, not a pointwise \u0394E map or a colour-accuracy measurement."
+  },
+  {
+    "name": "04_paired_colour_stage_changes",
+    "title": "Within-specimen colour changes across stages",
+    "caption": "Thin lines follow individual physical specimens within each scanner; thick lines show medians. Colour change is measured relative to each specimen's own baseline scan. Fresh specimens have two stages; mature specimens have three. No plaque labels are inferred from stage names."
+  },
+  {
+    "name": "05_mesh_sampling_fresh",
+    "title": "Mesh sampling: fresh",
+    "caption": "Dots represent individual scans; connected markers show scanner medians and vertical bars show the interquartile range. Vertex counts include encoded texture-seam duplicates; unique geometric vertices weld exact coordinate duplicates for counting only. Source meshes are not changed."
+  },
+  {
+    "name": "06_surface_topography_fresh",
+    "title": "Surface topography: fresh",
+    "caption": "Plane-detrended topographic descriptors. Native RMS uses exact triangle-area integration; mean absolute height and height quantiles use deterministic uniform-area samples. Native slopes are area-weighted. These are scanner-derived, unfiltered descriptors, not independently validated standard roughness measurements. Dots are scans; markers/IQRs summarise specimens."
+  },
+  {
+    "name": "07_common_scale_roughness_fresh",
+    "title": "Roughness at shared physical scales: fresh",
+    "caption": "Stored height maps are surface-area-weighted box-averaged into cells of the indicated physical width, then plane-detrended again. Lines show medians and shading the specimen IQR. Cells below the coverage threshold are excluded; holes are not filled. Equal grid spacing does not establish equal scanner resolution. No Gaussian or standardised roughness-band filtering is applied."
+  },
+  {
+    "name": "05_mesh_sampling_mature",
+    "title": "Mesh sampling: mature",
+    "caption": "Dots represent individual scans; connected markers show scanner medians and vertical bars show the interquartile range. Vertex counts include encoded texture-seam duplicates; unique geometric vertices weld exact coordinate duplicates for counting only. Source meshes are not changed."
+  },
+  {
+    "name": "06_surface_topography_mature",
+    "title": "Surface topography: mature",
+    "caption": "Plane-detrended topographic descriptors. Native RMS uses exact triangle-area integration; mean absolute height and height quantiles use deterministic uniform-area samples. Native slopes are area-weighted. These are scanner-derived, unfiltered descriptors, not independently validated standard roughness measurements. Dots are scans; markers/IQRs summarise specimens."
+  },
+  {
+    "name": "07_common_scale_roughness_mature",
+    "title": "Roughness at shared physical scales: mature",
+    "caption": "Stored height maps are surface-area-weighted box-averaged into cells of the indicated physical width, then plane-detrended again. Lines show medians and shading the specimen IQR. Cells below the coverage threshold are excluded; holes are not filled. Equal grid spacing does not establish equal scanner resolution. No Gaussian or standardised roughness-band filtering is applied."
+  },
+  {
+    "name": "08_scanner_stage_response_fresh",
+    "title": "Scanner-dependent stage changes: fresh",
+    "caption": "All changes are paired within a physical specimen and scanner. Curves show scanner medians and dots show individual paired changes. Signed changes are later minus earlier; density ratios are later divided by earlier. Differences indicate stage associations, without identifying plaque pixels."
+  },
+  {
+    "name": "08_scanner_stage_response_mature",
+    "title": "Scanner-dependent stage changes: mature",
+    "caption": "All changes are paired within a physical specimen and scanner. Curves show scanner medians and dots show individual paired changes. Signed changes are later minus earlier; density ratios are later divided by earlier. Differences indicate stage associations, without identifying plaque pixels."
+  },
+  {
+    "name": "09_stage_montage_BCG1-4",
+    "title": "Matched stage series: BCG1-4",
+    "caption": "Original saved unlit RGB projections; columns are scanners and rows are experimental stages. Images share physical display limits. Scanner-specific canonical frames do not provide exact pointwise correspondence between scanners."
+  },
+  {
+    "name": "10_colour_geometry_mesh_BCG1-4_baseline",
+    "title": "Colour, geometry and native mesh: BCG1-4, baseline",
+    "caption": "Matched scans of one specimen. Rows show saved RGB, neutral-shaded native geometry with a fixed 20\u00d7 vertical exaggeration for display only, native triangle edges in a 4 mm square, and area-averaged/detrended height at 0.05 mm cells. The height colour limit is shared across all selected scans (\u00b120.3 \u00b5m). Lighting and relief exaggeration are identical across scanners; quantitative measurements use unexaggerated geometry. These views illustrate appearance and structure without asserting plaque location."
+  },
+  {
+    "name": "11_Lab_maps_BCG1-4_baseline",
+    "title": "CIELAB maps: BCG1-4, baseline",
+    "caption": "CIELAB channels derived from the saved RGB projection under assumed sRGB/D65/2\u00b0. Each channel uses identical display limits across scanners; limits for a* and b* are \u00b180 and may clip display extremes. All numeric summaries use the full, unclipped values."
+  },
+  {
+    "name": "09_stage_montage_BCG6-8",
+    "title": "Matched stage series: BCG6-8",
+    "caption": "Original saved unlit RGB projections; columns are scanners and rows are experimental stages. Images share physical display limits. Scanner-specific canonical frames do not provide exact pointwise correspondence between scanners."
+  },
+  {
+    "name": "10_colour_geometry_mesh_BCG6-8_partial",
+    "title": "Colour, geometry and native mesh: BCG6-8, partial",
+    "caption": "Matched scans of one specimen. Rows show saved RGB, neutral-shaded native geometry with a fixed 20\u00d7 vertical exaggeration for display only, native triangle edges in a 4 mm square, and area-averaged/detrended height at 0.05 mm cells. The height colour limit is shared across all selected scans (\u00b120.3 \u00b5m). Lighting and relief exaggeration are identical across scanners; quantitative measurements use unexaggerated geometry. These views illustrate appearance and structure without asserting plaque location."
+  },
+  {
+    "name": "11_Lab_maps_BCG6-8_partial",
+    "title": "CIELAB maps: BCG6-8, partial",
+    "caption": "CIELAB channels derived from the saved RGB projection under assumed sRGB/D65/2\u00b0. Each channel uses identical display limits across scanners; limits for a* and b* are \u00b180 and may clip display extremes. All numeric summaries use the full, unclipped values."
+  }
+]

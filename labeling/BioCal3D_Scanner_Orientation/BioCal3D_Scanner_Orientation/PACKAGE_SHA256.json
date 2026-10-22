@@ -1,0 +1,18 @@
+{
+  "Install_Missing_Dependencies.bat": "3a85ae5beec17206aefb56919d5bea503025cb73e733fa1dda194761152448b5",
+  "README.md": "b802473a9aa9ec9c55b8e370049f9f137780e5db66e989a59e0b8e56e76f5262",
+  "Run_Python.bat": "254c6c85758e5300f5a5a25f9c852d004fadf316830c6b358778640afa5cf624",
+  "Start_Orientation.bat": "8c6003635a9d00bc5644ea5b066edf8751663dad3b294598b516ae1e5b22e7b4",
+  "VALIDATION.md": "cd10f90f0e0d450b483bcfe1e8c87cbdcd5fb88d009b65d7a43f808ac61e0847",
+  "orient_scanners.py": "0207dfd6244a50b7dd6b24838d2a0ee1fd1a15fa0046c81dcd1b04cbe6ffe228",
+  "orientation_gui.py": "003f917e6600b01aa59d72ce40da4b0e3412ff4fc543bff2d5ea68f8bfcdb466",
+  "requirements.txt": "9e13a350d95414cbf2f7532dcdf6bb5a9f2b0e11bce13a6115267ae35767e54e",
+  "tests/test_orientation.py": "0096ecc77d9cf28cb08be3687acde2e56e88077554e3c7280226e74d3b4f0303",
+  "vendor/biocal3d_raster.py": "912f0a4fcf031b38e8ae5d0ef4035f37afee417843f46ee03520378888f41a60",
+  "vendor/mesh_io.py": "5db57010d44353b122ee534b367410535a2b5574f50dddd6e7afc3737802f3bb",
+  "vendor/original_models.py": "ddf598e1d0bd7aa8df9768306e2592ff9acf1750778ac50a23508e2f6d10de60",
+  "vendor/performance.py": "416676e32b0055530d3da85b0c36d89e66c2f7cf7c49d264e2c243c5fe65d187",
+  "vendor/roi_geometry.py": "7b2572b61c5fbc0b30eff66862458bdfd23e2d8e79ad928470114852516b0102",
+  "vendor/roi_review_store.py": "9a72fe3736bb81a3fc2413046da8b48217ce73a726a462d28fe73863f4d0e269",
+  "vendor/source_correspondence.py": "d0f5b2759c54ca0e409d492d5647d6fb664de65b57aff64bada8f1f7b06d3e30"
+}
