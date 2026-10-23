@@ -1,0 +1,16 @@
+{
+  "source_run": "ROI_Exploration_20261023_091009",
+  "source_input": "Approved ROIs_reoriented",
+  "source_scans": 512,
+  "source_specimens": 48,
+  "figure_numbers": [
+    4,
+    5,
+    6,
+    7
+  ],
+  "descriptive_metrics": 45,
+  "table_S2_summary": "Median [P25\u2013P75] across independent specimens; 8 cohort/scanner panels",
+  "table_2_summary": "Median paired clean-minus-baseline change or ratio, with 95% bootstrap CI",
+  "reference_labels": "Temporary R1\u2013R7, renumber with manuscript reference list"
+}

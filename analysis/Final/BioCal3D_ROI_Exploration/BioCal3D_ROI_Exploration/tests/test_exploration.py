@@ -147,6 +147,35 @@ class DataTests(unittest.TestCase):
         value = app.deltaE_ciede2000(np.array([[50., 2.6772, -79.7751]]), np.array([[50., 0., -82.7485]]))[0]
         self.assertAlmostEqual(value, 2.0425, places=4)
 
+    def test_default_output_follows_script_location(self):
+        args = self.args()
+        code = self.base / "code" / "investigate_approved_rois.py"
+        with mock.patch.object(app, "__file__", str(code)):
+            output = app.output_directory(args)
+        self.assertEqual(output.parent, code.parent)
+        self.assertTrue(output.name.startswith("ROI_Exploration_"))
+        args.output = self.base / "custom_results"
+        self.assertEqual(app.output_directory(args), args.output)
+
+    def test_default_examples_are_requested_specimens_without_substitution(self):
+        df = app.discover(self.root)
+        for col in ["L_mean", "a_mean", "b_mean", "faces_per_mm2", "height_rms_um"]:
+            df[col] = 1.
+        with contextlib.redirect_stdout(io.StringIO()):
+            chosen, _ = app.choose_examples(df, None)
+        self.assertEqual(chosen, ["BCG3-1"])
+        chosen, _ = app.choose_examples(df, [])
+        self.assertEqual(chosen, [])
+        with self.assertRaisesRegex(ValueError, "absent"):
+            app.choose_examples(df, ["BCG6-4"])
+
+    def test_focused_figure_requires_100um_scale(self):
+        with contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+            app.parse_args(["--data-root", str(self.root), "--pitches-mm", "0.05", "0.2"])
+        # The restriction is only for the requested figure, not table-only analysis.
+        args = app.parse_args(["--data-root", str(self.root), "--pitches-mm", "0.05", "0.2", "--tables-only"])
+        self.assertEqual(args.pitches_mm, [.05,.2])
+
     def test_cli_all_and_training_scope_and_resume(self):
         hashes = {p: hashlib.sha256(p.read_bytes()).hexdigest() for p in self.root.rglob("*") if p.is_file()}
         out = self.base/"all"

@@ -3,6 +3,8 @@ setlocal
 cd /d "%~dp0"
 echo BioCal3D Approved ROI exploration
 echo Run this from Anaconda Prompt after: conda activate biocal3d
+echo Results are saved in a new ROI_Exploration_... folder beside this launcher.
+echo Examples: BCG6T1-4 and BCG3T1-1, both after partial cleaning.
 echo.
 set "ROI_ROOT=C:\Users\au662213\repos\biocal3d\data\Approved ROIs"
 set /p "ROI_INPUT=Approved ROIs folder [press Enter for %ROI_ROOT%]: "

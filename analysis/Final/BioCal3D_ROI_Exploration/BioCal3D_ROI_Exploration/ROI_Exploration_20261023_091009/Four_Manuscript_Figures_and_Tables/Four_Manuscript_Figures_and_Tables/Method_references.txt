@@ -1,0 +1,13 @@
+[R1] Commission Internationale de l’Eclairage. Colorimetry. 4th ed. CIE 015:2018. Vienna: CIE; 2018. https://doi.org/10.25039/TR.015.2018.
+
+[R2] International Electrotechnical Commission. IEC 61966-2-1:1999. Multimedia systems and equipment - Colour measurement and management - Part 2-1: Colour management - Default RGB colour space - sRGB. Geneva: IEC; 1999. https://webstore.iec.ch/en/publication/6169.
+
+[R3] Luo MR, Cui G, Rigg B. The development of the CIE 2000 colour-difference formula: CIEDE2000. Color Res Appl. 2001;26(5):340–350. https://doi.org/10.1002/col.1049.
+
+[R4] Sharma G, Wu W, Dalal EN. The CIEDE2000 color-difference formula: Implementation notes, supplementary test data, and mathematical observations. Color Res Appl. 2005;30(1):21–30. https://doi.org/10.1002/col.20070.
+
+[R5] Vallender SS. Calculation of the Wasserstein distance between probability distributions on the line. Theory Probab Appl. 1974;18(4):784–786. https://doi.org/10.1137/1118101.
+
+[R6] Efron B. Bootstrap methods: Another look at the jackknife. Ann Statist. 1979;7(1):1–26. https://doi.org/10.1214/aos/1176344552.
+
+[R7] van der Walt S, Schönberger JL, Nunez-Iglesias J, Boulogne F, Warner JD, Yager N, Gouillart E, Yu T, the scikit-image contributors. scikit-image: image processing in Python. PeerJ. 2014;2:e453. https://doi.org/10.7717/peerj.453.

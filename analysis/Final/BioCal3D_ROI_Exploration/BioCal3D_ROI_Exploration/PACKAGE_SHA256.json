@@ -1,9 +1,9 @@
 {
+  "investigate_approved_rois.py": "da9af6cfd0c9b4ad9e674d4efa398b47ed142c44757f933becdad8246ed275e0",
+  "Run_Exploration.bat": "f5c3c555887a53e172859799e4edc8862206ccd42a365cfd125e15a52b349ad6",
+  "README.md": "fab3ba09ad3247103b82e3928b2ca6e05c217a8cd83c9d7a1ca0cb8092e0083d",
   "requirements.txt": "46b642c7616f115454ee809a6ac8ef53bd42e564ff211f71c6240b3970a2bded",
-  "VALIDATION.md": "9d537cb8f6f98220ab6fb92d3b914fab395f01e90726709aaf11bd23db0bb150",
-  "Run_Exploration.bat": "d19ce686485871ff8f6892544c9d02c1a9d86ba1c651952c48451f815565955f",
-  "investigate_approved_rois.py": "af59afcdc81ea702a4a4908561b2c528d70d76b73bebf3f3742e3c3766ee2ec0",
-  "README.md": "43a8c2b6169cd3650a4c10e30ac0e694fc0be7ea13790c44d9e359bd4e41138b",
-  "tests/test_exploration.py": "9660ce2423dad8fdb56c5ce5af5e356c90bf95db3875e6864b579c4547512669",
-  "tests/make_fixture.py": "58a4701cb92d3064ddbdff6a25bcece794d009720b09ad6adf1020a65e570c83"
+  "VALIDATION.md": "570a869ad2197e3b6d5bc55689fcd1af71d5dd42ae21d578c17c26aabe560feb",
+  "tests/test_exploration.py": "1663a5abd22f2bcdd4034849f9b83ce94f7ecad4a723b449dfeac449e6cfe9de",
+  "tests/make_fixture.py": "2dd16a359d6a51979637cc29ad2cd233df9a17c07e7c773bf452c18ea2b727ea"
 }

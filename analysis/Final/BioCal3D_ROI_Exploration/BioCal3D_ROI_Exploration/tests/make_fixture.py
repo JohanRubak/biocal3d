@@ -5,11 +5,12 @@ import numpy as np
 import matplotlib.tri as mtri
 
 
-def make_dataset(root, specimens=2, scanners=("iTERO", "TRIOS3", "TRIOS5", "LABscanner")):
+def make_dataset(root, specimens=2, scanners=("iTERO", "TRIOS3", "TRIOS5", "LABscanner"),
+                 groups=(1, 3), specimen_numbers=None):
     root = Path(root); root.mkdir(parents=True, exist_ok=True)
-    for group in [1, 3]:
+    for group in groups:
         stages = [0, 1] if group == 1 else [0, 1, 2]
-        for number in range(1, specimens+1):
+        for number in (specimen_numbers if specimen_numbers is not None else range(1, specimens+1)):
             for si, scanner in enumerate(scanners):
                 for t in stages:
                     sample = f"BCG{group}T{t}-{number}"

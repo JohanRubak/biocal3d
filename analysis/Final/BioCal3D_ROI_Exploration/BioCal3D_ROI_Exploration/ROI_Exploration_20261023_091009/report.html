@@ -1,0 +1,146 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><title>BioCal3D ROI exploration</title>
+<style>body{max-width:1250px;margin:35px auto;padding:0 22px;font:16px/1.55 system-ui;color:#20323d}h1,h2{line-height:1.25}section{margin:38px 0;border-top:1px solid #ccd6dc;padding-top:22px}img{width:100%;height:auto}table{border-collapse:collapse;font-size:13px}td,th{padding:6px 10px;border:1px solid #d4dce1}.note{background:#eef5f8;padding:16px}a{color:#086b91}</style>
+<h1>Approved ROI exploration</h1><p>Version 1.1.0 · C:\Users\au662213\repos\biocal3d\analysis\Final\BioCal3D_ROI_Exploration\BioCal3D_ROI_Exploration\ROI_Exploration_20261023_091009</p>
+<div class="note"><strong>All-data descriptive analysis. Use a separate --scope train run with the actual specimen split for decisions that influence preprocessing or model evaluation.</strong><br>No plaque labels, masks, plaque percentages or plaque–clean separability estimates are used.</div>
+<p>Discovered 512 scans / 48 physical specimens; analysed 512 scans / 48 specimens. Failures: 0. LABscanner is a laboratory scanner.</p>
+<h2>How to interpret these outputs</h2><ul>
+<li>Colour: assumed sRGB, D65, 2° observer. Visible surface-area weighting within scans; equal specimen contributions to group histograms. Exported appearance, not calibrated colour accuracy.</li>
+<li>Paired scanner differences match specimen and stage. ΔE₀₀ compares mean Lab colours; distribution differences are also provided. No pointwise interscanner correspondence is assumed.</li>
+<li>Fresh G1–G2: baseline T0, clean T1. Mature G3–G6: baseline T0, partial T1, clean T2. Every group is included.</li>
+<li>Mesh counts and edge lengths describe sampling. Duplicate coordinates at texture seams are counted separately and also geometrically deduplicated for counts. Source geometry is preserved.</li>
+<li>Roughness descriptors: unfiltered, plane-detrended scanner topography. Native RMS is area-integrated; common-scale values use physical cell averaging. These are not standardised Sa/Sq measurements or independently verified physical roughness.</li>
+<li>Bootstrap intervals resample physical specimens within each displayed comparison. No pixel-wise significance tests or causal claims are made.</li>
+<li>Grid spacing and vertical exaggeration do not establish scanner resolution or geometric accuracy.</li></ul>
+<h2>Analysed scans</h2><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>cohort</th>
+      <th>scanner</th>
+      <th>stage</th>
+      <th>analysed_scans</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>fresh</td>
+      <td>LABscanner</td>
+      <td>baseline</td>
+      <td>16</td>
+    </tr>
+    <tr>
+      <td>fresh</td>
+      <td>LABscanner</td>
+      <td>clean</td>
+      <td>16</td>
+    </tr>
+    <tr>
+      <td>fresh</td>
+      <td>TRIOS3</td>
+      <td>baseline</td>
+      <td>16</td>
+    </tr>
+    <tr>
+      <td>fresh</td>
+      <td>TRIOS3</td>
+      <td>clean</td>
+      <td>16</td>
+    </tr>
+    <tr>
+      <td>fresh</td>
+      <td>TRIOS5</td>
+      <td>baseline</td>
+      <td>16</td>
+    </tr>
+    <tr>
+      <td>fresh</td>
+      <td>TRIOS5</td>
+      <td>clean</td>
+      <td>16</td>
+    </tr>
+    <tr>
+      <td>fresh</td>
+      <td>iTERO</td>
+      <td>baseline</td>
+      <td>16</td>
+    </tr>
+    <tr>
+      <td>fresh</td>
+      <td>iTERO</td>
+      <td>clean</td>
+      <td>16</td>
+    </tr>
+    <tr>
+      <td>mature</td>
+      <td>LABscanner</td>
+      <td>baseline</td>
+      <td>32</td>
+    </tr>
+    <tr>
+      <td>mature</td>
+      <td>LABscanner</td>
+      <td>clean</td>
+      <td>32</td>
+    </tr>
+    <tr>
+      <td>mature</td>
+      <td>LABscanner</td>
+      <td>partial</td>
+      <td>32</td>
+    </tr>
+    <tr>
+      <td>mature</td>
+      <td>TRIOS3</td>
+      <td>baseline</td>
+      <td>32</td>
+    </tr>
+    <tr>
+      <td>mature</td>
+      <td>TRIOS3</td>
+      <td>clean</td>
+      <td>32</td>
+    </tr>
+    <tr>
+      <td>mature</td>
+      <td>TRIOS3</td>
+      <td>partial</td>
+      <td>32</td>
+    </tr>
+    <tr>
+      <td>mature</td>
+      <td>TRIOS5</td>
+      <td>baseline</td>
+      <td>32</td>
+    </tr>
+    <tr>
+      <td>mature</td>
+      <td>TRIOS5</td>
+      <td>clean</td>
+      <td>32</td>
+    </tr>
+    <tr>
+      <td>mature</td>
+      <td>TRIOS5</td>
+      <td>partial</td>
+      <td>32</td>
+    </tr>
+    <tr>
+      <td>mature</td>
+      <td>iTERO</td>
+      <td>baseline</td>
+      <td>32</td>
+    </tr>
+    <tr>
+      <td>mature</td>
+      <td>iTERO</td>
+      <td>clean</td>
+      <td>32</td>
+    </tr>
+    <tr>
+      <td>mature</td>
+      <td>iTERO</td>
+      <td>partial</td>
+      <td>32</td>
+    </tr>
+  </tbody>
+</table><h2>Tables</h2><ul><li><a href="tables/common_scale_measurements.csv">common_scale_measurements.csv</a></li><li><a href="tables/common_scale_summary.csv">common_scale_summary.csv</a></li><li><a href="tables/failures.csv">failures.csv</a></li><li><a href="tables/group_paired_scanner_summary.csv">group_paired_scanner_summary.csv</a></li><li><a href="tables/group_paired_stage_summary.csv">group_paired_stage_summary.csv</a></li><li><a href="tables/group_scanner_stage_summary.csv">group_scanner_stage_summary.csv</a></li><li><a href="tables/inventory.csv">inventory.csv</a></li><li><a href="tables/inventory_counts.csv">inventory_counts.csv</a></li><li><a href="tables/paired_scanner_differences.csv">paired_scanner_differences.csv</a></li><li><a href="tables/paired_scanner_summary.csv">paired_scanner_summary.csv</a></li><li><a href="tables/paired_stage_changes.csv">paired_stage_changes.csv</a></li><li><a href="tables/paired_stage_summary.csv">paired_stage_summary.csv</a></li><li><a href="tables/representative_candidates.csv">representative_candidates.csv</a></li><li><a href="tables/scan_measurements.csv">scan_measurements.csv</a></li><li><a href="tables/scanner_response_summary.csv">scanner_response_summary.csv</a></li><li><a href="tables/scanner_stage_response_differences.csv">scanner_stage_response_differences.csv</a></li><li><a href="tables/scanner_stage_summary.csv">scanner_stage_summary.csv</a></li><li><a href="tables/selected_scans.csv">selected_scans.csv</a></li></ul><h2>Figures</h2><section><h2>CIELAB distributions: fresh</h2><a href="figures/01_Lab_distributions_fresh.png"><img loading="lazy" src="figures/01_Lab_distributions_fresh.png" alt="CIELAB distributions: fresh"></a><p>Within each scan, colour histograms are weighted by visible 3D surface area and normalised. Curves average scan histograms with one equal contribution per specimen. Assumed sRGB/D65/2°; these describe exported appearance. Background pixels are excluded.</p><p><a href="figures/01_Lab_distributions_fresh.png">PNG</a> · <a href="figures/01_Lab_distributions_fresh.pdf">PDF</a></p></section><section><h2>CIELAB distributions: mature</h2><a href="figures/01_Lab_distributions_mature.png"><img loading="lazy" src="figures/01_Lab_distributions_mature.png" alt="CIELAB distributions: mature"></a><p>Within each scan, colour histograms are weighted by visible 3D surface area and normalised. Curves average scan histograms with one equal contribution per specimen. Assumed sRGB/D65/2°; these describe exported appearance. Background pixels are excluded.</p><p><a href="figures/01_Lab_distributions_mature.png">PNG</a> · <a href="figures/01_Lab_distributions_mature.pdf">PDF</a></p></section><section><h2>Within-specimen colour changes: fresh</h2><a href="figures/02_within_specimen_colour_changes_fresh.png"><img loading="lazy" src="figures/02_within_specimen_colour_changes_fresh.png" alt="Within-specimen colour changes: fresh"></a><p>Thin lines follow individual physical specimens within each scanner. Thick lines show medians and shading shows the interquartile range at each stage. ΔE₀₀ compares area-weighted scan-mean CIELAB colours against the same specimen&#x27;s baseline, whose change is zero by definition. All scanner panels and both cohorts share the same vertical limits. Fresh specimens have two stages; mature specimens have three. Stage names do not identify plaque pixels.</p><p><a href="figures/02_within_specimen_colour_changes_fresh.png">PNG</a> · <a href="figures/02_within_specimen_colour_changes_fresh.pdf">PDF</a></p></section><section><h2>Within-specimen colour changes: mature</h2><a href="figures/02_within_specimen_colour_changes_mature.png"><img loading="lazy" src="figures/02_within_specimen_colour_changes_mature.png" alt="Within-specimen colour changes: mature"></a><p>Thin lines follow individual physical specimens within each scanner. Thick lines show medians and shading shows the interquartile range at each stage. ΔE₀₀ compares area-weighted scan-mean CIELAB colours against the same specimen&#x27;s baseline, whose change is zero by definition. All scanner panels and both cohorts share the same vertical limits. Fresh specimens have two stages; mature specimens have three. Stage names do not identify plaque pixels.</p><p><a href="figures/02_within_specimen_colour_changes_mature.png">PNG</a> · <a href="figures/02_within_specimen_colour_changes_mature.pdf">PDF</a></p></section><section><h2>Mesh and surface metrics: fresh and mature</h2><a href="figures/03_mesh_surface_metrics_fresh_mature.png"><img loading="lazy" src="figures/03_mesh_surface_metrics_fresh_mature.png" alt="Mesh and surface metrics: fresh and mature"></a><p>Rows show fresh (A–C) and mature (D–F) specimens. Columns show triangle density per mesh surface area, area-weighted median native face inclination relative to the best-fit plane, and plane-detrended RMS height after surface-area-weighted averaging into 100 µm cells. Dots are individual scans; connected markers show medians and bars show the specimen interquartile range. The density and RMS axes are logarithmic; the limits for each metric are shared across cohorts. Common cell width does not equalise scanner resolving power. These are unfiltered scanner-derived topography descriptors, not independently validated physical roughness or accuracy measurements.</p><p><a href="figures/03_mesh_surface_metrics_fresh_mature.png">PNG</a> · <a href="figures/03_mesh_surface_metrics_fresh_mature.pdf">PDF</a></p></section><section><h2>Colour, geometry and native mesh: BCG6-4, partial</h2><a href="figures/04_colour_geometry_mesh_BCG6-4_partial.png"><img loading="lazy" src="figures/04_colour_geometry_mesh_BCG6-4_partial.png" alt="Colour, geometry and native mesh: BCG6-4, partial"></a><p>Matched scans of one specimen. Rows show saved RGB, neutral-shaded native geometry with a fixed 20× vertical exaggeration for display only, native triangle edges in a 4 mm square, and area-averaged/detrended height at 0.05 mm cells. The height colour limit is shared across all selected scans (±20.3 µm). Lighting and relief exaggeration are identical across scanners; quantitative measurements use unexaggerated geometry. These views illustrate appearance and structure without asserting plaque location.</p><p><a href="figures/04_colour_geometry_mesh_BCG6-4_partial.png">PNG</a> · <a href="figures/04_colour_geometry_mesh_BCG6-4_partial.pdf">PDF</a></p></section><section><h2>CIELAB maps: BCG6-4, partial</h2><a href="figures/05_Lab_maps_BCG6-4_partial.png"><img loading="lazy" src="figures/05_Lab_maps_BCG6-4_partial.png" alt="CIELAB maps: BCG6-4, partial"></a><p>CIELAB channels derived from the saved RGB projection under assumed sRGB/D65/2°. Each channel uses identical display limits across scanners; limits for a* and b* are ±80 and may clip display extremes. All numeric summaries use the full, unclipped values.</p><p><a href="figures/05_Lab_maps_BCG6-4_partial.png">PNG</a> · <a href="figures/05_Lab_maps_BCG6-4_partial.pdf">PDF</a></p></section><section><h2>Colour, geometry and native mesh: BCG3-1, partial</h2><a href="figures/04_colour_geometry_mesh_BCG3-1_partial.png"><img loading="lazy" src="figures/04_colour_geometry_mesh_BCG3-1_partial.png" alt="Colour, geometry and native mesh: BCG3-1, partial"></a><p>Matched scans of one specimen. Rows show saved RGB, neutral-shaded native geometry with a fixed 20× vertical exaggeration for display only, native triangle edges in a 4 mm square, and area-averaged/detrended height at 0.05 mm cells. The height colour limit is shared across all selected scans (±20.3 µm). Lighting and relief exaggeration are identical across scanners; quantitative measurements use unexaggerated geometry. These views illustrate appearance and structure without asserting plaque location.</p><p><a href="figures/04_colour_geometry_mesh_BCG3-1_partial.png">PNG</a> · <a href="figures/04_colour_geometry_mesh_BCG3-1_partial.pdf">PDF</a></p></section><section><h2>CIELAB maps: BCG3-1, partial</h2><a href="figures/05_Lab_maps_BCG3-1_partial.png"><img loading="lazy" src="figures/05_Lab_maps_BCG3-1_partial.png" alt="CIELAB maps: BCG3-1, partial"></a><p>CIELAB channels derived from the saved RGB projection under assumed sRGB/D65/2°. Each channel uses identical display limits across scanners; limits for a* and b* are ±80 and may clip display extremes. All numeric summaries use the full, unclipped values.</p><p><a href="figures/05_Lab_maps_BCG3-1_partial.png">PNG</a> · <a href="figures/05_Lab_maps_BCG3-1_partial.pdf">PDF</a></p></section>
+<h2>Processing failures</h2><p>No processing failures.</p><p>Runtime: 292.7 seconds. See run_config.json for settings, assumptions and software versions.</p></html>

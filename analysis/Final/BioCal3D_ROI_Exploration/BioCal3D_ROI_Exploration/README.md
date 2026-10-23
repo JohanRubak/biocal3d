@@ -1,4 +1,4 @@
-# BioCal3D: Approved ROI exploration
+# BioCal3D: Approved ROI exploration — version 1.1.0
 
 This program implements the agreed, unlabelled-data analyses for Materials and
 Methods section 2.4. It covers colour distributions, paired scanner and stage
@@ -25,7 +25,9 @@ asks for the dataset folder and uses your known AU path as the default. Paste a
 folder path without surrounding quotation marks at that prompt.
 
 The default run describes **all data**. Output goes into a new timestamped
-sibling folder, for example `data\ROI_Exploration_20261022_120000`. Open its
+folder **inside the code folder, beside the Python script and launcher**, for
+example `BioCal3D_ROI_Exploration\ROI_Exploration_20261022_120000`. This does not
+depend on the current working directory or where the dataset is stored. Open its
 `report.html` in a browser. The report is local and needs no internet connection.
 
 The program reads the source dataset without modifying it. It uses Matplotlib's
@@ -109,40 +111,53 @@ Each figure is saved as a PNG (300 dpi by default) and a PDF. The HTML report
 includes an interpretation guide and an editable text caption for each output
 in `figures.json`. These captions describe the analysis, not invented findings.
 
-| File prefix | Figure | Question it addresses |
+The default run produces **nine PNG/PDF figure pairs** when both cohorts and
+both requested specimens are present:
+
+| File prefix | Figure | Layout |
 |---|---|---|
-| `01` | CIELAB distributions by scanner and stage, separately for fresh/mature | Do scanners represent the same stages with different colour distributions? |
-| `02` | Scan mean a*–b* scatter | Does the dominant colour variation follow scanner or stage? |
-| `03` | Paired scanner ΔE00 heatmaps | How different are scanner colour centroids for the same specimen/stage? |
-| `04` | Within-specimen colour trajectories from baseline | How does colour change with cleaning within each scanner? |
-| `05` | Mesh sampling summaries | How do encoded/geometric vertices, face counts, density and triangle sizes differ? |
-| `06` | Native surface topography and roughness descriptors | How do height variation and face slopes differ across scanners/stages? |
-| `07` | Roughness at shared physical cell widths | Do scanner differences persist when analysed at comparable spatial scales? |
-| `08` | Paired scanner-specific stage responses | Do scanners represent the same cleaning transitions differently? |
-| `09` | Matched specimen stage montage | What do the same specimen and stages look like across scanners? |
-| `10` | RGB, neutral geometry, mesh zoom and height map | How do colour, geometric structure and mesh sampling differ in one matched specimen? |
-| `11` | Matched L*, a* and b* maps | Which colour channels account for visible scanner differences? |
+| `01_Lab_distributions_fresh` | Fresh CIELAB distributions | Stages in rows; L*, a*, b* in columns; four scanners overlaid |
+| `01_Lab_distributions_mature` | Mature CIELAB distributions | Same layout, including partial cleaning |
+| `02_within_specimen_colour_changes_fresh` | Fresh within-specimen colour changes | Four scanner panels; each specimen followed from its own baseline |
+| `02_within_specimen_colour_changes_mature` | Mature within-specimen colour changes | Same layout, including partial cleaning |
+| `03_mesh_surface_metrics_fresh_mature` | Three selected mesh/surface metrics | Fresh/mature rows; triangle density, median native slope, 100 µm-grid RMS columns |
+| `04_colour_geometry_mesh_BCG6-4_partial` | BCG6T1-4 colour and native geometry | Four scanners; RGB, neutral native geometry, native mesh zoom, height map |
+| `04_colour_geometry_mesh_BCG3-1_partial` | BCG3T1-1 colour and native geometry | Same layout |
+| `05_Lab_maps_BCG6-4_partial` | BCG6T1-4 CIELAB maps | Four scanners; L*, a*, b* rows |
+| `05_Lab_maps_BCG3-1_partial` | BCG3T1-1 CIELAB maps | Same layout |
 
-For an initial manuscript story, start with `01`, `03`, `05`, `06` or `07`, and
-one matched `10` panel. Use `04`/`08` when discussing changes with cleaning.
-The supplied data determine the findings; this code does not presume LABscanner
-will have better geometric plaque contrast.
+The three geometric metrics describe complementary aspects: **triangle density**
+measures sampling, **median native face slope** measures local inclination, and
+**RMS height at 100 µm cells** measures height amplitude at a common calculation
+scale. A denser mesh does not prove greater accuracy. The RMS and density panels
+use log scales so all observations, including outliers, remain visible. The
+same metric has the same vertical limits in both cohort rows. The colour-change
+figures also share vertical limits across scanners and both cohorts. These
+trajectories show ΔE00 from each specimen's own baseline, not cumulative change
+or plaque percentage.
 
-By default, one complete specimen from each cohort is selected with the smallest
-robust distance to the cohort median feature profile. This is a deterministic
-selection rule, not an attempt to find the most striking example. Candidate
-rankings and selected IDs are recorded in `representative_candidates.csv`.
-If a cohort has no specimen complete across the available scanners/stages,
-automatic representative figures are omitted for that cohort; the numeric
-analysis still runs. Examples can be selected explicitly:
+Full-resolution saved RGB projections and original native triangles are used
+for the example figures. Both default examples are mature specimens shown at
+**partial cleaning**: physical specimen BCG6-4 corresponds to scan BCG6T1-4,
+and BCG3-1 corresponds to BCG3T1-1. They are explicitly requested illustrative
+examples, not automatically selected median-profile representatives. The
+profile rankings remain in the CSV for reference. If a default specimen is
+absent from a subset, it is omitted with a console message; no other specimen
+is substituted. An explicitly requested missing specimen stops with an error.
+
+To choose different specimen examples:
 
 ```bat
-python investigate_approved_rois.py --data-root "C:\Users\au662213\repos\biocal3d\data\Approved ROIs" --examples BCG1-2 BCG6-4 --dpi 600
+python investigate_approved_rois.py --data-root "C:\Users\au662213\repos\biocal3d\data\Approved ROIs" --examples BCG6-4 BCG3-1 --dpi 600
 ```
 
-An example must belong to the selected analysis scope. Representative structure
-views use the partial stage for mature specimens and baseline for fresh ones.
-RGB montages show all available stages. Shared physical display limits, height
+Pass `--examples` with no IDs to omit example figures. Examples must belong to
+the selected analysis scope. For custom mature specimens, the partial stage is
+used when available; otherwise the baseline stage is used. Fresh custom
+examples use baseline. No additional stage montage, colour-centroid scatter,
+paired-scanner heatmap or redundant six-metric geometry plots are generated.
+The corresponding numerical analyses remain available in the CSV tables.
+ Shared physical display limits, height
 colour limits, lighting and geometry exaggeration are used. Neutral geometry
 uses **20× vertical exaggeration for display only**, explicitly labelled. Use
 `--relief-exaggeration 1` for unexaggerated views. Numeric measurements always
@@ -216,7 +231,9 @@ Levelling uses weighted source-sample coordinates to preserve affine planes.
 
 The grids provide common analysis scales; they do not restore detail absent
 from a scanner or establish its resolving power. Pitches finer than the source
-projection spacing are rejected. Use `--pitches-mm 0.05 0.1 0.2` to set them.
+projection spacing are rejected. Use `--pitches-mm 0.05 0.1 0.2` to set them. Include **0.1 mm** when generating
+figures: the focused RMS panel uses that exact width and will not silently
+substitute another scale. Table-only runs can use other widths.
 At a 13.4 mm FOV and 1024 pixels, source grid spacing is about 13.1 µm; that
 spacing is distinct from native scanner resolution.
 
@@ -245,7 +262,7 @@ Missing paired scans are not imputed; actual paired counts are reported.
 - `*_summary.csv`: specimen-level medians, IQRs and bootstrap intervals.
 - `group_*_summary.csv`: corresponding summaries stratified by experimental
   group, for checking whether pooled fresh/mature patterns vary by group.
-- `representative_candidates.csv`: representative selection audit.
+- `representative_candidates.csv`: specimen profiles and selected example IDs.
 - `failures.csv`: processing failures with reasons. An empty file means no failures.
 
 The CSVs can be opened directly in Excel. No spreadsheet add-in is required.
@@ -262,8 +279,13 @@ for the map/mesh correspondence checks, which are always performed on new scans.
 python investigate_approved_rois.py --data-root "C:\Users\au662213\repos\biocal3d\data\Approved ROIs" --output "C:\path\to\previous_output" --resume
 ```
 
+For this version update, use a **new default output folder**. The changed
+script invalidates the previous version's per-scan caches. The original input
+data are unchanged, and the main measurements use the same definitions.
+
 Keep the same scope and split when resuming. Changes to measurement settings
-invalidate per-scan caches; figure-only changes regenerate figures. Use a new
+invalidate per-scan caches; script changes also invalidate caches; changing only command-line example
+selection or figure settings regenerates figures without changing measurements. Use a new
 output folder after changing the specimen split, dataset or scope. The cache
 is an analysis output, not a replacement for the prepared dataset.
 

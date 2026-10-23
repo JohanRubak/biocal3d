@@ -1,0 +1,19 @@
+{
+  "source_report": "/workspace/scratch/07b65183fbab/results_review/run_20261023/ROI_Exploration_20261023_091009",
+  "source_input_root": "C:\\Users\\au662213\\repos\\biocal3d\\data\\Approved ROIs_reoriented",
+  "source_run_version": "1.1.0",
+  "reformatter_version": "1.2.0",
+  "dpi": 600,
+  "width_mm": 170,
+  "formats": [
+    "png",
+    "pdf",
+    "tiff"
+  ],
+  "font_size_pt": 8,
+  "minimum_tick_font_size_pt": 7,
+  "original_measurements_changed": false,
+  "native_panel_source": "Embedded source PDF renderings, original pixels retained",
+  "height_panel_source": "Numeric cached 50 \u00b5m height grids; original common colour limit",
+  "note": "Export DPI does not add scanner detail. Embedded source image resolution is retained."
+}

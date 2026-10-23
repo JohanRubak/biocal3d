@@ -1,0 +1,47 @@
+[
+  {
+    "name": "01_Lab_distributions_fresh",
+    "title": "CIELAB distributions: fresh",
+    "caption": "Within each scan, colour histograms are weighted by visible 3D surface area and normalised. Curves average scan histograms with one equal contribution per specimen. Assumed sRGB/D65/2\u00b0; these describe exported appearance. Background pixels are excluded."
+  },
+  {
+    "name": "01_Lab_distributions_mature",
+    "title": "CIELAB distributions: mature",
+    "caption": "Within each scan, colour histograms are weighted by visible 3D surface area and normalised. Curves average scan histograms with one equal contribution per specimen. Assumed sRGB/D65/2\u00b0; these describe exported appearance. Background pixels are excluded."
+  },
+  {
+    "name": "02_within_specimen_colour_changes_fresh",
+    "title": "Within-specimen colour changes: fresh",
+    "caption": "Thin lines follow individual physical specimens within each scanner. Thick lines show medians and shading shows the interquartile range at each stage. \u0394E\u2080\u2080 compares area-weighted scan-mean CIELAB colours against the same specimen's baseline, whose change is zero by definition. All scanner panels and both cohorts share the same vertical limits. Fresh specimens have two stages; mature specimens have three. Stage names do not identify plaque pixels."
+  },
+  {
+    "name": "02_within_specimen_colour_changes_mature",
+    "title": "Within-specimen colour changes: mature",
+    "caption": "Thin lines follow individual physical specimens within each scanner. Thick lines show medians and shading shows the interquartile range at each stage. \u0394E\u2080\u2080 compares area-weighted scan-mean CIELAB colours against the same specimen's baseline, whose change is zero by definition. All scanner panels and both cohorts share the same vertical limits. Fresh specimens have two stages; mature specimens have three. Stage names do not identify plaque pixels."
+  },
+  {
+    "name": "03_mesh_surface_metrics_fresh_mature",
+    "title": "Mesh and surface metrics: fresh and mature",
+    "caption": "Rows show fresh (A\u2013C) and mature (D\u2013F) specimens. Columns show triangle density per mesh surface area, area-weighted median native face inclination relative to the best-fit plane, and plane-detrended RMS height after surface-area-weighted averaging into 100 \u00b5m cells. Dots are individual scans; connected markers show medians and bars show the specimen interquartile range. The density and RMS axes are logarithmic; the limits for each metric are shared across cohorts. Common cell width does not equalise scanner resolving power. These are unfiltered scanner-derived topography descriptors, not independently validated physical roughness or accuracy measurements."
+  },
+  {
+    "name": "04_colour_geometry_mesh_BCG6-4_partial",
+    "title": "Colour, geometry and native mesh: BCG6-4, partial",
+    "caption": "Matched scans of one specimen. Rows show saved RGB, neutral-shaded native geometry with a fixed 20\u00d7 vertical exaggeration for display only, native triangle edges in a 4 mm square, and area-averaged/detrended height at 0.05 mm cells. The height colour limit is shared across all selected scans (\u00b120.3 \u00b5m). Lighting and relief exaggeration are identical across scanners; quantitative measurements use unexaggerated geometry. These views illustrate appearance and structure without asserting plaque location."
+  },
+  {
+    "name": "05_Lab_maps_BCG6-4_partial",
+    "title": "CIELAB maps: BCG6-4, partial",
+    "caption": "CIELAB channels derived from the saved RGB projection under assumed sRGB/D65/2\u00b0. Each channel uses identical display limits across scanners; limits for a* and b* are \u00b180 and may clip display extremes. All numeric summaries use the full, unclipped values."
+  },
+  {
+    "name": "04_colour_geometry_mesh_BCG3-1_partial",
+    "title": "Colour, geometry and native mesh: BCG3-1, partial",
+    "caption": "Matched scans of one specimen. Rows show saved RGB, neutral-shaded native geometry with a fixed 20\u00d7 vertical exaggeration for display only, native triangle edges in a 4 mm square, and area-averaged/detrended height at 0.05 mm cells. The height colour limit is shared across all selected scans (\u00b120.3 \u00b5m). Lighting and relief exaggeration are identical across scanners; quantitative measurements use unexaggerated geometry. These views illustrate appearance and structure without asserting plaque location."
+  },
+  {
+    "name": "05_Lab_maps_BCG3-1_partial",
+    "title": "CIELAB maps: BCG3-1, partial",
+    "caption": "CIELAB channels derived from the saved RGB projection under assumed sRGB/D65/2\u00b0. Each channel uses identical display limits across scanners; limits for a* and b* are \u00b180 and may clip display extremes. All numeric summaries use the full, unclipped values."
+  }
+]
