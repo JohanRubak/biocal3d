@@ -1,0 +1,22 @@
+{
+  "center_mm": [
+    -0.0014750579748135833,
+    0.0034501345802136333,
+    0.0071771947112096324
+  ],
+  "field_mm": 16.0,
+  "size": 448,
+  "background": 127,
+  "valid_pixels": 82815,
+  "max_reprojection_error_pixels": 7.27871595881582e-06,
+  "coordinate_convention": "x right, world y up/image row down, nearest visible surface is maximum world z",
+  "source_geometry_sha256": "e1510efbe667025231807f892e4c323173f58bb04174a0422972cf874a4bc5a1",
+  "signature": "9789838c70d8704e306190f8e29d3b0d7cc19bc1be948b8c13007c0ea7f9e349",
+  "render_version": "orthographic-rgb-1",
+  "file_hashes": {
+    "rgb.png": "d7c7030a4702f0aae3e6374c6405ab6c1d13131510a422891ba150d93a2572de",
+    "gray.png": "611a6fbd3a48f9e75f52e8120310303bc3b2e5678923d00698895ead5e167491",
+    "valid_mask.png": "2f6fddb98adb732c5c7f729cf030a5d7d715b03b85bb81185e469e29c4b74c06",
+    "maps.npz": "0cb892fbb0866f5e1cb716a629f5b3a0b5f0a34b95b3e20ed2bac01882420289"
+  }
+}

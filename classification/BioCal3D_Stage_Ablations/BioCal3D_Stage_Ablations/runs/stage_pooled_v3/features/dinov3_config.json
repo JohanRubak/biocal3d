@@ -1,0 +1,20 @@
+{
+  "encoder": "dinov3",
+  "checkpoint_sha256": "08c60483bc63c04f533611e34bf70b120eedb7240f469bc16e9e20bf344b941d",
+  "upstream_commit": "6876159a11b4df116f30f667f8c9888617df0751",
+  "device": "cuda",
+  "torch": "2.7.1+cu126",
+  "numpy": "2.4.6",
+  "adapter_hashes": {
+    "stage_ablation.py": "e9b9abf857b15ea1a7de3cd86c203bc81861d791ff72075f2f6420287975bdd9",
+    "study_data.py": "560613f5cd90067792cf4811b667c9cad3fa5896362a8417e25df85d7eeaa6f6",
+    "images_2d.py": "b89cd47afe0254ee39b19c269729b731c81add2d3730bb54ced296af2da5b8e0",
+    "models_2d.py": "7175b4d8870b311276801bed83e131ac7defe37edc8633b67b20a0e8f7cd7ae4",
+    "concerto_backend.py": "20f0ae15c7f8443f01ae88a9ab494d0e2d848d2ce0ebda3f31fb38aa6fc17e79"
+  },
+  "image_size": 448,
+  "field_mm": 16.0,
+  "background": 127,
+  "pooling": "ROI weighted mean + covered patch max",
+  "encoder_state_sha256": "9a41e82fba0f8340583c4ca5798ee05779d4a79b90af72cbd0330ebddb6008f8"
+}

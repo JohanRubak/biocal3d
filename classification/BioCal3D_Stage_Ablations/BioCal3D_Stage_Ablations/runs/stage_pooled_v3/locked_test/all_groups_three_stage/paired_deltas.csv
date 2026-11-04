@@ -1,0 +1,9 @@
+﻿higher_input,reference_input,metric,paired_delta,specimen_count,minimum_specimens_per_relevant_stage,ci95,bootstrap_resamples,interval_scope
+dinov3_rgb,dinov3_gray,balanced_accuracy,-0.0034722222222222225,12,8,"[-0.03125, 0.020833333333333332]",2000,"Whole-specimen resampling stratified by fresh/mature, conditional on these fits and specimens."
+dinov3_rgb,dinov3_gray,baseline_recall,0.0,12,12,"[0.0, 0.0]",2000,"Whole-specimen resampling stratified by fresh/mature, conditional on these fits and specimens."
+dinov3_rgb,dinov3_gray,partial_recall,-0.03125,12,8,"[-0.09375, 0.0]",2000,"Whole-specimen resampling stratified by fresh/mature, conditional on these fits and specimens."
+dinov3_rgb,dinov3_gray,clean_recall,0.020833333333333332,12,12,"[0.0, 0.0625]",2000,"Whole-specimen resampling stratified by fresh/mature, conditional on these fits and specimens."
+concerto_rgb,concerto_geometry,balanced_accuracy,0.3541666666666667,12,8,"[0.2986111111111111, 0.4131944444444445]",2000,"Whole-specimen resampling stratified by fresh/mature, conditional on these fits and specimens."
+concerto_rgb,concerto_geometry,baseline_recall,0.20833333333333334,12,12,"[0.125, 0.2916666666666667]",2000,"Whole-specimen resampling stratified by fresh/mature, conditional on these fits and specimens."
+concerto_rgb,concerto_geometry,partial_recall,0.5625,12,8,"[0.40625, 0.6875]",2000,"Whole-specimen resampling stratified by fresh/mature, conditional on these fits and specimens."
+concerto_rgb,concerto_geometry,clean_recall,0.2916666666666667,12,12,"[0.14583333333333334, 0.4375]",2000,"Whole-specimen resampling stratified by fresh/mature, conditional on these fits and specimens."

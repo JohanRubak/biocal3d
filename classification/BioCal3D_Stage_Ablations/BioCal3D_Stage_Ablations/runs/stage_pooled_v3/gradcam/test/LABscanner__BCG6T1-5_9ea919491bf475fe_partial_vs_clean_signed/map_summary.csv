@@ -1,0 +1,5 @@
+﻿scan_id,mode,recorded_stage,target_stage,contrast_stage,predicted_stage,target_probability,logit_margin,intercept,sum_spatial_evidence,display_clip_p99
+LABscanner__BCG6T1-5,dinov3_rgb,partial,partial,clean,partial,0.9975115060806274,6.014924228191376,-0.405972421169281,6.420896266038651,0.22722746431827545
+LABscanner__BCG6T1-5,dinov3_gray,partial,partial,clean,partial,0.8633615970611572,1.8486570119857788,-0.003732618410140276,1.8523899879705985,0.17899948358535767
+LABscanner__BCG6T1-5,concerto_geometry,partial,partial,clean,clean,0.003048857906833291,-5.789926141500473,-0.434200182557106,-5.355720511503414,0.03768085955666224
+LABscanner__BCG6T1-5,concerto_rgb,partial,partial,clean,clean,0.17601118981838226,-1.521437406539917,0.7170287072658539,-2.2384930065721904,0.020950992821539775

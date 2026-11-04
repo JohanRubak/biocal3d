@@ -1,0 +1,903 @@
+{
+  "head": "Training-only StandardScaler + logistic regression, L2 C=1.0, balanced class weights",
+  "sklearn": "1.9.1",
+  "class_order": [
+    "baseline",
+    "partial",
+    "clean"
+  ],
+  "assessment": "specimen out-of-fold development",
+  "cohort_sha256": "e0db34da240e7a10fa7648e5382be8d3dfd925ddf7c403c074a1f9f9afe7d6b0",
+  "metrics": {
+    "dinov3_rgb": {
+      "pooled": {
+        "accuracy": 0.9817708333333334,
+        "balanced_accuracy": 0.9803240740740741,
+        "specimen_balanced_accuracy": 0.9803240740740741,
+        "macro_f1": 0.979804305352454,
+        "macro_auc": 0.9992717978395061,
+        "recall": [
+          0.9930555555555556,
+          0.96875,
+          0.9791666666666666
+        ],
+        "class_support": [
+          144,
+          96,
+          144
+        ],
+        "confusion_matrix": [
+          [
+            143,
+            1,
+            0
+          ],
+          [
+            0,
+            93,
+            3
+          ],
+          [
+            0,
+            3,
+            141
+          ]
+        ],
+        "scans": 384,
+        "specimens": 36,
+        "partial_specimens": 24,
+        "loss": 0.050015700211589
+      },
+      "by_scanner": {
+        "LABscanner": {
+          "accuracy": 0.9375,
+          "balanced_accuracy": 0.9305555555555555,
+          "specimen_balanced_accuracy": 0.9305555555555555,
+          "macro_f1": 0.9305555555555555,
+          "macro_auc": 0.9959876543209877,
+          "recall": [
+            1.0,
+            0.875,
+            0.9166666666666666
+          ],
+          "class_support": [
+            36,
+            24,
+            36
+          ],
+          "confusion_matrix": [
+            [
+              36,
+              0,
+              0
+            ],
+            [
+              0,
+              21,
+              3
+            ],
+            [
+              0,
+              3,
+              33
+            ]
+          ],
+          "scans": 96,
+          "specimens": 36,
+          "partial_specimens": 24,
+          "loss": 0.12461433162189817
+        },
+        "TRIOS3": {
+          "accuracy": 1.0,
+          "balanced_accuracy": 1.0,
+          "specimen_balanced_accuracy": 1.0,
+          "macro_f1": 1.0,
+          "macro_auc": 1.0,
+          "recall": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "class_support": [
+            36,
+            24,
+            36
+          ],
+          "confusion_matrix": [
+            [
+              36,
+              0,
+              0
+            ],
+            [
+              0,
+              24,
+              0
+            ],
+            [
+              0,
+              0,
+              36
+            ]
+          ],
+          "scans": 96,
+          "specimens": 36,
+          "partial_specimens": 24,
+          "loss": 0.006510152456444829
+        },
+        "TRIOS5": {
+          "accuracy": 1.0,
+          "balanced_accuracy": 1.0,
+          "specimen_balanced_accuracy": 1.0,
+          "macro_f1": 1.0,
+          "macro_auc": 1.0,
+          "recall": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "class_support": [
+            36,
+            24,
+            36
+          ],
+          "confusion_matrix": [
+            [
+              36,
+              0,
+              0
+            ],
+            [
+              0,
+              24,
+              0
+            ],
+            [
+              0,
+              0,
+              36
+            ]
+          ],
+          "scans": 96,
+          "specimens": 36,
+          "partial_specimens": 24,
+          "loss": 0.022497077570157748
+        },
+        "iTERO": {
+          "accuracy": 0.9895833333333334,
+          "balanced_accuracy": 0.9907407407407408,
+          "specimen_balanced_accuracy": 0.9907407407407408,
+          "macro_f1": 0.9885024432308134,
+          "macro_auc": 0.9996141975308642,
+          "recall": [
+            0.9722222222222222,
+            1.0,
+            1.0
+          ],
+          "class_support": [
+            36,
+            24,
+            36
+          ],
+          "confusion_matrix": [
+            [
+              35,
+              1,
+              0
+            ],
+            [
+              0,
+              24,
+              0
+            ],
+            [
+              0,
+              0,
+              36
+            ]
+          ],
+          "scans": 96,
+          "specimens": 36,
+          "partial_specimens": 24,
+          "loss": 0.04644123919785523
+        }
+      }
+    },
+    "dinov3_gray": {
+      "pooled": {
+        "accuracy": 0.9739583333333334,
+        "balanced_accuracy": 0.96875,
+        "specimen_balanced_accuracy": 0.96875,
+        "macro_f1": 0.9714579105847809,
+        "macro_auc": 0.9972077546296297,
+        "recall": [
+          0.9930555555555556,
+          0.9270833333333334,
+          0.9861111111111112
+        ],
+        "class_support": [
+          144,
+          96,
+          144
+        ],
+        "confusion_matrix": [
+          [
+            143,
+            0,
+            1
+          ],
+          [
+            0,
+            89,
+            7
+          ],
+          [
+            0,
+            2,
+            142
+          ]
+        ],
+        "scans": 384,
+        "specimens": 36,
+        "partial_specimens": 24,
+        "loss": 0.08426580556397589
+      },
+      "by_scanner": {
+        "LABscanner": {
+          "accuracy": 0.9479166666666666,
+          "balanced_accuracy": 0.9351851851851852,
+          "specimen_balanced_accuracy": 0.9351851851851852,
+          "macro_f1": 0.9407407407407407,
+          "macro_auc": 0.9829861111111112,
+          "recall": [
+            1.0,
+            0.8333333333333334,
+            0.9722222222222222
+          ],
+          "class_support": [
+            36,
+            24,
+            36
+          ],
+          "confusion_matrix": [
+            [
+              36,
+              0,
+              0
+            ],
+            [
+              0,
+              20,
+              4
+            ],
+            [
+              0,
+              1,
+              35
+            ]
+          ],
+          "scans": 96,
+          "specimens": 36,
+          "partial_specimens": 24,
+          "loss": 0.22304637351214693
+        },
+        "TRIOS3": {
+          "accuracy": 0.9791666666666666,
+          "balanced_accuracy": 0.976851851851852,
+          "specimen_balanced_accuracy": 0.976851851851852,
+          "macro_f1": 0.976851851851852,
+          "macro_auc": 0.9996527777777778,
+          "recall": [
+            1.0,
+            0.9583333333333334,
+            0.9722222222222222
+          ],
+          "class_support": [
+            36,
+            24,
+            36
+          ],
+          "confusion_matrix": [
+            [
+              36,
+              0,
+              0
+            ],
+            [
+              0,
+              23,
+              1
+            ],
+            [
+              0,
+              1,
+              35
+            ]
+          ],
+          "scans": 96,
+          "specimens": 36,
+          "partial_specimens": 24,
+          "loss": 0.03166684629826521
+        },
+        "TRIOS5": {
+          "accuracy": 0.9791666666666666,
+          "balanced_accuracy": 0.9768518518518517,
+          "specimen_balanced_accuracy": 0.9768518518518517,
+          "macro_f1": 0.9792039567286794,
+          "macro_auc": 0.9998070987654321,
+          "recall": [
+            0.9722222222222222,
+            0.9583333333333334,
+            1.0
+          ],
+          "class_support": [
+            36,
+            24,
+            36
+          ],
+          "confusion_matrix": [
+            [
+              35,
+              0,
+              1
+            ],
+            [
+              0,
+              23,
+              1
+            ],
+            [
+              0,
+              0,
+              36
+            ]
+          ],
+          "scans": 96,
+          "specimens": 36,
+          "partial_specimens": 24,
+          "loss": 0.03941706274914945
+        },
+        "iTERO": {
+          "accuracy": 0.9895833333333334,
+          "balanced_accuracy": 0.9861111111111112,
+          "specimen_balanced_accuracy": 0.9861111111111112,
+          "macro_f1": 0.9883415913727776,
+          "macro_auc": 0.9994598765432099,
+          "recall": [
+            1.0,
+            0.9583333333333334,
+            1.0
+          ],
+          "class_support": [
+            36,
+            24,
+            36
+          ],
+          "confusion_matrix": [
+            [
+              36,
+              0,
+              0
+            ],
+            [
+              0,
+              23,
+              1
+            ],
+            [
+              0,
+              0,
+              36
+            ]
+          ],
+          "scans": 96,
+          "specimens": 36,
+          "partial_specimens": 24,
+          "loss": 0.042932939696341994
+        }
+      }
+    },
+    "concerto_geometry": {
+      "pooled": {
+        "accuracy": 0.5833333333333334,
+        "balanced_accuracy": 0.5636574074074074,
+        "specimen_balanced_accuracy": 0.5636574074074074,
+        "macro_f1": 0.5652005250019934,
+        "macro_auc": 0.7529899691358025,
+        "recall": [
+          0.6597222222222222,
+          0.40625,
+          0.625
+        ],
+        "class_support": [
+          144,
+          96,
+          144
+        ],
+        "confusion_matrix": [
+          [
+            95,
+            16,
+            33
+          ],
+          [
+            18,
+            39,
+            39
+          ],
+          [
+            21,
+            33,
+            90
+          ]
+        ],
+        "scans": 384,
+        "specimens": 36,
+        "partial_specimens": 24,
+        "loss": 1.5558717605246253
+      },
+      "by_scanner": {
+        "LABscanner": {
+          "accuracy": 0.84375,
+          "balanced_accuracy": 0.8287037037037037,
+          "specimen_balanced_accuracy": 0.8287037037037037,
+          "macro_f1": 0.831851851851852,
+          "macro_auc": 0.9261188271604938,
+          "recall": [
+            0.9444444444444444,
+            0.7083333333333334,
+            0.8333333333333334
+          ],
+          "class_support": [
+            36,
+            24,
+            36
+          ],
+          "confusion_matrix": [
+            [
+              34,
+              2,
+              0
+            ],
+            [
+              1,
+              17,
+              6
+            ],
+            [
+              4,
+              2,
+              30
+            ]
+          ],
+          "scans": 96,
+          "specimens": 36,
+          "partial_specimens": 24,
+          "loss": 0.8352745847973554
+        },
+        "TRIOS3": {
+          "accuracy": 0.5208333333333334,
+          "balanced_accuracy": 0.5185185185185185,
+          "specimen_balanced_accuracy": 0.5185185185185185,
+          "macro_f1": 0.5162211740041928,
+          "macro_auc": 0.6933256172839505,
+          "recall": [
+            0.5,
+            0.5,
+            0.5555555555555556
+          ],
+          "class_support": [
+            36,
+            24,
+            36
+          ],
+          "confusion_matrix": [
+            [
+              18,
+              7,
+              11
+            ],
+            [
+              4,
+              12,
+              8
+            ],
+            [
+              6,
+              10,
+              20
+            ]
+          ],
+          "scans": 96,
+          "specimens": 36,
+          "partial_specimens": 24,
+          "loss": 1.6697987408516892
+        },
+        "TRIOS5": {
+          "accuracy": 0.4791666666666667,
+          "balanced_accuracy": 0.4490740740740741,
+          "specimen_balanced_accuracy": 0.4490740740740741,
+          "macro_f1": 0.45055859553123573,
+          "macro_auc": 0.6794367283950619,
+          "recall": [
+            0.5555555555555556,
+            0.20833333333333334,
+            0.5833333333333334
+          ],
+          "class_support": [
+            36,
+            24,
+            36
+          ],
+          "confusion_matrix": [
+            [
+              20,
+              3,
+              13
+            ],
+            [
+              4,
+              5,
+              15
+            ],
+            [
+              4,
+              11,
+              21
+            ]
+          ],
+          "scans": 96,
+          "specimens": 36,
+          "partial_specimens": 24,
+          "loss": 1.5522012564577654
+        },
+        "iTERO": {
+          "accuracy": 0.4895833333333333,
+          "balanced_accuracy": 0.4583333333333333,
+          "specimen_balanced_accuracy": 0.4583333333333333,
+          "macro_f1": 0.45313499546057684,
+          "macro_auc": 0.6311342592592591,
+          "recall": [
+            0.6388888888888888,
+            0.20833333333333334,
+            0.5277777777777778
+          ],
+          "class_support": [
+            36,
+            24,
+            36
+          ],
+          "confusion_matrix": [
+            [
+              23,
+              4,
+              9
+            ],
+            [
+              9,
+              5,
+              10
+            ],
+            [
+              7,
+              10,
+              19
+            ]
+          ],
+          "scans": 96,
+          "specimens": 36,
+          "partial_specimens": 24,
+          "loss": 2.1662124599916908
+        }
+      }
+    },
+    "concerto_rgb": {
+      "pooled": {
+        "accuracy": 0.9322916666666666,
+        "balanced_accuracy": 0.9247685185185185,
+        "specimen_balanced_accuracy": 0.9247685185185185,
+        "macro_f1": 0.9278176978233571,
+        "macro_auc": 0.9851972415123457,
+        "recall": [
+          0.9583333333333334,
+          0.8645833333333334,
+          0.9513888888888888
+        ],
+        "class_support": [
+          144,
+          96,
+          144
+        ],
+        "confusion_matrix": [
+          [
+            138,
+            1,
+            5
+          ],
+          [
+            2,
+            83,
+            11
+          ],
+          [
+            1,
+            6,
+            137
+          ]
+        ],
+        "scans": 384,
+        "specimens": 36,
+        "partial_specimens": 24,
+        "loss": 0.25531308225952737
+      },
+      "by_scanner": {
+        "LABscanner": {
+          "accuracy": 0.9375,
+          "balanced_accuracy": 0.9305555555555557,
+          "specimen_balanced_accuracy": 0.9305555555555557,
+          "macro_f1": 0.9328171443844204,
+          "macro_auc": 0.9885416666666668,
+          "recall": [
+            0.9722222222222222,
+            0.875,
+            0.9444444444444444
+          ],
+          "class_support": [
+            36,
+            24,
+            36
+          ],
+          "confusion_matrix": [
+            [
+              35,
+              0,
+              1
+            ],
+            [
+              0,
+              21,
+              3
+            ],
+            [
+              0,
+              2,
+              34
+            ]
+          ],
+          "scans": 96,
+          "specimens": 36,
+          "partial_specimens": 24,
+          "loss": 0.1532566731914994
+        },
+        "TRIOS3": {
+          "accuracy": 0.9583333333333334,
+          "balanced_accuracy": 0.9444444444444445,
+          "specimen_balanced_accuracy": 0.9444444444444445,
+          "macro_f1": 0.9516789516789516,
+          "macro_auc": 0.9834876543209875,
+          "recall": [
+            1.0,
+            0.8333333333333334,
+            1.0
+          ],
+          "class_support": [
+            36,
+            24,
+            36
+          ],
+          "confusion_matrix": [
+            [
+              36,
+              0,
+              0
+            ],
+            [
+              2,
+              20,
+              2
+            ],
+            [
+              0,
+              0,
+              36
+            ]
+          ],
+          "scans": 96,
+          "specimens": 36,
+          "partial_specimens": 24,
+          "loss": 0.18499762724873484
+        },
+        "TRIOS5": {
+          "accuracy": 0.96875,
+          "balanced_accuracy": 0.9675925925925926,
+          "specimen_balanced_accuracy": 0.9675925925925926,
+          "macro_f1": 0.9700506585612968,
+          "macro_auc": 0.9996913580246914,
+          "recall": [
+            0.9444444444444444,
+            0.9583333333333334,
+            1.0
+          ],
+          "class_support": [
+            36,
+            24,
+            36
+          ],
+          "confusion_matrix": [
+            [
+              34,
+              0,
+              2
+            ],
+            [
+              0,
+              23,
+              1
+            ],
+            [
+              0,
+              0,
+              36
+            ]
+          ],
+          "scans": 96,
+          "specimens": 36,
+          "partial_specimens": 24,
+          "loss": 0.08579184149536202
+        },
+        "iTERO": {
+          "accuracy": 0.8645833333333334,
+          "balanced_accuracy": 0.8564814814814815,
+          "specimen_balanced_accuracy": 0.8564814814814815,
+          "macro_f1": 0.8574538824538824,
+          "macro_auc": 0.9633101851851852,
+          "recall": [
+            0.9166666666666666,
+            0.7916666666666666,
+            0.8611111111111112
+          ],
+          "class_support": [
+            36,
+            24,
+            36
+          ],
+          "confusion_matrix": [
+            [
+              33,
+              1,
+              2
+            ],
+            [
+              0,
+              19,
+              5
+            ],
+            [
+              1,
+              4,
+              31
+            ]
+          ],
+          "scans": 96,
+          "specimens": 36,
+          "partial_specimens": 24,
+          "loss": 0.5972061871025133
+        }
+      }
+    }
+  },
+  "paired_deltas": [
+    {
+      "higher_input": "dinov3_rgb",
+      "reference_input": "dinov3_gray",
+      "metric": "balanced_accuracy",
+      "paired_delta": 0.011574074074074075,
+      "specimen_count": 36,
+      "minimum_specimens_per_relevant_stage": 24,
+      "ci95": [
+        -0.009288194444444444,
+        0.03703703703703704
+      ],
+      "bootstrap_resamples": 2000,
+      "interval_scope": "Whole-specimen resampling stratified by fresh/mature, conditional on these fits and specimens."
+    },
+    {
+      "higher_input": "dinov3_rgb",
+      "reference_input": "dinov3_gray",
+      "metric": "baseline_recall",
+      "paired_delta": 0.0,
+      "specimen_count": 36,
+      "minimum_specimens_per_relevant_stage": 36,
+      "ci95": [
+        -0.020833333333333332,
+        0.020833333333333332
+      ],
+      "bootstrap_resamples": 2000,
+      "interval_scope": "Whole-specimen resampling stratified by fresh/mature, conditional on these fits and specimens."
+    },
+    {
+      "higher_input": "dinov3_rgb",
+      "reference_input": "dinov3_gray",
+      "metric": "partial_recall",
+      "paired_delta": 0.041666666666666664,
+      "specimen_count": 36,
+      "minimum_specimens_per_relevant_stage": 24,
+      "ci95": [
+        -0.010416666666666666,
+        0.09375
+      ],
+      "bootstrap_resamples": 2000,
+      "interval_scope": "Whole-specimen resampling stratified by fresh/mature, conditional on these fits and specimens."
+    },
+    {
+      "higher_input": "dinov3_rgb",
+      "reference_input": "dinov3_gray",
+      "metric": "clean_recall",
+      "paired_delta": -0.006944444444444444,
+      "specimen_count": 36,
+      "minimum_specimens_per_relevant_stage": 36,
+      "ci95": [
+        -0.034722222222222224,
+        0.020833333333333332
+      ],
+      "bootstrap_resamples": 2000,
+      "interval_scope": "Whole-specimen resampling stratified by fresh/mature, conditional on these fits and specimens."
+    },
+    {
+      "higher_input": "concerto_rgb",
+      "reference_input": "concerto_geometry",
+      "metric": "balanced_accuracy",
+      "paired_delta": 0.3611111111111111,
+      "specimen_count": 36,
+      "minimum_specimens_per_relevant_stage": 24,
+      "ci95": [
+        0.31597222222222227,
+        0.40509259259259256
+      ],
+      "bootstrap_resamples": 2000,
+      "interval_scope": "Whole-specimen resampling stratified by fresh/mature, conditional on these fits and specimens."
+    },
+    {
+      "higher_input": "concerto_rgb",
+      "reference_input": "concerto_geometry",
+      "metric": "baseline_recall",
+      "paired_delta": 0.2986111111111111,
+      "specimen_count": 36,
+      "minimum_specimens_per_relevant_stage": 36,
+      "ci95": [
+        0.22916666666666666,
+        0.37517361111111014
+      ],
+      "bootstrap_resamples": 2000,
+      "interval_scope": "Whole-specimen resampling stratified by fresh/mature, conditional on these fits and specimens."
+    },
+    {
+      "higher_input": "concerto_rgb",
+      "reference_input": "concerto_geometry",
+      "metric": "partial_recall",
+      "paired_delta": 0.4583333333333333,
+      "specimen_count": 36,
+      "minimum_specimens_per_relevant_stage": 24,
+      "ci95": [
+        0.3541666666666667,
+        0.5520833333333334
+      ],
+      "bootstrap_resamples": 2000,
+      "interval_scope": "Whole-specimen resampling stratified by fresh/mature, conditional on these fits and specimens."
+    },
+    {
+      "higher_input": "concerto_rgb",
+      "reference_input": "concerto_geometry",
+      "metric": "clean_recall",
+      "paired_delta": 0.3263888888888889,
+      "specimen_count": 36,
+      "minimum_specimens_per_relevant_stage": 36,
+      "ci95": [
+        0.2359375,
+        0.4236111111111111
+      ],
+      "bootstrap_resamples": 2000,
+      "interval_scope": "Whole-specimen resampling stratified by fresh/mature, conditional on these fits and specimens."
+    }
+  ]
+}
