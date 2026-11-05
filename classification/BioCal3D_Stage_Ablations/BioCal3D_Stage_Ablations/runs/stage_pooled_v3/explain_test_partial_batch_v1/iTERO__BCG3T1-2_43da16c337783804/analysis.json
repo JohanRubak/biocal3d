@@ -1,0 +1,13 @@
+{
+  "version": "stage-decision-explanation-1.1",
+  "scan_id": "iTERO__BCG3T1-2",
+  "partition": "test",
+  "cohort_sha256": "e0db34da240e7a10fa7648e5382be8d3dfd925ddf7c403c074a1f9f9afe7d6b0",
+  "command": "cached",
+  "head_source": "locked_test",
+  "target": "partial",
+  "against": "clean",
+  "grid": 8,
+  "in_sample_head_specimen": false,
+  "meaning": "Classifier explanation. Cached deletion holds encoder features fixed; input interventions rerun the encoder. Neither is validated plaque segmentation."
+}

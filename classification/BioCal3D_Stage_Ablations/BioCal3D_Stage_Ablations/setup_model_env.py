@@ -103,7 +103,8 @@ def setup(args):
         pip_install("torch-scatter==2.1.2+pt25cu124", "--no-index", "--only-binary", ":all:",
                     "--find-links", SCATTER_WHEELS)
     else:
-        pip_install("-r", str(ROOT / "requirements.txt"))
+        # Torch Hub imports all DINOv3 entry points before selecting ViT-S/16.
+        pip_install("-r", str(ROOT / "requirements.txt"), "-r", str(repo / "requirements.txt"))
 
     run(sys.executable, "-m", "pip", "check")
     check = """
@@ -122,6 +123,12 @@ if sys.argv[2] == "concerto":
     from torch_scatter import scatter
     groups = torch.tensor([0, 0, 1, 1], device="cuda")
     assert scatter(x, groups, reduce="sum").tolist() == [2, 2]
+else:
+    import runpy
+    from pathlib import Path
+    sys.path.insert(0, sys.argv[3])
+    hub = runpy.run_path(str(Path(sys.argv[3]) / "hubconf.py"))
+    assert callable(hub["dinov3_vits16"])
 print(f"CUDA check passed on {torch.cuda.get_device_name(0)} (PyTorch {torch.__version__}).")
 """
     run(sys.executable, "-c", check, model["cuda"], args.encoder, str(repo))

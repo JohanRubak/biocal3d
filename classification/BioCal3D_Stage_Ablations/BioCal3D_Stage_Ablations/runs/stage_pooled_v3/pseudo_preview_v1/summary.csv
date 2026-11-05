@@ -1,0 +1,25 @@
+﻿scan_id,physical_id,scanner,stage,partition,mode,method,plaque_like_fraction,uncertain_fraction,clean_like_fraction,fraction_basis,uncovered_projected_roi_fraction,mean_pseudo_score,low,high
+TRIOS5__BCG5T2-1,BCG5-1,TRIOS5,clean,validation,dinov3_rgb,stage_association,0.0,1.0,0.0,covered patch area,0.016276987123632458,0.5065573594171386,0.35,0.65
+TRIOS5__BCG5T2-1,BCG5-1,TRIOS5,clean,validation,concerto_rgb,stage_association,0.0,0.7764892578125,0.2235107421875,area-sampled points,0.0,0.46807207379848925,0.35,0.65
+LABscanner__BCG5T1-7,BCG5-7,LABscanner,partial,validation,dinov3_rgb,stage_association,0.0,0.7229816317558289,0.27701836824417114,covered patch area,0.023893063969793737,0.44449947277856017,0.35,0.65
+LABscanner__BCG5T1-7,BCG5-7,LABscanner,partial,validation,concerto_rgb,stage_association,0.0,1.0,0.0,area-sampled points,0.0,0.5827887231306601,0.35,0.65
+iTERO__BCG6T2-6,BCG6-6,iTERO,clean,validation,dinov3_rgb,stage_association,0.0,0.8619598746299744,0.13804011046886444,covered patch area,0.028463660810952418,0.47466542593648925,0.35,0.65
+iTERO__BCG6T2-6,BCG6-6,iTERO,clean,validation,concerto_rgb,stage_association,0.0,0.1641845703125,0.8358154296875,area-sampled points,0.0,0.3734696906078676,0.35,0.65
+TRIOS5__BCG3T0-1,BCG3-1,TRIOS5,baseline,validation,dinov3_rgb,stage_association,0.0,1.0,0.0,covered patch area,0.020205758271038432,0.5115856499246413,0.35,0.65
+TRIOS5__BCG3T0-1,BCG3-1,TRIOS5,baseline,validation,concerto_rgb,stage_association,0.0,0.997802734375,0.002197265625,area-sampled points,0.0,0.5191743770346144,0.35,0.65
+TRIOS5__BCG4T1-4,BCG4-4,TRIOS5,partial,validation,dinov3_rgb,stage_association,0.0,1.0,0.0,covered patch area,0.0239116054585099,0.5069860899508558,0.35,0.65
+TRIOS5__BCG4T1-4,BCG4-4,TRIOS5,partial,validation,concerto_rgb,stage_association,0.0,1.0,0.0,area-sampled points,0.0,0.5075893574256413,0.35,0.65
+LABscanner__BCG3T2-6,BCG3-6,LABscanner,clean,validation,dinov3_rgb,stage_association,0.0,0.6844817996025085,0.31551820039749146,covered patch area,0.01936247878795283,0.43787497519993146,0.35,0.65
+LABscanner__BCG3T2-6,BCG3-6,LABscanner,clean,validation,concerto_rgb,stage_association,0.0,0.970703125,0.029296875,area-sampled points,0.0,0.49094961643975743,0.35,0.65
+LABscanner__BCG3T0-1,BCG3-1,LABscanner,baseline,validation,dinov3_rgb,stage_association,0.0,0.7007800340652466,0.2992199659347534,covered patch area,0.016730985591754233,0.44091882296607704,0.35,0.65
+LABscanner__BCG3T0-1,BCG3-1,LABscanner,baseline,validation,concerto_rgb,stage_association,0.0,1.0,0.0,area-sampled points,0.0,0.587840510930708,0.35,0.65
+TRIOS3__BCG3T1-1,BCG3-1,TRIOS3,partial,validation,dinov3_rgb,stage_association,0.0,1.0,0.0,covered patch area,0.034451808892571156,0.5074845644520181,0.35,0.65
+TRIOS3__BCG3T1-1,BCG3-1,TRIOS3,partial,validation,concerto_rgb,stage_association,0.0,1.0,0.0,area-sampled points,0.0,0.5660796139125368,0.35,0.65
+iTERO__BCG5T0-7,BCG5-7,iTERO,baseline,validation,dinov3_rgb,stage_association,0.0,0.9574947357177734,0.04250524938106537,covered patch area,0.034688433754250236,0.4976279299221838,0.35,0.65
+iTERO__BCG5T0-7,BCG5-7,iTERO,baseline,validation,concerto_rgb,stage_association,0.0,0.3851318359375,0.6148681640625,area-sampled points,0.0,0.42579813763402086,0.35,0.65
+iTERO__BCG4T1-2,BCG4-2,iTERO,partial,validation,dinov3_rgb,stage_association,0.0,1.0,0.0,covered patch area,0.037367870832849315,0.5076526499553196,0.35,0.65
+iTERO__BCG4T1-2,BCG4-2,iTERO,partial,validation,concerto_rgb,stage_association,0.0,0.4293212890625,0.5706787109375,area-sampled points,0.0,0.43381330370495913,0.35,0.65
+TRIOS3__BCG2T0-2,BCG2-2,TRIOS3,baseline,validation,dinov3_rgb,stage_association,0.0,1.0,0.0,covered patch area,0.029986348984203826,0.5095801867584538,0.35,0.65
+TRIOS3__BCG2T0-2,BCG2-2,TRIOS3,baseline,validation,concerto_rgb,stage_association,0.0,0.78955078125,0.21044921875,area-sampled points,0.0,0.4714112639898299,0.35,0.65
+TRIOS3__BCG4T2-2,BCG4-2,TRIOS3,clean,validation,dinov3_rgb,stage_association,0.0,0.8605003952980042,0.13949961960315704,covered patch area,0.036742891049340476,0.47562930842010814,0.35,0.65
+TRIOS3__BCG4T2-2,BCG4-2,TRIOS3,clean,validation,concerto_rgb,stage_association,0.0,0.323486328125,0.676513671875,area-sampled points,0.0,0.4107788736361604,0.35,0.65

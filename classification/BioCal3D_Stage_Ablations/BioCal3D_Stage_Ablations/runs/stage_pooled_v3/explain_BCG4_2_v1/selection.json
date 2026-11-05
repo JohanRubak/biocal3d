@@ -1,0 +1,21 @@
+{
+  "version": "stage-decision-explanation-1.1",
+  "cohort_sha256": "e0db34da240e7a10fa7648e5382be8d3dfd925ddf7c403c074a1f9f9afe7d6b0",
+  "command": "cached",
+  "scans": [
+    "LABscanner__BCG4T0-2",
+    "LABscanner__BCG4T2-2",
+    "LABscanner__BCG4T1-2",
+    "TRIOS3__BCG4T0-2",
+    "TRIOS3__BCG4T2-2",
+    "TRIOS3__BCG4T1-2",
+    "TRIOS5__BCG4T0-2",
+    "TRIOS5__BCG4T2-2",
+    "TRIOS5__BCG4T1-2",
+    "iTERO__BCG4T0-2",
+    "iTERO__BCG4T2-2",
+    "iTERO__BCG4T1-2"
+  ],
+  "head_source": "locked_test",
+  "grid": 8
+}

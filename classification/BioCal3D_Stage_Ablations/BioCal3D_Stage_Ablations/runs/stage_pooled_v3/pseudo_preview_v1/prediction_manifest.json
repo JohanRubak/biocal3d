@@ -1,0 +1,13 @@
+{
+  "version": "feature-pseudomasks-1.0",
+  "cohort_sha256": "e0db34da240e7a10fa7648e5382be8d3dfd925ddf7c403c074a1f9f9afe7d6b0",
+  "model_manifest_sha256": "60866cc849a9aa68bbdc61092e9761f43ef20a0d2b5900fbeb10a196aea8c583",
+  "model_sha256": {
+    "dinov3_rgb": "c28eae0a4660661eed568f209cb8ce566e595f08bda50afe7be7e911b2d82557",
+    "concerto_rgb": "b225c50b13df165d23f67106b492a4b563a18ad5f59b0d02d818c165585cbe1b"
+  },
+  "partition": "validation",
+  "low": 0.35,
+  "high": 0.65,
+  "meaning": "Scores are not calibrated plaque probabilities; fractions describe candidate pseudo labels, not validated plaque coverage."
+}

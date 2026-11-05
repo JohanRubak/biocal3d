@@ -3,6 +3,8 @@
 import argparse
 import csv
 import re
+import sys
+from tempfile import NamedTemporaryFile
 from pathlib import Path
 
 import joblib
@@ -201,6 +203,21 @@ def draw_overlay(ax, base, mask, overlay, scale, cmap, norm):
               interpolation="nearest")
 
 
+def save_png(fig, destination, dpi):
+    """Write a complete PNG before replacing its final filename."""
+    temporary = None
+    try:
+        with NamedTemporaryFile(mode="wb", suffix=".png", prefix=".plot-",
+                                dir=destination.parent, delete=False) as stream:
+            temporary = Path(stream.name)
+            fig.savefig(stream, format="png", dpi=dpi, facecolor="white")
+        temporary.replace(destination)
+    finally:
+        plt.close(fig)
+        if temporary is not None:
+            temporary.unlink(missing_ok=True)
+
+
 def diagnose_pooling(output, maps, rgb, mask, center, field, scan, stage, comparison):
     # Distances are measured in the orthographic projection. Padding also
     # makes the image border count as outside the valid surface.
@@ -258,8 +275,7 @@ def diagnose_pooling(output, maps, rgb, mask, center, field, scan, stage, compar
     bar = fig.colorbar(matplotlib.cm.ScalarMappable(norm=norm, cmap=cmap),
                        ax=axes.ravel().tolist(), shrink=.56)
     bar.set_ticks([-1, 0, 1], labels=["Opposes", "Neutral", "Supports"])
-    fig.savefig(output / "pooling_diagnostic.png", dpi=170, facecolor="white")
-    plt.close(fig)
+    save_png(fig, output / "pooling_diagnostic.png", dpi=170)
     write_csv(output / "pooling_diagnostic.csv", records)
 
 
@@ -322,8 +338,7 @@ def save_scan(args, row, models, keys, predictions):
     else:
         colorbar.set_ticks([0, 1], labels=["Low", "High"])
     colorbar.set_label("Relative evidence within each panel")
-    fig.savefig(output / "heatmaps.png", dpi=200, facecolor="white")
-    plt.close(fig)
+    save_png(fig, output / "heatmaps.png", dpi=200)
     write_csv(output / "map_summary.csv", summary)
     if args.diagnose_pooling:
         diagnose_pooling(output, maps, rgb, mask, center, field, scan, stage, comparison)
@@ -383,8 +398,17 @@ def main():
                   for mode in args.modes}
         keys = {mode: signature(read_json(args.run / "features" / f"{mode.split('_', 1)[0]}_config.json"))
                 for mode in models}
+        failed = []
         for row in rows:
-            save_scan(args, row, models, keys, predictions)
+            try:
+                save_scan(args, row, models, keys, predictions)
+            except OSError as exc:
+                failed.append(row["scan_id"])
+                print(f"File error for {row['scan_id']}: {exc}", file=sys.stderr, flush=True)
+        if failed:
+            parser.exit(2, f"File errors for {len(failed)} of {len(rows)} scans. "
+                           f"Retry these with --scan and, for output errors, a different --out folder:\n"
+                           f"{', '.join(failed)}\n")
     except (OSError, ValueError, KeyError) as exc:
         parser.exit(2, f"Error: {exc}\n")
 

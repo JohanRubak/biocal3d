@@ -34,9 +34,17 @@ conda run --no-capture-output -n biocal3d-dinov3 python setup_model_env.py dinov
 conda run --no-capture-output -n biocal3d-concerto python setup_model_env.py concerto
 ```
 
-The helper installs matching CUDA-enabled PyTorch and torchvision wheels and the shared pipeline dependencies. It clones the two official repositories into `vendor/`, verifies CUDA access, and checks the CUDA scatter operation in the Concerto environment. DINOv3 uses PyTorch 2.7.1 with CUDA 12.6. Concerto uses PyTorch 2.5.0 with CUDA 12.4 and the matching torch-scatter and spconv wheels. The two CUDA wheel builds use the same NVIDIA driver. The Concerto adapter runs with FlashAttention disabled.
+The helper installs matching CUDA-enabled PyTorch and torchvision wheels and the shared pipeline dependencies. For DINOv3 it also installs the upstream repository requirements and checks that the PyTorch Hub entry point imports. It clones the two official repositories into `vendor/`, verifies CUDA access, and checks the CUDA scatter operation in the Concerto environment. DINOv3 uses PyTorch 2.7.1 with CUDA 12.6. Concerto uses PyTorch 2.5.0 with CUDA 12.4 and the matching torch-scatter and spconv wheels. The two CUDA wheel builds use the same NVIDIA driver. The Concerto adapter runs with FlashAttention disabled.
 
 The Concerto setup downloads and checks the official `weights/concerto_small.pth`. For DINOv3, request model access through [Meta’s DINOv3 repository](https://github.com/facebookresearch/dinov3#pretrained-models), download the **ViT-S/16 LVD-1689M PyTorch Hub .pth checkpoint**, and place it at `weights/dinov3_vits16_pretrain_lvd1689m-08c60483.pth`. Keep a checkpoint you already downloaded by passing its actual path to the smoke command below. The helper also accepts `--checkpoint` for an existing official file. Source weights and dependency references are in the [DINOv3 repository](https://github.com/facebookresearch/dinov3), [Concerto repository](https://github.com/Pointcept/Concerto) and [Concerto Small model download](https://huggingface.co/Pointcept/Concerto/blob/main/concerto_small.pth).
+
+If a previous DINOv3 setup reports `No module named 'torchmetrics'`, repair that environment from the extracted folder:
+
+```bat
+conda run --no-capture-output -n biocal3d-dinov3 python -m pip install -r vendor/dinov3/requirements.txt
+```
+
+Then retry the DINOv3 smoke command below.
 
 ### Concerto on WSL2 if native Windows fails
 
@@ -66,4 +74,40 @@ Results are under `development_cv/all_groups_three_stage/`. The saved heads in t
 
 If you reserved a test set, repeat both extraction commands with `--partition test` after settling the study settings. Run `conda run --no-capture-output -n biocal3d-dinov3 python stage_ablation.py fit --run runs/stage_pooled_v3 --test` once. The heads are refit on all development scans and the fixed assessment writes to `locked_test/all_groups_three_stage/`, including the four fitted heads. The default development workflow never extracts test features.
 
+## Plot performance and head optimization
+
+Install Matplotlib into the DINOv3 environment once:
+
+```bat
+conda run -n biocal3d-dinov3 python -m pip install matplotlib
+```
+
+Plot existing development results from their folder or use an exported ZIP as the first argument:
+
+```bat
+conda run --no-capture-output -n biocal3d-dinov3 python plot_stage_ablation.py runs/stage_pooled_v3/development_cv/all_groups_three_stage --out runs/stage_pooled_v3/plots/development
+```
+
+This saves `performance.png` and `confusion_matrices.png`. For locked test plots, pass the `locked_test/all_groups_three_stage` folder and choose a different output folder.
+
+To examine how the heads improved while fitting, add `--trace-run runs/stage_pooled_v3` to the development plotting command. It reads the existing development embeddings and replays the same scaler and logistic regression on the original folds with several increasing caps on optimizer iterations. It logs the converged iteration count per fold and saves training and validation log loss, validation balanced accuracy, and actual iteration counts in `optimization_replay.png` and `optimization_replay.csv`. This is a diagnostic replay from cached embeddings. The original fit did not log intermediate iterations. It also checks the final replayed validation probabilities against the originals. Keep the same scikit-learn and SciPy environment for that comparison. There is no need to re-extract embeddings or access the locked test.
+
 The ROI loader, renderer, grayscale conversion and DINO adapter come from your earlier 2D benchmark. The Concerto adapter uses the pretrained encoder and hierarchy mapping from your earlier 3D investigations. Synthetic end-to-end checks used the real split, render and fitting code with simulated encoder embeddings. GPU extraction requires your local official model environments and weights.
+
+
+## Local-feature pseudo masks
+
+See [PSEUDO_MASKS.md](PSEUDO_MASKS.md) for the new DINOv3/Concerto local-feature visualizations and exploratory plaque pseudo masks. Start with development spatial caches, fit `make_feature_pseudomasks.py fit`, then use `predict` for held-out development previews. The original encoder and stage-classification Python modules are unchanged.
+
+
+## Repository-style PCA and cosine similarity inspector
+
+See [FEATURE_MAPS.md](FEATURE_MAPS.md) for `inspect_feature_maps.py`: an interactive desktop viewer for per-specimen PCA, clicked reference cosine maps, cross-scan comparisons and prompted candidate masks for DINOv3 and Concerto. It uses spatial caches directly and does not need the stage-association pseudo-model fit.
+
+
+## Explain the fitted stage-classifier decisions
+
+See [CLASSIFIER_EXPLANATIONS.md](CLASSIFIER_EXPLANATIONS.md) for `explain_stage_classifier.py`: exact logistic-regression feature contributions, mean/max spatial allocation, feature deletion with random controls, and optional original-input interventions with encoder re-inference. Use this workflow to investigate why stage classification works; PCA/similarity maps alone do not explain the fitted head.
+
+
+The classifier explanation script now accepts batch filters (`--partition`, `--stage`, `--scanner`, `--specimen`, `--limit`, `--all`, multiple `--scan` IDs), writes a local HTML gallery and combined CSV, and saves `allocation_detail.png` with separate mean/max contrast scales. See CLASSIFIER_EXPLANATIONS.md for commands.
