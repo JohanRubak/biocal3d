@@ -1,0 +1,32 @@
+{
+  "version": "plaque-dependence-1.0",
+  "scan_id": "TRIOS5__BCG4T1-1",
+  "physical_id": "BCG4-1",
+  "scanner": "TRIOS5",
+  "recorded_stage": "partial",
+  "partition": "test",
+  "geometry_sha256": "fded92619235df3c3ab3686ae12f50b432c94a2f3468408c29fdb485a43abcd8",
+  "cohort_sha256": "e0db34da240e7a10fa7648e5382be8d3dfd925ddf7c403c074a1f9f9afe7d6b0",
+  "rgb_array_sha256": "348ea6658b22ba593cca122ed6de07aef1a8bd5e598d7fcaa20765771896261c",
+  "valid_array_sha256": "037624ae7c09046ee00e5d0de6c46ef5171ebf8ad8eed18959407fb6fb48f3bc",
+  "image_shape": [
+    448,
+    448
+  ],
+  "field_mm": 16.0,
+  "pairs": [
+    {
+      "pair_id": 1,
+      "radius_mm": 0.5,
+      "plaque_xy": [
+        140.07795344751867,
+        334.9589371980676
+      ],
+      "clean_xy": [
+        247.56909676474893,
+        86.79146537842183
+      ]
+    }
+  ],
+  "label_meaning": "Human-selected visually plaque-like/clean-like regions; exploratory labels, not ground truth."
+}

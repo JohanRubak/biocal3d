@@ -1,0 +1,145 @@
+﻿scope,classifier,mode,stage,support,recall,precision,f1
+All scanners,binary,dinov3_gray,clean,48,0.9166666666666666,0.9777777777777777,0.946236559139785
+All scanners,binary,dinov3_gray,plaque_stage,80,0.9875,0.9518072289156626,0.9693251533742331
+All scanners,binary,dinov3_rgb,clean,48,0.9375,1.0,0.967741935483871
+All scanners,binary,dinov3_rgb,plaque_stage,80,1.0,0.963855421686747,0.9815950920245399
+All scanners,three-stage,dinov3_gray,clean,48,0.9375,0.9574468085106383,0.9473684210526315
+All scanners,three-stage,dinov3_gray,plaque_stage,80,0.975,0.9629629629629629,0.968944099378882
+All scanners,three-stage,dinov3_rgb,clean,48,0.9375,0.8490566037735849,0.8910891089108911
+All scanners,three-stage,dinov3_rgb,plaque_stage,80,0.9,0.96,0.9290322580645162
+All scanners,binary,concerto_geometry,clean,48,0.9375,0.4326923076923077,0.5921052631578947
+All scanners,binary,concerto_geometry,plaque_stage,80,0.2625,0.875,0.40384615384615385
+All scanners,binary,concerto_rgb,clean,48,0.8541666666666666,0.9111111111111111,0.8817204301075269
+All scanners,binary,concerto_rgb,plaque_stage,80,0.95,0.9156626506024096,0.9325153374233128
+All scanners,three-stage,concerto_geometry,clean,48,0.7708333333333334,0.46835443037974683,0.5826771653543307
+All scanners,three-stage,concerto_geometry,plaque_stage,80,0.475,0.7755102040816326,0.5891472868217055
+All scanners,three-stage,concerto_rgb,clean,48,0.9375,0.9574468085106383,0.9473684210526315
+All scanners,three-stage,concerto_rgb,plaque_stage,80,0.975,0.9629629629629629,0.968944099378882
+All scanners,mean-pooling,dinov3_gray,clean,48,0.9166666666666666,0.9777777777777777,0.946236559139785
+All scanners,mean-pooling,dinov3_gray,plaque_stage,80,0.9875,0.9518072289156626,0.9693251533742331
+All scanners,mean-pooling,dinov3_rgb,clean,48,0.9583333333333334,0.9787234042553191,0.968421052631579
+All scanners,mean-pooling,dinov3_rgb,plaque_stage,80,0.9875,0.9753086419753086,0.9813664596273292
+All scanners,mean-pooling,concerto_geometry,clean,48,0.625,0.6382978723404256,0.631578947368421
+All scanners,mean-pooling,concerto_geometry,plaque_stage,80,0.7875,0.7777777777777778,0.782608695652174
+All scanners,mean-pooling,concerto_rgb,clean,48,0.875,0.9333333333333333,0.9032258064516129
+All scanners,mean-pooling,concerto_rgb,plaque_stage,80,0.9625,0.927710843373494,0.9447852760736196
+LABscanner,binary,dinov3_gray,clean,12,0.9166666666666666,0.9166666666666666,0.9166666666666666
+LABscanner,binary,dinov3_gray,plaque_stage,20,0.95,0.95,0.95
+LABscanner,binary,dinov3_rgb,clean,12,1.0,1.0,1.0
+LABscanner,binary,dinov3_rgb,plaque_stage,20,1.0,1.0,1.0
+LABscanner,three-stage,dinov3_gray,clean,12,1.0,0.8571428571428571,0.9230769230769231
+LABscanner,three-stage,dinov3_gray,plaque_stage,20,0.9,1.0,0.9473684210526315
+LABscanner,three-stage,dinov3_rgb,clean,12,1.0,0.6666666666666666,0.8
+LABscanner,three-stage,dinov3_rgb,plaque_stage,20,0.7,1.0,0.8235294117647058
+LABscanner,binary,concerto_geometry,clean,12,0.8333333333333334,0.7142857142857143,0.7692307692307693
+LABscanner,binary,concerto_geometry,plaque_stage,20,0.8,0.8888888888888888,0.8421052631578947
+LABscanner,binary,concerto_rgb,clean,12,0.9166666666666666,0.8461538461538461,0.88
+LABscanner,binary,concerto_rgb,plaque_stage,20,0.9,0.9473684210526315,0.9230769230769231
+LABscanner,three-stage,concerto_geometry,clean,12,0.75,0.9,0.8181818181818182
+LABscanner,three-stage,concerto_geometry,plaque_stage,20,0.95,0.8636363636363636,0.9047619047619048
+LABscanner,three-stage,concerto_rgb,clean,12,1.0,1.0,1.0
+LABscanner,three-stage,concerto_rgb,plaque_stage,20,1.0,1.0,1.0
+LABscanner,mean-pooling,dinov3_gray,clean,12,0.75,0.9,0.8181818181818182
+LABscanner,mean-pooling,dinov3_gray,plaque_stage,20,0.95,0.8636363636363636,0.9047619047619048
+LABscanner,mean-pooling,dinov3_rgb,clean,12,1.0,0.9230769230769231,0.96
+LABscanner,mean-pooling,dinov3_rgb,plaque_stage,20,0.95,1.0,0.9743589743589743
+LABscanner,mean-pooling,concerto_geometry,clean,12,0.9166666666666666,0.9166666666666666,0.9166666666666666
+LABscanner,mean-pooling,concerto_geometry,plaque_stage,20,0.95,0.95,0.95
+LABscanner,mean-pooling,concerto_rgb,clean,12,0.9166666666666666,0.9166666666666666,0.9166666666666666
+LABscanner,mean-pooling,concerto_rgb,plaque_stage,20,0.95,0.95,0.95
+TRIOS3,binary,dinov3_gray,clean,12,0.9166666666666666,1.0,0.9565217391304348
+TRIOS3,binary,dinov3_gray,plaque_stage,20,1.0,0.9523809523809523,0.975609756097561
+TRIOS3,binary,dinov3_rgb,clean,12,0.9166666666666666,1.0,0.9565217391304348
+TRIOS3,binary,dinov3_rgb,plaque_stage,20,1.0,0.9523809523809523,0.975609756097561
+TRIOS3,three-stage,dinov3_gray,clean,12,0.9166666666666666,1.0,0.9565217391304348
+TRIOS3,three-stage,dinov3_gray,plaque_stage,20,1.0,0.9523809523809523,0.975609756097561
+TRIOS3,three-stage,dinov3_rgb,clean,12,0.9166666666666666,0.9166666666666666,0.9166666666666666
+TRIOS3,three-stage,dinov3_rgb,plaque_stage,20,0.95,0.95,0.95
+TRIOS3,binary,concerto_geometry,clean,12,1.0,0.3870967741935484,0.5581395348837209
+TRIOS3,binary,concerto_geometry,plaque_stage,20,0.05,1.0,0.09523809523809523
+TRIOS3,binary,concerto_rgb,clean,12,0.8333333333333334,0.9090909090909091,0.8695652173913043
+TRIOS3,binary,concerto_rgb,plaque_stage,20,0.95,0.9047619047619048,0.926829268292683
+TRIOS3,three-stage,concerto_geometry,clean,12,0.6666666666666666,0.38095238095238093,0.48484848484848486
+TRIOS3,three-stage,concerto_geometry,plaque_stage,20,0.35,0.6363636363636364,0.45161290322580644
+TRIOS3,three-stage,concerto_rgb,clean,12,1.0,1.0,1.0
+TRIOS3,three-stage,concerto_rgb,plaque_stage,20,1.0,1.0,1.0
+TRIOS3,mean-pooling,dinov3_gray,clean,12,1.0,1.0,1.0
+TRIOS3,mean-pooling,dinov3_gray,plaque_stage,20,1.0,1.0,1.0
+TRIOS3,mean-pooling,dinov3_rgb,clean,12,0.9166666666666666,1.0,0.9565217391304348
+TRIOS3,mean-pooling,dinov3_rgb,plaque_stage,20,1.0,0.9523809523809523,0.975609756097561
+TRIOS3,mean-pooling,concerto_geometry,clean,12,0.5,0.5454545454545454,0.5217391304347826
+TRIOS3,mean-pooling,concerto_geometry,plaque_stage,20,0.75,0.7142857142857143,0.7317073170731707
+TRIOS3,mean-pooling,concerto_rgb,clean,12,0.9166666666666666,1.0,0.9565217391304348
+TRIOS3,mean-pooling,concerto_rgb,plaque_stage,20,1.0,0.9523809523809523,0.975609756097561
+TRIOS5,binary,dinov3_gray,clean,12,0.9166666666666666,1.0,0.9565217391304348
+TRIOS5,binary,dinov3_gray,plaque_stage,20,1.0,0.9523809523809523,0.975609756097561
+TRIOS5,binary,dinov3_rgb,clean,12,0.9166666666666666,1.0,0.9565217391304348
+TRIOS5,binary,dinov3_rgb,plaque_stage,20,1.0,0.9523809523809523,0.975609756097561
+TRIOS5,three-stage,dinov3_gray,clean,12,0.9166666666666666,1.0,0.9565217391304348
+TRIOS5,three-stage,dinov3_gray,plaque_stage,20,1.0,0.9523809523809523,0.975609756097561
+TRIOS5,three-stage,dinov3_rgb,clean,12,0.9166666666666666,1.0,0.9565217391304348
+TRIOS5,three-stage,dinov3_rgb,plaque_stage,20,1.0,0.9523809523809523,0.975609756097561
+TRIOS5,binary,concerto_geometry,clean,12,1.0,0.4,0.5714285714285714
+TRIOS5,binary,concerto_geometry,plaque_stage,20,0.1,1.0,0.18181818181818182
+TRIOS5,binary,concerto_rgb,clean,12,0.9166666666666666,0.9166666666666666,0.9166666666666666
+TRIOS5,binary,concerto_rgb,plaque_stage,20,0.95,0.95,0.95
+TRIOS5,three-stage,concerto_geometry,clean,12,0.9166666666666666,0.4583333333333333,0.6111111111111112
+TRIOS5,three-stage,concerto_geometry,plaque_stage,20,0.35,0.875,0.5
+TRIOS5,three-stage,concerto_rgb,clean,12,0.9166666666666666,0.9166666666666666,0.9166666666666666
+TRIOS5,three-stage,concerto_rgb,plaque_stage,20,0.95,0.95,0.95
+TRIOS5,mean-pooling,dinov3_gray,clean,12,0.9166666666666666,1.0,0.9565217391304348
+TRIOS5,mean-pooling,dinov3_gray,plaque_stage,20,1.0,0.9523809523809523,0.975609756097561
+TRIOS5,mean-pooling,dinov3_rgb,clean,12,0.9166666666666666,1.0,0.9565217391304348
+TRIOS5,mean-pooling,dinov3_rgb,plaque_stage,20,1.0,0.9523809523809523,0.975609756097561
+TRIOS5,mean-pooling,concerto_geometry,clean,12,0.6666666666666666,0.6153846153846154,0.64
+TRIOS5,mean-pooling,concerto_geometry,plaque_stage,20,0.75,0.7894736842105263,0.7692307692307693
+TRIOS5,mean-pooling,concerto_rgb,clean,12,0.9166666666666666,1.0,0.9565217391304348
+TRIOS5,mean-pooling,concerto_rgb,plaque_stage,20,1.0,0.9523809523809523,0.975609756097561
+iTERO,binary,dinov3_gray,clean,12,0.9166666666666666,1.0,0.9565217391304348
+iTERO,binary,dinov3_gray,plaque_stage,20,1.0,0.9523809523809523,0.975609756097561
+iTERO,binary,dinov3_rgb,clean,12,0.9166666666666666,1.0,0.9565217391304348
+iTERO,binary,dinov3_rgb,plaque_stage,20,1.0,0.9523809523809523,0.975609756097561
+iTERO,three-stage,dinov3_gray,clean,12,0.9166666666666666,1.0,0.9565217391304348
+iTERO,three-stage,dinov3_gray,plaque_stage,20,1.0,0.9523809523809523,0.975609756097561
+iTERO,three-stage,dinov3_rgb,clean,12,0.9166666666666666,0.9166666666666666,0.9166666666666666
+iTERO,three-stage,dinov3_rgb,plaque_stage,20,0.95,0.95,0.95
+iTERO,binary,concerto_geometry,clean,12,0.9166666666666666,0.3793103448275862,0.5365853658536586
+iTERO,binary,concerto_geometry,plaque_stage,20,0.1,0.6666666666666666,0.17391304347826086
+iTERO,binary,concerto_rgb,clean,12,0.75,1.0,0.8571428571428571
+iTERO,binary,concerto_rgb,plaque_stage,20,1.0,0.8695652173913043,0.9302325581395349
+iTERO,three-stage,concerto_geometry,clean,12,0.75,0.375,0.5
+iTERO,three-stage,concerto_geometry,plaque_stage,20,0.25,0.625,0.35714285714285715
+iTERO,three-stage,concerto_rgb,clean,12,0.8333333333333334,0.9090909090909091,0.8695652173913043
+iTERO,three-stage,concerto_rgb,plaque_stage,20,0.95,0.9047619047619048,0.926829268292683
+iTERO,mean-pooling,dinov3_gray,clean,12,1.0,1.0,1.0
+iTERO,mean-pooling,dinov3_gray,plaque_stage,20,1.0,1.0,1.0
+iTERO,mean-pooling,dinov3_rgb,clean,12,1.0,1.0,1.0
+iTERO,mean-pooling,dinov3_rgb,plaque_stage,20,1.0,1.0,1.0
+iTERO,mean-pooling,concerto_geometry,clean,12,0.4166666666666667,0.45454545454545453,0.43478260869565216
+iTERO,mean-pooling,concerto_geometry,plaque_stage,20,0.7,0.6666666666666666,0.6829268292682927
+iTERO,mean-pooling,concerto_rgb,clean,12,0.75,0.8181818181818182,0.782608695652174
+iTERO,mean-pooling,concerto_rgb,plaque_stage,20,0.9,0.8571428571428571,0.8780487804878049
+Mature only (all scanners),binary,dinov3_gray,clean,32,0.96875,0.96875,0.96875
+Mature only (all scanners),binary,dinov3_gray,plaque_stage,64,0.984375,0.984375,0.984375
+Mature only (all scanners),binary,dinov3_rgb,clean,32,1.0,1.0,1.0
+Mature only (all scanners),binary,dinov3_rgb,plaque_stage,64,1.0,1.0,1.0
+Mature only (all scanners),three-stage,dinov3_gray,clean,32,1.0,0.9411764705882353,0.9696969696969697
+Mature only (all scanners),three-stage,dinov3_gray,plaque_stage,64,0.96875,1.0,0.9841269841269841
+Mature only (all scanners),three-stage,dinov3_rgb,clean,32,1.0,0.8421052631578947,0.9142857142857143
+Mature only (all scanners),three-stage,dinov3_rgb,plaque_stage,64,0.90625,1.0,0.9508196721311475
+Mature only (all scanners),binary,concerto_geometry,clean,32,0.9375,0.38461538461538464,0.5454545454545454
+Mature only (all scanners),binary,concerto_geometry,plaque_stage,64,0.25,0.8888888888888888,0.3902439024390244
+Mature only (all scanners),binary,concerto_rgb,clean,32,0.9375,0.9090909090909091,0.9230769230769231
+Mature only (all scanners),binary,concerto_rgb,plaque_stage,64,0.953125,0.9682539682539683,0.9606299212598425
+Mature only (all scanners),three-stage,concerto_geometry,clean,32,0.78125,0.423728813559322,0.5494505494505495
+Mature only (all scanners),three-stage,concerto_geometry,plaque_stage,64,0.46875,0.8108108108108109,0.594059405940594
+Mature only (all scanners),three-stage,concerto_rgb,clean,32,1.0,0.9411764705882353,0.9696969696969697
+Mature only (all scanners),three-stage,concerto_rgb,plaque_stage,64,0.96875,1.0,0.9841269841269841
+Mature only (all scanners),mean-pooling,dinov3_gray,clean,32,0.90625,0.9666666666666667,0.9354838709677419
+Mature only (all scanners),mean-pooling,dinov3_gray,plaque_stage,64,0.984375,0.9545454545454546,0.9692307692307692
+Mature only (all scanners),mean-pooling,dinov3_rgb,clean,32,1.0,0.9696969696969697,0.9846153846153847
+Mature only (all scanners),mean-pooling,dinov3_rgb,plaque_stage,64,0.984375,1.0,0.9921259842519685
+Mature only (all scanners),mean-pooling,concerto_geometry,clean,32,0.6875,0.6285714285714286,0.6567164179104478
+Mature only (all scanners),mean-pooling,concerto_geometry,plaque_stage,64,0.796875,0.8360655737704918,0.816
+Mature only (all scanners),mean-pooling,concerto_rgb,clean,32,0.96875,0.9117647058823529,0.9393939393939394
+Mature only (all scanners),mean-pooling,concerto_rgb,plaque_stage,64,0.953125,0.9838709677419355,0.9682539682539683

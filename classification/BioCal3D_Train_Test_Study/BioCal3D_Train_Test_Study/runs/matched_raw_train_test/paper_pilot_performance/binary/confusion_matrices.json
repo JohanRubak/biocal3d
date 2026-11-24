@@ -1,0 +1,776 @@
+{
+  "class_order": [
+    "clean",
+    "plaque_stage"
+  ],
+  "matrices": {
+    "All scanners": {
+      "binary": {
+        "dinov3_gray": [
+          [
+            44,
+            4
+          ],
+          [
+            1,
+            79
+          ]
+        ],
+        "dinov3_rgb": [
+          [
+            45,
+            3
+          ],
+          [
+            0,
+            80
+          ]
+        ],
+        "concerto_geometry": [
+          [
+            45,
+            3
+          ],
+          [
+            59,
+            21
+          ]
+        ],
+        "concerto_rgb": [
+          [
+            41,
+            7
+          ],
+          [
+            4,
+            76
+          ]
+        ]
+      },
+      "three-stage": {
+        "dinov3_gray": [
+          [
+            45,
+            3
+          ],
+          [
+            2,
+            78
+          ]
+        ],
+        "dinov3_rgb": [
+          [
+            45,
+            3
+          ],
+          [
+            8,
+            72
+          ]
+        ],
+        "concerto_geometry": [
+          [
+            37,
+            11
+          ],
+          [
+            42,
+            38
+          ]
+        ],
+        "concerto_rgb": [
+          [
+            45,
+            3
+          ],
+          [
+            2,
+            78
+          ]
+        ]
+      },
+      "mean-pooling": {
+        "dinov3_gray": [
+          [
+            44,
+            4
+          ],
+          [
+            1,
+            79
+          ]
+        ],
+        "dinov3_rgb": [
+          [
+            46,
+            2
+          ],
+          [
+            1,
+            79
+          ]
+        ],
+        "concerto_geometry": [
+          [
+            30,
+            18
+          ],
+          [
+            17,
+            63
+          ]
+        ],
+        "concerto_rgb": [
+          [
+            42,
+            6
+          ],
+          [
+            3,
+            77
+          ]
+        ]
+      }
+    },
+    "LABscanner": {
+      "binary": {
+        "dinov3_gray": [
+          [
+            11,
+            1
+          ],
+          [
+            1,
+            19
+          ]
+        ],
+        "dinov3_rgb": [
+          [
+            12,
+            0
+          ],
+          [
+            0,
+            20
+          ]
+        ],
+        "concerto_geometry": [
+          [
+            10,
+            2
+          ],
+          [
+            4,
+            16
+          ]
+        ],
+        "concerto_rgb": [
+          [
+            11,
+            1
+          ],
+          [
+            2,
+            18
+          ]
+        ]
+      },
+      "three-stage": {
+        "dinov3_gray": [
+          [
+            12,
+            0
+          ],
+          [
+            2,
+            18
+          ]
+        ],
+        "dinov3_rgb": [
+          [
+            12,
+            0
+          ],
+          [
+            6,
+            14
+          ]
+        ],
+        "concerto_geometry": [
+          [
+            9,
+            3
+          ],
+          [
+            1,
+            19
+          ]
+        ],
+        "concerto_rgb": [
+          [
+            12,
+            0
+          ],
+          [
+            0,
+            20
+          ]
+        ]
+      },
+      "mean-pooling": {
+        "dinov3_gray": [
+          [
+            9,
+            3
+          ],
+          [
+            1,
+            19
+          ]
+        ],
+        "dinov3_rgb": [
+          [
+            12,
+            0
+          ],
+          [
+            1,
+            19
+          ]
+        ],
+        "concerto_geometry": [
+          [
+            11,
+            1
+          ],
+          [
+            1,
+            19
+          ]
+        ],
+        "concerto_rgb": [
+          [
+            11,
+            1
+          ],
+          [
+            1,
+            19
+          ]
+        ]
+      }
+    },
+    "TRIOS3": {
+      "binary": {
+        "dinov3_gray": [
+          [
+            11,
+            1
+          ],
+          [
+            0,
+            20
+          ]
+        ],
+        "dinov3_rgb": [
+          [
+            11,
+            1
+          ],
+          [
+            0,
+            20
+          ]
+        ],
+        "concerto_geometry": [
+          [
+            12,
+            0
+          ],
+          [
+            19,
+            1
+          ]
+        ],
+        "concerto_rgb": [
+          [
+            10,
+            2
+          ],
+          [
+            1,
+            19
+          ]
+        ]
+      },
+      "three-stage": {
+        "dinov3_gray": [
+          [
+            11,
+            1
+          ],
+          [
+            0,
+            20
+          ]
+        ],
+        "dinov3_rgb": [
+          [
+            11,
+            1
+          ],
+          [
+            1,
+            19
+          ]
+        ],
+        "concerto_geometry": [
+          [
+            8,
+            4
+          ],
+          [
+            13,
+            7
+          ]
+        ],
+        "concerto_rgb": [
+          [
+            12,
+            0
+          ],
+          [
+            0,
+            20
+          ]
+        ]
+      },
+      "mean-pooling": {
+        "dinov3_gray": [
+          [
+            12,
+            0
+          ],
+          [
+            0,
+            20
+          ]
+        ],
+        "dinov3_rgb": [
+          [
+            11,
+            1
+          ],
+          [
+            0,
+            20
+          ]
+        ],
+        "concerto_geometry": [
+          [
+            6,
+            6
+          ],
+          [
+            5,
+            15
+          ]
+        ],
+        "concerto_rgb": [
+          [
+            11,
+            1
+          ],
+          [
+            0,
+            20
+          ]
+        ]
+      }
+    },
+    "TRIOS5": {
+      "binary": {
+        "dinov3_gray": [
+          [
+            11,
+            1
+          ],
+          [
+            0,
+            20
+          ]
+        ],
+        "dinov3_rgb": [
+          [
+            11,
+            1
+          ],
+          [
+            0,
+            20
+          ]
+        ],
+        "concerto_geometry": [
+          [
+            12,
+            0
+          ],
+          [
+            18,
+            2
+          ]
+        ],
+        "concerto_rgb": [
+          [
+            11,
+            1
+          ],
+          [
+            1,
+            19
+          ]
+        ]
+      },
+      "three-stage": {
+        "dinov3_gray": [
+          [
+            11,
+            1
+          ],
+          [
+            0,
+            20
+          ]
+        ],
+        "dinov3_rgb": [
+          [
+            11,
+            1
+          ],
+          [
+            0,
+            20
+          ]
+        ],
+        "concerto_geometry": [
+          [
+            11,
+            1
+          ],
+          [
+            13,
+            7
+          ]
+        ],
+        "concerto_rgb": [
+          [
+            11,
+            1
+          ],
+          [
+            1,
+            19
+          ]
+        ]
+      },
+      "mean-pooling": {
+        "dinov3_gray": [
+          [
+            11,
+            1
+          ],
+          [
+            0,
+            20
+          ]
+        ],
+        "dinov3_rgb": [
+          [
+            11,
+            1
+          ],
+          [
+            0,
+            20
+          ]
+        ],
+        "concerto_geometry": [
+          [
+            8,
+            4
+          ],
+          [
+            5,
+            15
+          ]
+        ],
+        "concerto_rgb": [
+          [
+            11,
+            1
+          ],
+          [
+            0,
+            20
+          ]
+        ]
+      }
+    },
+    "iTERO": {
+      "binary": {
+        "dinov3_gray": [
+          [
+            11,
+            1
+          ],
+          [
+            0,
+            20
+          ]
+        ],
+        "dinov3_rgb": [
+          [
+            11,
+            1
+          ],
+          [
+            0,
+            20
+          ]
+        ],
+        "concerto_geometry": [
+          [
+            11,
+            1
+          ],
+          [
+            18,
+            2
+          ]
+        ],
+        "concerto_rgb": [
+          [
+            9,
+            3
+          ],
+          [
+            0,
+            20
+          ]
+        ]
+      },
+      "three-stage": {
+        "dinov3_gray": [
+          [
+            11,
+            1
+          ],
+          [
+            0,
+            20
+          ]
+        ],
+        "dinov3_rgb": [
+          [
+            11,
+            1
+          ],
+          [
+            1,
+            19
+          ]
+        ],
+        "concerto_geometry": [
+          [
+            9,
+            3
+          ],
+          [
+            15,
+            5
+          ]
+        ],
+        "concerto_rgb": [
+          [
+            10,
+            2
+          ],
+          [
+            1,
+            19
+          ]
+        ]
+      },
+      "mean-pooling": {
+        "dinov3_gray": [
+          [
+            12,
+            0
+          ],
+          [
+            0,
+            20
+          ]
+        ],
+        "dinov3_rgb": [
+          [
+            12,
+            0
+          ],
+          [
+            0,
+            20
+          ]
+        ],
+        "concerto_geometry": [
+          [
+            5,
+            7
+          ],
+          [
+            6,
+            14
+          ]
+        ],
+        "concerto_rgb": [
+          [
+            9,
+            3
+          ],
+          [
+            2,
+            18
+          ]
+        ]
+      }
+    },
+    "Mature only (all scanners)": {
+      "binary": {
+        "dinov3_gray": [
+          [
+            31,
+            1
+          ],
+          [
+            1,
+            63
+          ]
+        ],
+        "dinov3_rgb": [
+          [
+            32,
+            0
+          ],
+          [
+            0,
+            64
+          ]
+        ],
+        "concerto_geometry": [
+          [
+            30,
+            2
+          ],
+          [
+            48,
+            16
+          ]
+        ],
+        "concerto_rgb": [
+          [
+            30,
+            2
+          ],
+          [
+            3,
+            61
+          ]
+        ]
+      },
+      "three-stage": {
+        "dinov3_gray": [
+          [
+            32,
+            0
+          ],
+          [
+            2,
+            62
+          ]
+        ],
+        "dinov3_rgb": [
+          [
+            32,
+            0
+          ],
+          [
+            6,
+            58
+          ]
+        ],
+        "concerto_geometry": [
+          [
+            25,
+            7
+          ],
+          [
+            34,
+            30
+          ]
+        ],
+        "concerto_rgb": [
+          [
+            32,
+            0
+          ],
+          [
+            2,
+            62
+          ]
+        ]
+      },
+      "mean-pooling": {
+        "dinov3_gray": [
+          [
+            29,
+            3
+          ],
+          [
+            1,
+            63
+          ]
+        ],
+        "dinov3_rgb": [
+          [
+            32,
+            0
+          ],
+          [
+            1,
+            63
+          ]
+        ],
+        "concerto_geometry": [
+          [
+            22,
+            10
+          ],
+          [
+            13,
+            51
+          ]
+        ],
+        "concerto_rgb": [
+          [
+            31,
+            1
+          ],
+          [
+            3,
+            61
+          ]
+        ]
+      }
+    }
+  }
+}

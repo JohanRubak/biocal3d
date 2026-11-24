@@ -1,0 +1,172 @@
+{
+  "rule": "Median of the active models' maximum class probabilities, with mean and scan ID as tie-breakers.",
+  "correctness_rule": "Number of models predicting the observed partial stage. Ties prefer unused scans, then use the confidence ranking in the same direction.",
+  "combined_rule": "Sum of the top probabilities of correct models divided by the number of active models. Incorrect predictions contribute zero. Ties use the correct-count ranking's tie-breakers.",
+  "observed_stage_filter": "partial",
+  "excluded_primary": "BCG3-1",
+  "candidates": 28,
+  "examples": [
+    {
+      "scan_id": "TRIOS5__BCG4T1-1",
+      "sample_name": "BCG4T1-1",
+      "scanner": "TRIOS5",
+      "observed_stage": "partial",
+      "model_predictions": {
+        "dinov3_gray": "partial",
+        "dinov3_rgb": "partial",
+        "dinov3_harmonized": "partial",
+        "concerto_geometry": "clean",
+        "concerto_rgb": "partial",
+        "concerto_harmonized": "partial"
+      },
+      "top_probabilities": {
+        "dinov3_gray": 0.9985758066177368,
+        "dinov3_rgb": 0.9959830045700073,
+        "dinov3_harmonized": 0.9999130964279175,
+        "concerto_geometry": 0.46195492148399353,
+        "concerto_rgb": 0.9945366382598877,
+        "concerto_harmonized": 0.8045996427536011
+      },
+      "models_correct": 5,
+      "correct_confidence_score": 0.7989346981048584,
+      "median_top_probability": 0.9952598214149475,
+      "mean_top_probability": 0.8759271850188574,
+      "role": "highest"
+    },
+    {
+      "scan_id": "LABscanner__BCG3T1-2",
+      "sample_name": "BCG3T1-2",
+      "scanner": "LABscanner",
+      "observed_stage": "partial",
+      "model_predictions": {
+        "dinov3_gray": "clean",
+        "dinov3_rgb": "baseline",
+        "dinov3_harmonized": "clean",
+        "concerto_geometry": "partial",
+        "concerto_rgb": "partial",
+        "concerto_harmonized": "partial"
+      },
+      "top_probabilities": {
+        "dinov3_gray": 0.940761148929596,
+        "dinov3_rgb": 0.6533723473548889,
+        "dinov3_harmonized": 0.7612067461013794,
+        "concerto_geometry": 0.8370953798294067,
+        "concerto_rgb": 0.8955073952674866,
+        "concerto_harmonized": 0.5285607576370239
+      },
+      "models_correct": 3,
+      "correct_confidence_score": 0.3768605887889862,
+      "median_top_probability": 0.7991510629653931,
+      "mean_top_probability": 0.7694172958532969,
+      "role": "lowest"
+    },
+    {
+      "scan_id": "TRIOS3__BCG3T1-2",
+      "sample_name": "BCG3T1-2",
+      "scanner": "TRIOS3",
+      "observed_stage": "partial",
+      "model_predictions": {
+        "dinov3_gray": "partial",
+        "dinov3_rgb": "partial",
+        "dinov3_harmonized": "partial",
+        "concerto_geometry": "partial",
+        "concerto_rgb": "partial",
+        "concerto_harmonized": "partial"
+      },
+      "top_probabilities": {
+        "dinov3_gray": 0.9995976090431213,
+        "dinov3_rgb": 0.918089747428894,
+        "dinov3_harmonized": 0.9953593611717224,
+        "concerto_geometry": 0.3526057004928589,
+        "concerto_rgb": 0.9889551997184753,
+        "concerto_harmonized": 0.8760963678359985
+      },
+      "models_correct": 6,
+      "correct_confidence_score": 0.8551173309485117,
+      "median_top_probability": 0.9535224735736847,
+      "mean_top_probability": 0.8551173309485117,
+      "role": "most_correct"
+    },
+    {
+      "scan_id": "TRIOS5__BCG6T1-4",
+      "sample_name": "BCG6T1-4",
+      "scanner": "TRIOS5",
+      "observed_stage": "partial",
+      "model_predictions": {
+        "dinov3_gray": "partial",
+        "dinov3_rgb": "baseline",
+        "dinov3_harmonized": "baseline",
+        "concerto_geometry": "clean",
+        "concerto_rgb": "partial",
+        "concerto_harmonized": "partial"
+      },
+      "top_probabilities": {
+        "dinov3_gray": 0.9904795289039612,
+        "dinov3_rgb": 0.8157616257667542,
+        "dinov3_harmonized": 0.9980149269104004,
+        "concerto_geometry": 0.5507654547691345,
+        "concerto_rgb": 0.9934086799621582,
+        "concerto_harmonized": 0.9073007702827454
+      },
+      "models_correct": 3,
+      "correct_confidence_score": 0.4818648298581441,
+      "median_top_probability": 0.9488901495933533,
+      "mean_top_probability": 0.8759551644325256,
+      "role": "least_correct"
+    },
+    {
+      "scan_id": "LABscanner__BCG5T1-4",
+      "sample_name": "BCG5T1-4",
+      "scanner": "LABscanner",
+      "observed_stage": "partial",
+      "model_predictions": {
+        "dinov3_gray": "partial",
+        "dinov3_rgb": "partial",
+        "dinov3_harmonized": "partial",
+        "concerto_geometry": "partial",
+        "concerto_rgb": "partial",
+        "concerto_harmonized": "partial"
+      },
+      "top_probabilities": {
+        "dinov3_gray": 0.9438466429710388,
+        "dinov3_rgb": 0.8649565577507019,
+        "dinov3_harmonized": 0.9972680807113647,
+        "concerto_geometry": 0.8711960911750793,
+        "concerto_rgb": 0.9736367464065552,
+        "concerto_harmonized": 0.8615169525146484
+      },
+      "models_correct": 6,
+      "correct_confidence_score": 0.9187368452548981,
+      "median_top_probability": 0.9075213670730591,
+      "mean_top_probability": 0.9187368452548981,
+      "role": "highest_combined"
+    },
+    {
+      "scan_id": "LABscanner__BCG3T1-2",
+      "sample_name": "BCG3T1-2",
+      "scanner": "LABscanner",
+      "observed_stage": "partial",
+      "model_predictions": {
+        "dinov3_gray": "clean",
+        "dinov3_rgb": "baseline",
+        "dinov3_harmonized": "clean",
+        "concerto_geometry": "partial",
+        "concerto_rgb": "partial",
+        "concerto_harmonized": "partial"
+      },
+      "top_probabilities": {
+        "dinov3_gray": 0.940761148929596,
+        "dinov3_rgb": 0.6533723473548889,
+        "dinov3_harmonized": 0.7612067461013794,
+        "concerto_geometry": 0.8370953798294067,
+        "concerto_rgb": 0.8955073952674866,
+        "concerto_harmonized": 0.5285607576370239
+      },
+      "models_correct": 3,
+      "correct_confidence_score": 0.3768605887889862,
+      "median_top_probability": 0.7991510629653931,
+      "mean_top_probability": 0.7694172958532969,
+      "role": "lowest_combined"
+    }
+  ]
+}

@@ -1,0 +1,147 @@
+{
+  "version": "plaque-dependence-1.1",
+  "mode": "concerto_rgb",
+  "scan_id": "TRIOS5__BCG4T1-1",
+  "physical_id": "BCG4-1",
+  "scanner": "TRIOS5",
+  "partition": "test",
+  "target": "partial",
+  "against": "clean",
+  "intervention": "appearance",
+  "fills": [
+    "median",
+    "neutral"
+  ],
+  "random_controls": 5,
+  "rim_tolerance_mm": 0.5,
+  "seed": 123,
+  "selection_sha256": "29a68fb9235d56c414f52428d9169ab7ebafbe0cd62e3d2236e4aa46deb5d2fe",
+  "head_sha256": "80f246665cf6b1558c008ef8df005a8530404372f23895c638072d4307e80303",
+  "cache_sha256": "bdff4e19d7d3b3d837e766ec3f8fb1ce340f7a158ce37f64980d18a4454c3ac3",
+  "checkpoint_sha256": "251441d92ac7d9cff9e0c3ae22bdf2dc416d1c9dbb7a75f1922c08bfd1a18868",
+  "baseline_margin": 13.15167236328125,
+  "cached_margin": 11.62385368347168,
+  "baseline_probabilities": [
+    3.579182521207258e-05,
+    0.9999618530273438,
+    2.341937943128869e-06
+  ],
+  "baseline_protocol": "paired_seeds",
+  "encoder_repeats": 8,
+  "baseline_verification": {
+    "protocol": "paired_seeds",
+    "cached_margin": 11.62385368347168,
+    "cached_predicted_stage": "partial",
+    "cached_probabilities": [
+      7.021961209829897e-05,
+      0.9999208450317383,
+      8.949321454565506e-06
+    ],
+    "same_seed_max_feature_difference": 0.0,
+    "same_seed_margin_difference": 0.0,
+    "replay_runtime": {
+      "device": "cuda",
+      "torch": "2.5.0+cu124",
+      "numpy": "1.26.4",
+      "cuda": "12.4",
+      "packages": {
+        "torch-scatter": "2.1.2+pt25cu124",
+        "spconv-cu124": "2.3.8"
+      },
+      "shuffle_order_modules": [
+        "<model>",
+        "enc.enc1.down",
+        "enc.enc2.down",
+        "enc.enc3.down",
+        "enc.enc4.down"
+      ],
+      "gpu": "NVIDIA RTX 2000 Ada Generation",
+      "changed_adapters": [],
+      "rebuilt_coord_max_abs_difference": 0.0
+    },
+    "attempts": [
+      {
+        "seed": 3290179407,
+        "margin": 13.614313125610352,
+        "probabilities": [
+          2.265514194732532e-05,
+          0.9999761581420898,
+          1.2228369996591937e-06
+        ],
+        "predicted_stage": "partial"
+      },
+      {
+        "seed": 3290179408,
+        "margin": 12.490110397338867,
+        "probabilities": [
+          5.4962863941909745e-05,
+          0.9999412298202515,
+          3.76346997654764e-06
+        ],
+        "predicted_stage": "partial"
+      },
+      {
+        "seed": 3290179409,
+        "margin": 13.35849380493164,
+        "probabilities": [
+          3.619198832893744e-05,
+          0.9999622106552124,
+          1.5792955991855706e-06
+        ],
+        "predicted_stage": "partial"
+      },
+      {
+        "seed": 3290179410,
+        "margin": 12.177087783813477,
+        "probabilities": [
+          4.183481723885052e-05,
+          0.999953031539917,
+          5.146803687239299e-06
+        ],
+        "predicted_stage": "partial"
+      },
+      {
+        "seed": 3290179411,
+        "margin": 13.45861530303955,
+        "probabilities": [
+          2.2913091015652753e-05,
+          0.9999756813049316,
+          1.428851419404964e-06
+        ],
+        "predicted_stage": "partial"
+      },
+      {
+        "seed": 3290179412,
+        "margin": 14.309974670410156,
+        "probabilities": [
+          2.2327101760311052e-05,
+          0.9999771118164062,
+          6.098836706769362e-07
+        ],
+        "predicted_stage": "partial"
+      },
+      {
+        "seed": 3290179413,
+        "margin": 12.889592170715332,
+        "probabilities": [
+          5.675244756275788e-05,
+          0.9999407529830933,
+          2.5240358354494674e-06
+        ],
+        "predicted_stage": "partial"
+      },
+      {
+        "seed": 3290179414,
+        "margin": 12.915225982666016,
+        "probabilities": [
+          2.8696778826997615e-05,
+          0.9999687671661377,
+          2.460226369294105e-06
+        ],
+        "predicted_stage": "partial"
+      }
+    ]
+  },
+  "unit": "area-sampled surface points",
+  "meaning": "Input intervention sensitivity in visually selected regions; not plaque segmentation validation or proof of a biological mechanism."
+}

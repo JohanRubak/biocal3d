@@ -1,0 +1,48 @@
+{
+  "models_sha256": "a56269593db086dfccadb9f3e780992edfb5dd9edfa094164618639754a4ea71",
+  "preview_sha256": "3862a1adc99f3280e3802a27a71eb3e8f55570c10bd5f5157ced9b31f2fce449",
+  "examples": [
+    {
+      "scan_id": "TRIOS5__BCG3T1-1",
+      "scanner": "TRIOS5",
+      "sample_name": "BCG3T1-1",
+      "reason": "Manuscript example"
+    },
+    {
+      "scan_id": "LABscanner__BCG3T1-1",
+      "scanner": "LABscanner",
+      "sample_name": "BCG3T1-1",
+      "reason": "Manuscript example"
+    },
+    {
+      "scan_id": "TRIOS3__BCG3T1-1",
+      "scanner": "TRIOS3",
+      "sample_name": "BCG3T1-1",
+      "reason": "Manuscript example"
+    },
+    {
+      "scan_id": "iTERO__BCG3T1-1",
+      "scanner": "iTERO",
+      "sample_name": "BCG3T1-1",
+      "reason": "Manuscript example"
+    },
+    {
+      "scan_id": "LABscanner__BCG1T1-8",
+      "scanner": "LABscanner",
+      "sample_name": "BCG1T1-8",
+      "reason": "All conditions correct"
+    },
+    {
+      "scan_id": "LABscanner__BCG3T1-2",
+      "scanner": "LABscanner",
+      "sample_name": "BCG3T1-2",
+      "reason": "Conditions disagree on correctness"
+    },
+    {
+      "scan_id": "TRIOS5__BCG1T1-1",
+      "scanner": "TRIOS5",
+      "sample_name": "BCG1T1-1",
+      "reason": "Most incorrect conditions"
+    }
+  ]
+}

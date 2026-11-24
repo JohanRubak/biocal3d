@@ -1,0 +1,11 @@
+name: biocal3d
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - pip
+  - pip:
+      - -r studio/requirements.txt
+      - -r analysis/colour-harmonization/requirements.txt
+      - -r analysis/classification-study/requirements.txt
+      - -r tools/requirements-hub.txt

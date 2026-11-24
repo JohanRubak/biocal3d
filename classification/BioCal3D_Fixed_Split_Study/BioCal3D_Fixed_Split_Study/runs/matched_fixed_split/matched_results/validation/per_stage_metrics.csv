@@ -1,0 +1,217 @@
+﻿scope,mode,stage,support,recall,precision,f1
+All scanners,gmm_gray,baseline,48,0.5625,0.4909090909090909,0.5242718446601942
+All scanners,gmm_gray,partial,32,0.3125,0.5,0.38461538461538464
+All scanners,gmm_gray,clean,48,0.5,0.4528301886792453,0.4752475247524752
+All scanners,gmm_rgb,baseline,48,0.375,0.4864864864864865,0.4235294117647059
+All scanners,gmm_rgb,partial,32,0.4375,0.45161290322580644,0.4444444444444444
+All scanners,gmm_rgb,clean,48,0.75,0.6,0.6666666666666666
+All scanners,gmm_harmonized,baseline,48,0.22916666666666666,0.4074074074074074,0.29333333333333333
+All scanners,gmm_harmonized,partial,32,0.53125,0.3617021276595745,0.43037974683544306
+All scanners,gmm_harmonized,clean,48,0.6875,0.6111111111111112,0.6470588235294118
+All scanners,boost_gray,baseline,48,0.7916666666666666,0.9047619047619048,0.8444444444444444
+All scanners,boost_gray,partial,32,0.8125,0.6341463414634146,0.7123287671232876
+All scanners,boost_gray,clean,48,0.8333333333333334,0.8888888888888888,0.8602150537634409
+All scanners,boost_rgb,baseline,48,0.7083333333333334,0.68,0.6938775510204082
+All scanners,boost_rgb,partial,32,0.5625,0.782608695652174,0.6545454545454545
+All scanners,boost_rgb,clean,48,0.9166666666666666,0.8,0.8543689320388349
+All scanners,boost_harmonized,baseline,48,0.75,0.6545454545454545,0.6990291262135923
+All scanners,boost_harmonized,partial,32,0.59375,0.8636363636363636,0.7037037037037037
+All scanners,boost_harmonized,clean,48,0.875,0.8235294117647058,0.8484848484848485
+All scanners,dinov3_gray,baseline,48,1.0,1.0,1.0
+All scanners,dinov3_gray,partial,32,0.96875,1.0,0.9841269841269841
+All scanners,dinov3_gray,clean,48,1.0,0.9795918367346939,0.9896907216494846
+All scanners,dinov3_rgb,baseline,48,1.0,1.0,1.0
+All scanners,dinov3_rgb,partial,32,0.9375,1.0,0.967741935483871
+All scanners,dinov3_rgb,clean,48,1.0,0.96,0.9795918367346939
+All scanners,dinov3_harmonized,baseline,48,1.0,0.9795918367346939,0.9896907216494846
+All scanners,dinov3_harmonized,partial,32,0.9375,1.0,0.967741935483871
+All scanners,dinov3_harmonized,clean,48,0.9791666666666666,0.9591836734693877,0.9690721649484536
+All scanners,concerto_geometry,baseline,48,0.8125,0.6190476190476191,0.7027027027027027
+All scanners,concerto_geometry,partial,32,0.375,0.5,0.42857142857142855
+All scanners,concerto_geometry,clean,48,0.5208333333333334,0.6097560975609756,0.5617977528089888
+All scanners,concerto_rgb,baseline,48,0.9791666666666666,1.0,0.9894736842105263
+All scanners,concerto_rgb,partial,32,0.90625,0.9666666666666667,0.9354838709677419
+All scanners,concerto_rgb,clean,48,0.9791666666666666,0.9215686274509803,0.9494949494949495
+All scanners,concerto_harmonized,baseline,48,0.9791666666666666,1.0,0.9894736842105263
+All scanners,concerto_harmonized,partial,32,0.90625,0.9666666666666667,0.9354838709677419
+All scanners,concerto_harmonized,clean,48,0.9791666666666666,0.9215686274509803,0.9494949494949495
+LABscanner,gmm_gray,baseline,12,0.25,0.2,0.2222222222222222
+LABscanner,gmm_gray,partial,8,0.0,0.0,0.0
+LABscanner,gmm_gray,clean,12,0.5,0.375,0.42857142857142855
+LABscanner,gmm_rgb,baseline,12,0.0,0.0,0.0
+LABscanner,gmm_rgb,partial,8,0.125,0.5,0.2
+LABscanner,gmm_rgb,clean,12,1.0,0.4444444444444444,0.6153846153846154
+LABscanner,gmm_harmonized,baseline,12,0.08333333333333333,0.3333333333333333,0.13333333333333333
+LABscanner,gmm_harmonized,partial,8,0.375,0.6,0.46153846153846156
+LABscanner,gmm_harmonized,clean,12,1.0,0.5,0.6666666666666666
+LABscanner,boost_gray,baseline,12,0.25,1.0,0.4
+LABscanner,boost_gray,partial,8,0.75,0.4,0.5217391304347826
+LABscanner,boost_gray,clean,12,0.8333333333333334,0.7142857142857143,0.7692307692307693
+LABscanner,boost_rgb,baseline,12,0.4166666666666667,0.45454545454545453,0.43478260869565216
+LABscanner,boost_rgb,partial,8,0.0,0.0,0.0
+LABscanner,boost_rgb,clean,12,1.0,0.5714285714285714,0.7272727272727273
+LABscanner,boost_harmonized,baseline,12,0.3333333333333333,0.2857142857142857,0.3076923076923077
+LABscanner,boost_harmonized,partial,8,0.0,0.0,0.0
+LABscanner,boost_harmonized,clean,12,0.8333333333333334,0.5555555555555556,0.6666666666666666
+LABscanner,dinov3_gray,baseline,12,1.0,1.0,1.0
+LABscanner,dinov3_gray,partial,8,0.875,1.0,0.9333333333333333
+LABscanner,dinov3_gray,clean,12,1.0,0.9230769230769231,0.96
+LABscanner,dinov3_rgb,baseline,12,1.0,1.0,1.0
+LABscanner,dinov3_rgb,partial,8,0.75,1.0,0.8571428571428571
+LABscanner,dinov3_rgb,clean,12,1.0,0.8571428571428571,0.9230769230769231
+LABscanner,dinov3_harmonized,baseline,12,1.0,0.9230769230769231,0.96
+LABscanner,dinov3_harmonized,partial,8,0.75,1.0,0.8571428571428571
+LABscanner,dinov3_harmonized,clean,12,0.9166666666666666,0.8461538461538461,0.88
+LABscanner,concerto_geometry,baseline,12,1.0,0.8571428571428571,0.9230769230769231
+LABscanner,concerto_geometry,partial,8,0.75,0.8571428571428571,0.8
+LABscanner,concerto_geometry,clean,12,0.75,0.8181818181818182,0.782608695652174
+LABscanner,concerto_rgb,baseline,12,0.9166666666666666,1.0,0.9565217391304348
+LABscanner,concerto_rgb,partial,8,0.75,0.8571428571428571,0.8
+LABscanner,concerto_rgb,clean,12,0.9166666666666666,0.7857142857142857,0.8461538461538461
+LABscanner,concerto_harmonized,baseline,12,0.9166666666666666,1.0,0.9565217391304348
+LABscanner,concerto_harmonized,partial,8,0.75,0.8571428571428571,0.8
+LABscanner,concerto_harmonized,clean,12,0.9166666666666666,0.7857142857142857,0.8461538461538461
+TRIOS3,gmm_gray,baseline,12,0.8333333333333334,0.625,0.7142857142857143
+TRIOS3,gmm_gray,partial,8,0.5,0.8,0.6153846153846154
+TRIOS3,gmm_gray,clean,12,0.5,0.5454545454545454,0.5217391304347826
+TRIOS3,gmm_rgb,baseline,12,0.6666666666666666,0.5714285714285714,0.6153846153846154
+TRIOS3,gmm_rgb,partial,8,0.625,0.45454545454545453,0.5263157894736842
+TRIOS3,gmm_rgb,clean,12,0.5,0.8571428571428571,0.631578947368421
+TRIOS3,gmm_harmonized,baseline,12,0.3333333333333333,0.36363636363636365,0.34782608695652173
+TRIOS3,gmm_harmonized,partial,8,0.5,0.26666666666666666,0.34782608695652173
+TRIOS3,gmm_harmonized,clean,12,0.3333333333333333,0.6666666666666666,0.4444444444444444
+TRIOS3,boost_gray,baseline,12,1.0,1.0,1.0
+TRIOS3,boost_gray,partial,8,0.875,1.0,0.9333333333333333
+TRIOS3,boost_gray,clean,12,1.0,0.9230769230769231,0.96
+TRIOS3,boost_rgb,baseline,12,0.8333333333333334,0.8333333333333334,0.8333333333333334
+TRIOS3,boost_rgb,partial,8,0.75,1.0,0.8571428571428571
+TRIOS3,boost_rgb,clean,12,1.0,0.8571428571428571,0.9230769230769231
+TRIOS3,boost_harmonized,baseline,12,0.9166666666666666,0.9166666666666666,0.9166666666666666
+TRIOS3,boost_harmonized,partial,8,0.875,1.0,0.9333333333333333
+TRIOS3,boost_harmonized,clean,12,1.0,0.9230769230769231,0.96
+TRIOS3,dinov3_gray,baseline,12,1.0,1.0,1.0
+TRIOS3,dinov3_gray,partial,8,1.0,1.0,1.0
+TRIOS3,dinov3_gray,clean,12,1.0,1.0,1.0
+TRIOS3,dinov3_rgb,baseline,12,1.0,1.0,1.0
+TRIOS3,dinov3_rgb,partial,8,1.0,1.0,1.0
+TRIOS3,dinov3_rgb,clean,12,1.0,1.0,1.0
+TRIOS3,dinov3_harmonized,baseline,12,1.0,1.0,1.0
+TRIOS3,dinov3_harmonized,partial,8,1.0,1.0,1.0
+TRIOS3,dinov3_harmonized,clean,12,1.0,1.0,1.0
+TRIOS3,concerto_geometry,baseline,12,0.6666666666666666,0.6666666666666666,0.6666666666666666
+TRIOS3,concerto_geometry,partial,8,0.375,0.3333333333333333,0.35294117647058826
+TRIOS3,concerto_geometry,clean,12,0.5,0.5454545454545454,0.5217391304347826
+TRIOS3,concerto_rgb,baseline,12,1.0,1.0,1.0
+TRIOS3,concerto_rgb,partial,8,1.0,1.0,1.0
+TRIOS3,concerto_rgb,clean,12,1.0,1.0,1.0
+TRIOS3,concerto_harmonized,baseline,12,1.0,1.0,1.0
+TRIOS3,concerto_harmonized,partial,8,1.0,1.0,1.0
+TRIOS3,concerto_harmonized,clean,12,1.0,1.0,1.0
+TRIOS5,gmm_gray,baseline,12,0.8333333333333334,0.5882352941176471,0.6896551724137931
+TRIOS5,gmm_gray,partial,8,0.5,0.5,0.5
+TRIOS5,gmm_gray,clean,12,0.4166666666666667,0.7142857142857143,0.5263157894736842
+TRIOS5,gmm_rgb,baseline,12,0.75,0.6,0.6666666666666666
+TRIOS5,gmm_rgb,partial,8,0.5,0.4444444444444444,0.47058823529411764
+TRIOS5,gmm_rgb,clean,12,0.5833333333333334,0.875,0.7
+TRIOS5,gmm_harmonized,baseline,12,0.5,0.5454545454545454,0.5217391304347826
+TRIOS5,gmm_harmonized,partial,8,0.5,0.3076923076923077,0.38095238095238093
+TRIOS5,gmm_harmonized,clean,12,0.5833333333333334,0.875,0.7
+TRIOS5,boost_gray,baseline,12,1.0,1.0,1.0
+TRIOS5,boost_gray,partial,8,1.0,1.0,1.0
+TRIOS5,boost_gray,clean,12,1.0,1.0,1.0
+TRIOS5,boost_rgb,baseline,12,0.6666666666666666,0.7272727272727273,0.6956521739130435
+TRIOS5,boost_rgb,partial,8,0.75,0.6,0.6666666666666666
+TRIOS5,boost_rgb,clean,12,0.9166666666666666,1.0,0.9565217391304348
+TRIOS5,boost_harmonized,baseline,12,0.9166666666666666,0.8461538461538461,0.88
+TRIOS5,boost_harmonized,partial,8,0.875,0.875,0.875
+TRIOS5,boost_harmonized,clean,12,0.9166666666666666,1.0,0.9565217391304348
+TRIOS5,dinov3_gray,baseline,12,1.0,1.0,1.0
+TRIOS5,dinov3_gray,partial,8,1.0,1.0,1.0
+TRIOS5,dinov3_gray,clean,12,1.0,1.0,1.0
+TRIOS5,dinov3_rgb,baseline,12,1.0,1.0,1.0
+TRIOS5,dinov3_rgb,partial,8,1.0,1.0,1.0
+TRIOS5,dinov3_rgb,clean,12,1.0,1.0,1.0
+TRIOS5,dinov3_harmonized,baseline,12,1.0,1.0,1.0
+TRIOS5,dinov3_harmonized,partial,8,1.0,1.0,1.0
+TRIOS5,dinov3_harmonized,clean,12,1.0,1.0,1.0
+TRIOS5,concerto_geometry,baseline,12,0.6666666666666666,0.4444444444444444,0.5333333333333333
+TRIOS5,concerto_geometry,partial,8,0.125,0.25,0.16666666666666666
+TRIOS5,concerto_geometry,clean,12,0.4166666666666667,0.5,0.45454545454545453
+TRIOS5,concerto_rgb,baseline,12,1.0,1.0,1.0
+TRIOS5,concerto_rgb,partial,8,1.0,1.0,1.0
+TRIOS5,concerto_rgb,clean,12,1.0,1.0,1.0
+TRIOS5,concerto_harmonized,baseline,12,1.0,1.0,1.0
+TRIOS5,concerto_harmonized,partial,8,1.0,1.0,1.0
+TRIOS5,concerto_harmonized,clean,12,1.0,1.0,1.0
+iTERO,gmm_gray,baseline,12,0.3333333333333333,0.5714285714285714,0.42105263157894735
+iTERO,gmm_gray,partial,8,0.25,0.3333333333333333,0.2857142857142857
+iTERO,gmm_gray,clean,12,0.5833333333333334,0.3684210526315789,0.45161290322580644
+iTERO,gmm_rgb,baseline,12,0.08333333333333333,0.2,0.11764705882352941
+iTERO,gmm_rgb,partial,8,0.5,0.4444444444444444,0.47058823529411764
+iTERO,gmm_rgb,clean,12,0.9166666666666666,0.6111111111111112,0.7333333333333333
+iTERO,gmm_harmonized,baseline,12,0.0,0.0,0.0
+iTERO,gmm_harmonized,partial,8,0.75,0.42857142857142855,0.5454545454545454
+iTERO,gmm_harmonized,clean,12,0.8333333333333334,0.625,0.7142857142857143
+iTERO,boost_gray,baseline,12,0.9166666666666666,0.7333333333333333,0.8148148148148148
+iTERO,boost_gray,partial,8,0.625,0.45454545454545453,0.5263157894736842
+iTERO,boost_gray,clean,12,0.5,1.0,0.6666666666666666
+iTERO,boost_rgb,baseline,12,0.9166666666666666,0.6875,0.7857142857142857
+iTERO,boost_rgb,partial,8,0.75,0.8571428571428571,0.8
+iTERO,boost_rgb,clean,12,0.75,1.0,0.8571428571428571
+iTERO,boost_harmonized,baseline,12,0.8333333333333334,0.625,0.7142857142857143
+iTERO,boost_harmonized,partial,8,0.625,0.7142857142857143,0.6666666666666666
+iTERO,boost_harmonized,clean,12,0.75,1.0,0.8571428571428571
+iTERO,dinov3_gray,baseline,12,1.0,1.0,1.0
+iTERO,dinov3_gray,partial,8,1.0,1.0,1.0
+iTERO,dinov3_gray,clean,12,1.0,1.0,1.0
+iTERO,dinov3_rgb,baseline,12,1.0,1.0,1.0
+iTERO,dinov3_rgb,partial,8,1.0,1.0,1.0
+iTERO,dinov3_rgb,clean,12,1.0,1.0,1.0
+iTERO,dinov3_harmonized,baseline,12,1.0,1.0,1.0
+iTERO,dinov3_harmonized,partial,8,1.0,1.0,1.0
+iTERO,dinov3_harmonized,clean,12,1.0,1.0,1.0
+iTERO,concerto_geometry,baseline,12,0.9166666666666666,0.5789473684210527,0.7096774193548387
+iTERO,concerto_geometry,partial,8,0.25,0.5,0.3333333333333333
+iTERO,concerto_geometry,clean,12,0.4166666666666667,0.5555555555555556,0.47619047619047616
+iTERO,concerto_rgb,baseline,12,1.0,1.0,1.0
+iTERO,concerto_rgb,partial,8,0.875,1.0,0.9333333333333333
+iTERO,concerto_rgb,clean,12,1.0,0.9230769230769231,0.96
+iTERO,concerto_harmonized,baseline,12,1.0,1.0,1.0
+iTERO,concerto_harmonized,partial,8,0.875,1.0,0.9333333333333333
+iTERO,concerto_harmonized,clean,12,1.0,0.9230769230769231,0.96
+Mature only (all scanners),gmm_gray,baseline,32,0.53125,0.425,0.4722222222222222
+Mature only (all scanners),gmm_gray,partial,32,0.3125,0.5555555555555556,0.4
+Mature only (all scanners),gmm_gray,clean,32,0.4375,0.3684210526315789,0.4
+Mature only (all scanners),gmm_rgb,baseline,32,0.375,0.4,0.3870967741935484
+Mature only (all scanners),gmm_rgb,partial,32,0.4375,0.56,0.49122807017543857
+Mature only (all scanners),gmm_rgb,clean,32,0.75,0.5853658536585366,0.6575342465753424
+Mature only (all scanners),gmm_harmonized,baseline,32,0.25,0.34782608695652173,0.2909090909090909
+Mature only (all scanners),gmm_harmonized,partial,32,0.53125,0.4358974358974359,0.4788732394366197
+Mature only (all scanners),gmm_harmonized,clean,32,0.65625,0.6176470588235294,0.6363636363636364
+Mature only (all scanners),boost_gray,baseline,32,0.8125,0.896551724137931,0.8524590163934426
+Mature only (all scanners),boost_gray,partial,32,0.8125,0.7428571428571429,0.7761194029850746
+Mature only (all scanners),boost_gray,clean,32,0.875,0.875,0.875
+Mature only (all scanners),boost_rgb,baseline,32,0.78125,0.6756756756756757,0.7246376811594203
+Mature only (all scanners),boost_rgb,partial,32,0.5625,0.9473684210526315,0.7058823529411765
+Mature only (all scanners),boost_rgb,clean,32,1.0,0.8,0.8888888888888888
+Mature only (all scanners),boost_harmonized,baseline,32,0.8125,0.6666666666666666,0.7323943661971831
+Mature only (all scanners),boost_harmonized,partial,32,0.59375,0.95,0.7307692307692307
+Mature only (all scanners),boost_harmonized,clean,32,1.0,0.8648648648648649,0.927536231884058
+Mature only (all scanners),dinov3_gray,baseline,32,1.0,1.0,1.0
+Mature only (all scanners),dinov3_gray,partial,32,0.96875,1.0,0.9841269841269841
+Mature only (all scanners),dinov3_gray,clean,32,1.0,0.9696969696969697,0.9846153846153847
+Mature only (all scanners),dinov3_rgb,baseline,32,1.0,1.0,1.0
+Mature only (all scanners),dinov3_rgb,partial,32,0.9375,1.0,0.967741935483871
+Mature only (all scanners),dinov3_rgb,clean,32,1.0,0.9411764705882353,0.9696969696969697
+Mature only (all scanners),dinov3_harmonized,baseline,32,1.0,0.9696969696969697,0.9846153846153847
+Mature only (all scanners),dinov3_harmonized,partial,32,0.9375,1.0,0.967741935483871
+Mature only (all scanners),dinov3_harmonized,clean,32,0.96875,0.9393939393939394,0.9538461538461539
+Mature only (all scanners),concerto_geometry,baseline,32,0.75,0.5581395348837209,0.64
+Mature only (all scanners),concerto_geometry,partial,32,0.375,0.5454545454545454,0.4444444444444444
+Mature only (all scanners),concerto_geometry,clean,32,0.5,0.5161290322580645,0.5079365079365079
+Mature only (all scanners),concerto_rgb,baseline,32,0.96875,1.0,0.9841269841269841
+Mature only (all scanners),concerto_rgb,partial,32,0.90625,0.9666666666666667,0.9354838709677419
+Mature only (all scanners),concerto_rgb,clean,32,0.96875,0.8857142857142857,0.9253731343283582
+Mature only (all scanners),concerto_harmonized,baseline,32,0.96875,1.0,0.9841269841269841
+Mature only (all scanners),concerto_harmonized,partial,32,0.90625,0.9666666666666667,0.9354838709677419
+Mature only (all scanners),concerto_harmonized,clean,32,0.96875,0.8857142857142857,0.9253731343283582

@@ -1,0 +1,31 @@
+{
+  "version": "plaque-dependence-1.0",
+  "mode": "dinov3_rgb",
+  "scan_id": "TRIOS5__BCG4T1-1",
+  "physical_id": "BCG4-1",
+  "scanner": "TRIOS5",
+  "partition": "test",
+  "target": "partial",
+  "against": "clean",
+  "intervention": "appearance",
+  "fills": [
+    "median",
+    "neutral"
+  ],
+  "random_controls": 5,
+  "rim_tolerance_mm": 0.5,
+  "seed": 123,
+  "selection_sha256": "29a68fb9235d56c414f52428d9169ab7ebafbe0cd62e3d2236e4aa46deb5d2fe",
+  "head_sha256": "a2a944c0f3ec370670fb7d64d68dd603a3502bfa2a95f90801dc7a6b35e56569",
+  "cache_sha256": "0ba6c2f7aa6bd1e964a1c95b999c1dfde3aa7bbd5addf9222066127034b83e40",
+  "checkpoint_sha256": "08c60483bc63c04f533611e34bf70b120eedb7240f469bc16e9e20bf344b941d",
+  "baseline_margin": 9.503747940063477,
+  "cached_margin": 9.50374752690365,
+  "baseline_probabilities": [
+    0.010882618837058544,
+    0.9890435934066772,
+    7.375478162430227e-05
+  ],
+  "unit": "rendered ROI pixels",
+  "meaning": "Input intervention sensitivity in visually selected regions; not plaque segmentation validation or proof of a biological mechanism."
+}

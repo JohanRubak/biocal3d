@@ -1,0 +1,30 @@
+{
+  "models_sha256": "8440cc89a7c5869325cfd4b65f7f2d87a2860030f787a81c60b530cd3ec2f2a2",
+  "preview_sha256": "2fb568c9e34a156a107c40aedce5a585c6b1b94022878e880c04b5887c55bc4b",
+  "examples": [
+    {
+      "scan_id": "TRIOS5__BCG3T1-1",
+      "scanner": "TRIOS5",
+      "sample_name": "BCG3T1-1",
+      "reason": "Manuscript example"
+    },
+    {
+      "scan_id": "LABscanner__BCG3T1-1",
+      "scanner": "LABscanner",
+      "sample_name": "BCG3T1-1",
+      "reason": "Manuscript example"
+    },
+    {
+      "scan_id": "TRIOS3__BCG3T1-1",
+      "scanner": "TRIOS3",
+      "sample_name": "BCG3T1-1",
+      "reason": "Manuscript example"
+    },
+    {
+      "scan_id": "iTERO__BCG3T1-1",
+      "scanner": "iTERO",
+      "sample_name": "BCG3T1-1",
+      "reason": "Manuscript example"
+    }
+  ]
+}

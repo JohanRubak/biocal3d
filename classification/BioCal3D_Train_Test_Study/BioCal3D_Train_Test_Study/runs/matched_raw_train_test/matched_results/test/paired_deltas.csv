@@ -1,0 +1,25 @@
+﻿scope,family,contrast,comparison,reference,specimens,delta_balanced_accuracy,ci95_low,ci95_high
+All scanners,GMM,Raw − no colour,gmm_rgb,gmm_gray,12,0.024305555555555525,-0.041666666666666685,0.09027777777777773
+All scanners,Boosting,Raw − no colour,boost_rgb,boost_gray,12,-0.03819444444444453,-0.13194444444444453,0.0590277777777779
+All scanners,DINOv3,Raw − no colour,dinov3_rgb,dinov3_gray,12,0.013888888888889062,-0.006944444444444531,0.03472222222222221
+All scanners,Concerto,Raw − no colour,concerto_rgb,concerto_geometry,12,0.34375,0.3159722222222221,0.375
+LABscanner,GMM,Raw − no colour,gmm_rgb,gmm_gray,12,0.22222222222222218,0.12500000000000003,0.3055555555555556
+LABscanner,Boosting,Raw − no colour,boost_rgb,boost_gray,12,-0.1111111111111111,-0.22222222222222215,0.0
+LABscanner,DINOv3,Raw − no colour,dinov3_rgb,dinov3_gray,12,0.08333333333333337,0.02777777777777779,0.13888888888888884
+LABscanner,Concerto,Raw − no colour,concerto_rgb,concerto_geometry,12,0.0,-0.05555555555555558,0.05555555555555558
+TRIOS3,GMM,Raw − no colour,gmm_rgb,gmm_gray,12,-0.23611111111111105,-0.44444444444444436,-0.04166666666666674
+TRIOS3,Boosting,Raw − no colour,boost_rgb,boost_gray,12,-0.04166666666666674,-0.13888888888888884,0.05555555555555558
+TRIOS3,DINOv3,Raw − no colour,dinov3_rgb,dinov3_gray,12,-0.02777777777777779,-0.05555555555555547,0.0
+TRIOS3,Concerto,Raw − no colour,concerto_rgb,concerto_geometry,12,0.5416666666666666,0.47222222222222227,0.6111111111111112
+TRIOS5,GMM,Raw − no colour,gmm_rgb,gmm_gray,12,0.02777777777777768,-0.1111111111111111,0.16666666666666663
+TRIOS5,Boosting,Raw − no colour,boost_rgb,boost_gray,12,-0.11111111111111105,-0.2222222222222222,0.0
+TRIOS5,DINOv3,Raw − no colour,dinov3_rgb,dinov3_gray,12,0.0,0.0,0.0
+TRIOS5,Concerto,Raw − no colour,concerto_rgb,concerto_geometry,12,0.41666666666666674,0.3055555555555556,0.5277777777777777
+iTERO,GMM,Raw − no colour,gmm_rgb,gmm_gray,12,0.08333333333333337,-0.02777777777777768,0.1805555555555557
+iTERO,Boosting,Raw − no colour,boost_rgb,boost_gray,12,0.11111111111111116,-0.05555555555555558,0.29166666666666663
+iTERO,DINOv3,Raw − no colour,dinov3_rgb,dinov3_gray,12,0.0,0.0,0.0
+iTERO,Concerto,Raw − no colour,concerto_rgb,concerto_geometry,12,0.4166666666666666,0.2916666666666667,0.5416666666666665
+Mature only (all scanners),GMM,Raw − no colour,gmm_rgb,gmm_gray,8,0.0625,-0.010416666666666685,0.13541666666666669
+Mature only (all scanners),Boosting,Raw − no colour,boost_rgb,boost_gray,8,-0.01041666666666663,-0.11458333333333326,0.09375
+Mature only (all scanners),DINOv3,Raw − no colour,dinov3_rgb,dinov3_gray,8,0.03125,0.01041666666666663,0.05208333333333337
+Mature only (all scanners),Concerto,Raw − no colour,concerto_rgb,concerto_geometry,8,0.33333333333333326,0.3125,0.35416666666666663

@@ -1,0 +1,112 @@
+{
+  "encoder": "concerto",
+  "checkpoint_sha256": "251441d92ac7d9cff9e0c3ae22bdf2dc416d1c9dbb7a75f1922c08bfd1a18868",
+  "upstream_commit": "5b41117160cdd92c3538be1911277b17e7ef5871",
+  "device": "cuda",
+  "torch": "2.5.0+cu124",
+  "numpy": "1.26.4",
+  "adapter_hashes": {
+    "stage_ablation.py": "e90dd6b9cea13ec90383956a25e0188022e73f45625e0d7072a03610c6490363",
+    "study_data.py": "7f153d61176722bbaf3b8438ed5ddefbe040a5e7ec424101c0691975159031c7",
+    "images_2d.py": "e8806363e52525285d29a52fddd64dd3387bc91eaa96188a12b3fa034bde1798",
+    "models_2d.py": "7175b4d8870b311276801bed83e131ac7defe37edc8633b67b20a0e8f7cd7ae4",
+    "concerto_backend.py": "20f0ae15c7f8443f01ae88a9ab494d0e2d848d2ce0ebda3f31fb38aa6fc17e79",
+    "scanner_harmonization.py": "f08afe74d5afda11ae954ff2b6565787c9ab63e0e8d9f41dbfd663889fe1ac28"
+  },
+  "harmonization_sha256": "583e568298307a6565086c61a4a370dee70d9e8dba111536422cc8afcc8bb7c6",
+  "colour_matrices": {
+    "LABscanner": [
+      [
+        0.9074924656198697,
+        0.0,
+        0.0,
+        0.0372782082258345
+      ],
+      [
+        0.0,
+        0.919576357679918,
+        0.0,
+        0.028537777964671746
+      ],
+      [
+        0.0,
+        0.0,
+        0.9753346077820196,
+        0.08647579425259877
+      ]
+    ],
+    "TRIOS3": [
+      [
+        0.9754720908633755,
+        0.0,
+        0.0,
+        -0.014450660257455172
+      ],
+      [
+        0.0,
+        1.046948853341284,
+        0.0,
+        0.030021524022923796
+      ],
+      [
+        0.0,
+        0.0,
+        1.0251371580289348,
+        0.050660838319471074
+      ]
+    ],
+    "TRIOS5": [
+      [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ]
+    ],
+    "iTERO": [
+      [
+        0.8679516356435256,
+        0.0,
+        0.0,
+        0.04687995665956596
+      ],
+      [
+        0.0,
+        0.9330447692789182,
+        0.0,
+        0.08975521643348824
+      ],
+      [
+        0.0,
+        0.0,
+        0.9684269681471305,
+        0.028987544790462616
+      ]
+    ]
+  },
+  "serialization_seed": "stable and shared across inputs per scan",
+  "surface": {
+    "align_plane": true,
+    "scale_mm": 10.0,
+    "sampling_seed": 123,
+    "sampling": "surface",
+    "points": 8192,
+    "inputs": "geometry_rgb"
+  },
+  "voxel_mm": 0.1,
+  "attention_patch": 128,
+  "normals": "mesh normals in both conditions",
+  "pooling": "sampled surface mean + max"
+}

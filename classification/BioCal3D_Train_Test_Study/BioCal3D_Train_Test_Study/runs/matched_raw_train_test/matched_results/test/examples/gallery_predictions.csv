@@ -1,0 +1,57 @@
+﻿scan_id,reason,family,correct,mask_fraction,contrast_target,contrast_against,mode,truth,prediction,p_baseline,p_partial,p_clean
+TRIOS5__BCG3T1-1,Manuscript example,GMM,0,0.06421681437594869,average baseline and partial logits,clean,gmm_gray,partial,clean,0.2719537611235629,0.34606412113796525,0.3819821177384719
+TRIOS5__BCG3T1-1,Manuscript example,GMM,1,0.06438818978602556,average baseline and partial logits,clean,gmm_rgb,partial,partial,0.15311881900679739,0.6007695732139617,0.2461116077792409
+TRIOS5__BCG3T1-1,Manuscript example,Boosting,1,0.026085785633844196,average baseline and partial logits,clean,boost_gray,partial,partial,0.02713275669938475,0.7641993221621871,0.20866792113842825
+TRIOS5__BCG3T1-1,Manuscript example,Boosting,1,0.06807276110267835,average baseline and partial logits,clean,boost_rgb,partial,partial,0.08544329037124591,0.8635815107555134,0.050975198873240736
+TRIOS5__BCG3T1-1,Manuscript example,DINOv3,1,,average baseline and partial logits,clean,dinov3_gray,partial,partial,8.918935641028896e-06,0.9980963385512475,0.0018947425131115143
+TRIOS5__BCG3T1-1,Manuscript example,DINOv3,1,,average baseline and partial logits,clean,dinov3_rgb,partial,partial,1.2589752271745453e-06,0.9999465284835131,5.2212541259772646e-05
+TRIOS5__BCG3T1-1,Manuscript example,Concerto,0,,average baseline and partial logits,clean,concerto_geometry,partial,baseline,0.4351082358327226,0.14413850926522745,0.4207532549020499
+TRIOS5__BCG3T1-1,Manuscript example,Concerto,1,,average baseline and partial logits,clean,concerto_rgb,partial,partial,2.9146144305038436e-07,0.9994332856078086,0.0005664229307481842
+LABscanner__BCG3T1-1,Manuscript example,GMM,0,0.05124995442558001,average baseline and partial logits,clean,gmm_gray,partial,baseline,0.39911312724936227,0.3419688461640219,0.25891802658661595
+LABscanner__BCG3T1-1,Manuscript example,GMM,0,0.0,average baseline and partial logits,clean,gmm_rgb,partial,clean,0.3169503956765888,0.15525214591511957,0.5277974584082917
+LABscanner__BCG3T1-1,Manuscript example,Boosting,1,0.010305895506969849,average baseline and partial logits,clean,boost_gray,partial,partial,0.1716185666289436,0.5341950065731367,0.2941864267979197
+LABscanner__BCG3T1-1,Manuscript example,Boosting,0,0.015957123585673832,average baseline and partial logits,clean,boost_rgb,partial,baseline,0.4551057363196385,0.22877257974627077,0.31612168393409074
+LABscanner__BCG3T1-1,Manuscript example,DINOv3,1,,average baseline and partial logits,clean,dinov3_gray,partial,partial,0.0015177255292508711,0.9899723985197865,0.008509875950962822
+LABscanner__BCG3T1-1,Manuscript example,DINOv3,1,,average baseline and partial logits,clean,dinov3_rgb,partial,partial,0.01332608304065744,0.899426650990663,0.08724726596867956
+LABscanner__BCG3T1-1,Manuscript example,Concerto,1,,average baseline and partial logits,clean,concerto_geometry,partial,partial,6.724404493627171e-07,0.9998834887429646,0.00011583881658614656
+LABscanner__BCG3T1-1,Manuscript example,Concerto,1,,average baseline and partial logits,clean,concerto_rgb,partial,partial,0.001352215328474353,0.9984683643973455,0.00017942027418013176
+TRIOS3__BCG3T1-1,Manuscript example,GMM,1,0.0802494706802909,average baseline and partial logits,clean,gmm_gray,partial,partial,0.2722254243199633,0.3724662556736604,0.3553083200063763
+TRIOS3__BCG3T1-1,Manuscript example,GMM,1,0.06652167909417288,average baseline and partial logits,clean,gmm_rgb,partial,partial,0.10475622956278227,0.4846533367116077,0.41059043372561005
+TRIOS3__BCG3T1-1,Manuscript example,Boosting,1,0.020183190647150878,average baseline and partial logits,clean,boost_gray,partial,partial,0.04988188834715892,0.5702573812232485,0.37986073042959256
+TRIOS3__BCG3T1-1,Manuscript example,Boosting,1,0.07405873147381019,average baseline and partial logits,clean,boost_rgb,partial,partial,0.06939410306092955,0.8964889436677689,0.034116953271301674
+TRIOS3__BCG3T1-1,Manuscript example,DINOv3,1,,average baseline and partial logits,clean,dinov3_gray,partial,partial,1.0474405581075118e-05,0.9992000078166349,0.0007895177777840367
+TRIOS3__BCG3T1-1,Manuscript example,DINOv3,1,,average baseline and partial logits,clean,dinov3_rgb,partial,partial,2.305175141817821e-05,0.9998857046563315,9.124359225027734e-05
+TRIOS3__BCG3T1-1,Manuscript example,Concerto,1,,average baseline and partial logits,clean,concerto_geometry,partial,partial,0.327063235866242,0.669836800299337,0.003099963834420954
+TRIOS3__BCG3T1-1,Manuscript example,Concerto,1,,average baseline and partial logits,clean,concerto_rgb,partial,partial,0.0007387869010772086,0.9992342747246923,2.693837423048273e-05
+iTERO__BCG3T1-1,Manuscript example,GMM,0,0.06282927278165044,average baseline and partial logits,clean,gmm_gray,partial,clean,0.2693236500310795,0.3436663032885376,0.387010046680383
+iTERO__BCG3T1-1,Manuscript example,GMM,1,0.07496491591322152,average baseline and partial logits,clean,gmm_rgb,partial,partial,0.10289300701259374,0.6360189653879681,0.2610880275994382
+iTERO__BCG3T1-1,Manuscript example,Boosting,1,0.028090275381323762,average baseline and partial logits,clean,boost_gray,partial,partial,0.0847394902522764,0.6969629623907939,0.21829754735692974
+iTERO__BCG3T1-1,Manuscript example,Boosting,1,0.0696390365104562,average baseline and partial logits,clean,boost_rgb,partial,partial,0.10848626922823844,0.8583416849232048,0.03317204584855671
+iTERO__BCG3T1-1,Manuscript example,DINOv3,1,,average baseline and partial logits,clean,dinov3_gray,partial,partial,3.7372747962026842e-06,0.9998616508483862,0.0001346118768175516
+iTERO__BCG3T1-1,Manuscript example,DINOv3,1,,average baseline and partial logits,clean,dinov3_rgb,partial,partial,8.318793376591497e-08,0.9999988346450754,1.0821669908089053e-06
+iTERO__BCG3T1-1,Manuscript example,Concerto,0,,average baseline and partial logits,clean,concerto_geometry,partial,clean,0.02699947395169838,0.053316327503497477,0.9196841985448042
+iTERO__BCG3T1-1,Manuscript example,Concerto,0,,average baseline and partial logits,clean,concerto_rgb,partial,clean,0.0001623349701031835,0.12373715407132817,0.8761005109585687
+LABscanner__BCG1T1-8,All conditions correct,GMM,1,0.01396491740262268,average baseline and partial logits,clean,gmm_gray,clean,clean,0.3492830127859519,0.28805910747408014,0.362657879739968
+LABscanner__BCG1T1-8,All conditions correct,GMM,1,0.0,average baseline and partial logits,clean,gmm_rgb,clean,clean,0.3169503956765888,0.15525214591511957,0.5277974584082917
+LABscanner__BCG1T1-8,All conditions correct,Boosting,1,0.0038440016543804588,average baseline and partial logits,clean,boost_gray,clean,clean,0.03992643575728809,0.38032396734005125,0.5797495969026606
+LABscanner__BCG1T1-8,All conditions correct,Boosting,1,0.0055592049242147775,average baseline and partial logits,clean,boost_rgb,clean,clean,0.34375670762676286,0.15283385125621043,0.5034094411170267
+LABscanner__BCG1T1-8,All conditions correct,DINOv3,1,,average baseline and partial logits,clean,dinov3_gray,clean,clean,0.08083688575838932,0.031708439140018016,0.8874546751015928
+LABscanner__BCG1T1-8,All conditions correct,DINOv3,1,,average baseline and partial logits,clean,dinov3_rgb,clean,clean,0.014818661922815802,0.00854697837314096,0.9766343597040432
+LABscanner__BCG1T1-8,All conditions correct,Concerto,1,,average baseline and partial logits,clean,concerto_geometry,clean,clean,0.014364814929013866,0.011772831059324666,0.9738623540116614
+LABscanner__BCG1T1-8,All conditions correct,Concerto,1,,average baseline and partial logits,clean,concerto_rgb,clean,clean,0.00011600723351288031,0.001037068881465204,0.9988469238850219
+LABscanner__BCG3T1-2,Correct and incorrect conditions,GMM,0,0.028016322553139655,average baseline and partial logits,clean,gmm_gray,partial,clean,0.2809782276541212,0.2933300215867895,0.4256917507590892
+LABscanner__BCG3T1-2,Correct and incorrect conditions,GMM,0,0.0,average baseline and partial logits,clean,gmm_rgb,partial,clean,0.3169503956765888,0.15525214591511957,0.5277974584082917
+LABscanner__BCG3T1-2,Correct and incorrect conditions,Boosting,0,0.004689688775199464,average baseline and partial logits,clean,boost_gray,partial,clean,0.055434812804740365,0.4255568769000166,0.5190083102952431
+LABscanner__BCG3T1-2,Correct and incorrect conditions,Boosting,0,0.006127047932273586,average baseline and partial logits,clean,boost_rgb,partial,baseline,0.43406863156094494,0.15776068018011505,0.40817068825894015
+LABscanner__BCG3T1-2,Correct and incorrect conditions,DINOv3,0,,average baseline and partial logits,clean,dinov3_gray,partial,clean,0.024938798311994644,0.18833243965815225,0.7867287620298532
+LABscanner__BCG3T1-2,Correct and incorrect conditions,DINOv3,0,,average baseline and partial logits,clean,dinov3_rgb,partial,clean,0.1160421932615139,0.13540447278946388,0.7485533339490222
+LABscanner__BCG3T1-2,Correct and incorrect conditions,Concerto,1,,average baseline and partial logits,clean,concerto_geometry,partial,partial,0.00010729954642063352,0.55434622290333,0.44554647755024934
+LABscanner__BCG3T1-2,Correct and incorrect conditions,Concerto,1,,average baseline and partial logits,clean,concerto_rgb,partial,partial,0.016814119960591175,0.9545760134922956,0.02860986654711314
+TRIOS5__BCG1T1-1,Correct and incorrect conditions,GMM,1,0.014774850580970883,average baseline and partial logits,clean,gmm_gray,clean,clean,0.28481066322762183,0.27298247146202437,0.4422068653103538
+TRIOS5__BCG1T1-1,Correct and incorrect conditions,GMM,0,0.019118211178894486,average baseline and partial logits,clean,gmm_rgb,clean,partial,0.34724480402573094,0.46051077487089864,0.19224442110337042
+TRIOS5__BCG1T1-1,Correct and incorrect conditions,Boosting,1,0.005679779243438556,average baseline and partial logits,clean,boost_gray,clean,clean,0.005502029485696976,0.25533244922676746,0.7391655212875355
+TRIOS5__BCG1T1-1,Correct and incorrect conditions,Boosting,0,0.03454889683590511,average baseline and partial logits,clean,boost_rgb,clean,partial,0.28770064283148833,0.42633167968896674,0.28596767747954493
+TRIOS5__BCG1T1-1,Correct and incorrect conditions,DINOv3,0,,average baseline and partial logits,clean,dinov3_gray,clean,partial,2.41374378864957e-05,0.8017017408450806,0.198274121717033
+TRIOS5__BCG1T1-1,Correct and incorrect conditions,DINOv3,0,,average baseline and partial logits,clean,dinov3_rgb,clean,partial,1.6982809230668106e-05,0.9848897653073866,0.01509325188338291
+TRIOS5__BCG1T1-1,Correct and incorrect conditions,Concerto,0,,average baseline and partial logits,clean,concerto_geometry,clean,baseline,0.5330263416194579,0.16497603235316458,0.30199762602737756
+TRIOS5__BCG1T1-1,Correct and incorrect conditions,Concerto,0,,average baseline and partial logits,clean,concerto_rgb,clean,partial,2.3009332769601947e-06,0.9441651020246489,0.05583259704207421

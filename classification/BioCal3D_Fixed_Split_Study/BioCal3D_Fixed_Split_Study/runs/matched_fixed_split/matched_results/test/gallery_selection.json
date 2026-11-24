@@ -1,0 +1,60 @@
+{
+  "examples": [
+    {
+      "scan_id": "TRIOS5__BCG3T1-1",
+      "reason": "Manuscript example",
+      "scanner": "TRIOS5",
+      "sample_name": "BCG3T1-1",
+      "correct_conditions": 10,
+      "total_conditions": 12
+    },
+    {
+      "scan_id": "LABscanner__BCG3T1-1",
+      "reason": "Manuscript example",
+      "scanner": "LABscanner",
+      "sample_name": "BCG3T1-1",
+      "correct_conditions": 7,
+      "total_conditions": 12
+    },
+    {
+      "scan_id": "TRIOS3__BCG3T1-1",
+      "reason": "Manuscript example",
+      "scanner": "TRIOS3",
+      "sample_name": "BCG3T1-1",
+      "correct_conditions": 12,
+      "total_conditions": 12
+    },
+    {
+      "scan_id": "iTERO__BCG3T1-1",
+      "reason": "Manuscript example",
+      "scanner": "iTERO",
+      "sample_name": "BCG3T1-1",
+      "correct_conditions": 8,
+      "total_conditions": 12
+    },
+    {
+      "scan_id": "TRIOS3__BCG2T0-4",
+      "reason": "All conditions correct",
+      "scanner": "TRIOS3",
+      "sample_name": "BCG2T0-4",
+      "correct_conditions": 12,
+      "total_conditions": 12
+    },
+    {
+      "scan_id": "TRIOS5__BCG1T1-1",
+      "reason": "Conditions disagree on correctness",
+      "scanner": "TRIOS5",
+      "sample_name": "BCG1T1-1",
+      "correct_conditions": 2,
+      "total_conditions": 12
+    },
+    {
+      "scan_id": "LABscanner__BCG3T1-2",
+      "reason": "Most incorrect conditions",
+      "scanner": "LABscanner",
+      "sample_name": "BCG3T1-2",
+      "correct_conditions": 3,
+      "total_conditions": 12
+    }
+  ]
+}

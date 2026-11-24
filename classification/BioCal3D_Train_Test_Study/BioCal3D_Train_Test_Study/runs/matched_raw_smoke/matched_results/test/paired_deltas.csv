@@ -1,0 +1,25 @@
+﻿scope,family,contrast,comparison,reference,specimens,delta_balanced_accuracy,ci95_low,ci95_high
+All scanners,GMM,Raw − no colour,gmm_rgb,gmm_gray,1,0.16666666666666669,0.16666666666666669,0.16666666666666669
+All scanners,Boosting,Raw − no colour,boost_rgb,boost_gray,1,-0.16666666666666674,-0.16666666666666674,-0.16666666666666674
+All scanners,DINOv3,Raw − no colour,dinov3_rgb,dinov3_gray,1,-0.08333333333333337,-0.08333333333333337,-0.08333333333333337
+All scanners,Concerto,Raw − no colour,concerto_rgb,concerto_geometry,1,0.25,0.25,0.25
+LABscanner,GMM,Raw − no colour,gmm_rgb,gmm_gray,1,0.0,0.0,0.0
+LABscanner,Boosting,Raw − no colour,boost_rgb,boost_gray,1,-0.3333333333333333,-0.3333333333333333,-0.3333333333333333
+LABscanner,DINOv3,Raw − no colour,dinov3_rgb,dinov3_gray,1,-0.33333333333333337,-0.33333333333333337,-0.33333333333333337
+LABscanner,Concerto,Raw − no colour,concerto_rgb,concerto_geometry,1,-0.33333333333333337,-0.33333333333333337,-0.33333333333333337
+TRIOS3,GMM,Raw − no colour,gmm_rgb,gmm_gray,1,0.0,0.0,0.0
+TRIOS3,Boosting,Raw − no colour,boost_rgb,boost_gray,1,0.0,0.0,0.0
+TRIOS3,DINOv3,Raw − no colour,dinov3_rgb,dinov3_gray,1,0.0,0.0,0.0
+TRIOS3,Concerto,Raw − no colour,concerto_rgb,concerto_geometry,1,1.0,1.0,1.0
+TRIOS5,GMM,Raw − no colour,gmm_rgb,gmm_gray,1,0.3333333333333333,0.3333333333333333,0.3333333333333333
+TRIOS5,Boosting,Raw − no colour,boost_rgb,boost_gray,1,-0.33333333333333337,-0.33333333333333337,-0.33333333333333337
+TRIOS5,DINOv3,Raw − no colour,dinov3_rgb,dinov3_gray,1,0.0,0.0,0.0
+TRIOS5,Concerto,Raw − no colour,concerto_rgb,concerto_geometry,1,0.0,0.0,0.0
+iTERO,GMM,Raw − no colour,gmm_rgb,gmm_gray,1,0.3333333333333333,0.3333333333333333,0.3333333333333333
+iTERO,Boosting,Raw − no colour,boost_rgb,boost_gray,1,0.0,0.0,0.0
+iTERO,DINOv3,Raw − no colour,dinov3_rgb,dinov3_gray,1,0.0,0.0,0.0
+iTERO,Concerto,Raw − no colour,concerto_rgb,concerto_geometry,1,0.3333333333333333,0.3333333333333333,0.3333333333333333
+Mature only (all scanners),GMM,Raw − no colour,gmm_rgb,gmm_gray,1,0.16666666666666669,0.16666666666666669,0.16666666666666669
+Mature only (all scanners),Boosting,Raw − no colour,boost_rgb,boost_gray,1,-0.16666666666666674,-0.16666666666666674,-0.16666666666666674
+Mature only (all scanners),DINOv3,Raw − no colour,dinov3_rgb,dinov3_gray,1,-0.08333333333333337,-0.08333333333333337,-0.08333333333333337
+Mature only (all scanners),Concerto,Raw − no colour,concerto_rgb,concerto_geometry,1,0.25,0.25,0.25

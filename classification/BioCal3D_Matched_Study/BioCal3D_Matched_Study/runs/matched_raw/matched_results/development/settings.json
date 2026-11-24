@@ -1,0 +1,57 @@
+{
+  "cohort_sha256": "c0b1639df6ed95097738a9439275c0ef1bee0090df0a6486ef8edbaa1bd13a92",
+  "configs": [
+    {
+      "encoder": "dinov3",
+      "checkpoint_sha256": "08c60483bc63c04f533611e34bf70b120eedb7240f469bc16e9e20bf344b941d",
+      "upstream_commit": "6876159a11b4df116f30f667f8c9888617df0751",
+      "device": "cuda",
+      "torch": "2.7.1+cu126",
+      "numpy": "2.4.6",
+      "adapter_hashes": {
+        "stage_ablation.py": "e6a766165fdbd7a1b0ef4ccbc108adf78fcf10f233f81a5641994e59f69a4f2d",
+        "study_data.py": "7f153d61176722bbaf3b8438ed5ddefbe040a5e7ec424101c0691975159031c7",
+        "images_2d.py": "8afe0224c569b4d772540f6f39cf98ceef5e9915b32604eabadd0c19511de0cb",
+        "models_2d.py": "7175b4d8870b311276801bed83e131ac7defe37edc8633b67b20a0e8f7cd7ae4",
+        "concerto_backend.py": "20f0ae15c7f8443f01ae88a9ab494d0e2d848d2ce0ebda3f31fb38aa6fc17e79"
+      },
+      "image_size": 448,
+      "field_mm": 16.0,
+      "background": 127,
+      "pooling": "ROI weighted mean + covered patch max",
+      "encoder_state_sha256": "9a41e82fba0f8340583c4ca5798ee05779d4a79b90af72cbd0330ebddb6008f8"
+    },
+    {
+      "encoder": "concerto",
+      "checkpoint_sha256": "251441d92ac7d9cff9e0c3ae22bdf2dc416d1c9dbb7a75f1922c08bfd1a18868",
+      "upstream_commit": "5b41117160cdd92c3538be1911277b17e7ef5871",
+      "device": "cuda",
+      "torch": "2.5.0+cu124",
+      "numpy": "1.26.4",
+      "adapter_hashes": {
+        "stage_ablation.py": "e6a766165fdbd7a1b0ef4ccbc108adf78fcf10f233f81a5641994e59f69a4f2d",
+        "study_data.py": "7f153d61176722bbaf3b8438ed5ddefbe040a5e7ec424101c0691975159031c7",
+        "images_2d.py": "8afe0224c569b4d772540f6f39cf98ceef5e9915b32604eabadd0c19511de0cb",
+        "models_2d.py": "7175b4d8870b311276801bed83e131ac7defe37edc8633b67b20a0e8f7cd7ae4",
+        "concerto_backend.py": "20f0ae15c7f8443f01ae88a9ab494d0e2d848d2ce0ebda3f31fb38aa6fc17e79"
+      },
+      "serialization_seed": "stable and shared across inputs per scan",
+      "surface": {
+        "align_plane": true,
+        "scale_mm": 10.0,
+        "sampling_seed": 123,
+        "sampling": "surface",
+        "points": 8192,
+        "inputs": "geometry_rgb"
+      },
+      "voxel_mm": 0.1,
+      "attention_patch": 128,
+      "normals": "mesh normals in both conditions",
+      "pooling": "sampled surface mean + max"
+    }
+  ],
+  "harmonization_sha256": null,
+  "trees": 80,
+  "pixels_per_scan": 1024,
+  "analysis_sha256": "9aec33e6863694ea31350b73d5259bf197f486bfff30cbd6ecc24c00d6dc8bf4"
+}

@@ -1,0 +1,34 @@
+{
+  "cohort_sha256": "c0b1639df6ed95097738a9439275c0ef1bee0090df0a6486ef8edbaa1bd13a92",
+  "smoke": true,
+  "trees": 2,
+  "pixels_per_scan": 128,
+  "training_scan_ids": [
+    "LABscanner__BCG3T0-3",
+    "LABscanner__BCG3T1-3",
+    "LABscanner__BCG3T2-3",
+    "TRIOS3__BCG3T0-3",
+    "TRIOS3__BCG3T1-3",
+    "TRIOS3__BCG3T2-3",
+    "TRIOS5__BCG3T0-3",
+    "TRIOS5__BCG3T1-3",
+    "TRIOS5__BCG3T2-3",
+    "iTERO__BCG3T0-3",
+    "iTERO__BCG3T1-3",
+    "iTERO__BCG3T2-3"
+  ],
+  "test_scan_ids": [
+    "LABscanner__BCG3T0-1",
+    "LABscanner__BCG3T1-1",
+    "LABscanner__BCG3T2-1",
+    "TRIOS3__BCG3T0-1",
+    "TRIOS3__BCG3T1-1",
+    "TRIOS3__BCG3T2-1",
+    "TRIOS5__BCG3T0-1",
+    "TRIOS5__BCG3T1-1",
+    "TRIOS5__BCG3T2-1",
+    "iTERO__BCG3T0-1",
+    "iTERO__BCG3T1-1",
+    "iTERO__BCG3T2-1"
+  ]
+}

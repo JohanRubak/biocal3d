@@ -1,0 +1,16 @@
+{
+  "partition": "test",
+  "smoke": false,
+  "cohort_sha256": "c0b1639df6ed95097738a9439275c0ef1bee0090df0a6486ef8edbaa1bd13a92",
+  "training_models_sha256": "a56269593db086dfccadb9f3e780992edfb5dd9edfa094164618639754a4ea71",
+  "scans": 128,
+  "examples": [
+    "TRIOS5__BCG3T1-1",
+    "LABscanner__BCG3T1-1",
+    "TRIOS3__BCG3T1-1",
+    "iTERO__BCG3T1-1",
+    "LABscanner__BCG1T1-8",
+    "LABscanner__BCG3T1-2",
+    "TRIOS5__BCG1T1-1"
+  ]
+}

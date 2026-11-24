@@ -1,0 +1,564 @@
+{
+  "schema": 1,
+  "received": "2026-11-24",
+  "source_archive": "run.zip",
+  "archive_sha256": "f0a36cbe62d6efd2d6ab1c93a1604340f1c13f03eb99308970b633b42129eac1",
+  "archive_bytes": 438142506,
+  "file_count": 106,
+  "uncompressed_bytes": 453612827,
+  "artifact_path": "artifacts/classification/final-run-2026-11-24/run.zip",
+  "manifest_path": "artifacts/classification/final-run-2026-11-24/manifest.json",
+  "external_storage": "JohanRubak/BioCal3D-Data (private)",
+  "related_cleaned_data_snapshot": "92fdb7e462b426ccd3ed738e5ca5c1063ea5c093",
+  "relationship_to_data_snapshot": "Historical ROI geometry hashes are recorded in cohort files; matching to a fresh cleaned-release download has not been rechecked here.",
+  "cohort": {
+    "scans": 512,
+    "specimens": 48,
+    "scan_roles": {
+      "train": 320,
+      "test": 128,
+      "validation": 64
+    },
+    "specimen_roles": {
+      "train": 30,
+      "validation": 6,
+      "test": 12
+    },
+    "seed": 20261104,
+    "primary_specimen": "BCG3-1",
+    "raw_index_sha256": "ad44af80be0a423b5c43b4ac76c87e1aa6364c629cd9a82c67f48bf77794b8be",
+    "harmonized_index_sha256": "2991ab959e270c232ce3b1b00173fed682b58bbddeed3dff7085c9521ed33d56"
+  },
+  "heads": [
+    {
+      "mode": "concerto_geometry",
+      "path": "models/concerto_geometry.npz",
+      "sha256": "948a7375db3a1dbb92837919045a81e86a479a0ab8256d13a3ab37dbadabe1b7",
+      "best_epoch": 84,
+      "completed_epochs": 114,
+      "max_epochs": 1000,
+      "patience": 30,
+      "learning_rate_schedule": "constant",
+      "arrays": {
+        "attention_input": {
+          "shape": [
+            896,
+            128
+          ],
+          "dtype": "float32"
+        },
+        "attention_bias": {
+          "shape": [
+            128
+          ],
+          "dtype": "float32"
+        },
+        "attention_output": {
+          "shape": [
+            128
+          ],
+          "dtype": "float32"
+        },
+        "classifier": {
+          "shape": [
+            896,
+            3
+          ],
+          "dtype": "float32"
+        },
+        "bias": {
+          "shape": [
+            3
+          ],
+          "dtype": "float32"
+        },
+        "history": {
+          "shape": [
+            114,
+            2
+          ],
+          "dtype": "float64"
+        },
+        "best_epoch": {
+          "shape": [],
+          "dtype": "int64"
+        },
+        "key": {
+          "shape": [],
+          "dtype": "<U64"
+        },
+        "max_epochs": {
+          "shape": [],
+          "dtype": "int64"
+        },
+        "patience": {
+          "shape": [],
+          "dtype": "int64"
+        },
+        "learning_rate_schedule": {
+          "shape": [],
+          "dtype": "<U8"
+        }
+      }
+    },
+    {
+      "mode": "concerto_harmonized",
+      "path": "models/concerto_harmonized.npz",
+      "sha256": "1cbff4a17f1befb4d94c5f7967758af773c7028f7b59164b7f1f3a7fc219c64a",
+      "best_epoch": 75,
+      "completed_epochs": 105,
+      "max_epochs": 1000,
+      "patience": 30,
+      "learning_rate_schedule": "constant",
+      "arrays": {
+        "attention_input": {
+          "shape": [
+            896,
+            128
+          ],
+          "dtype": "float32"
+        },
+        "attention_bias": {
+          "shape": [
+            128
+          ],
+          "dtype": "float32"
+        },
+        "attention_output": {
+          "shape": [
+            128
+          ],
+          "dtype": "float32"
+        },
+        "classifier": {
+          "shape": [
+            896,
+            3
+          ],
+          "dtype": "float32"
+        },
+        "bias": {
+          "shape": [
+            3
+          ],
+          "dtype": "float32"
+        },
+        "history": {
+          "shape": [
+            105,
+            2
+          ],
+          "dtype": "float64"
+        },
+        "best_epoch": {
+          "shape": [],
+          "dtype": "int64"
+        },
+        "key": {
+          "shape": [],
+          "dtype": "<U64"
+        },
+        "max_epochs": {
+          "shape": [],
+          "dtype": "int64"
+        },
+        "patience": {
+          "shape": [],
+          "dtype": "int64"
+        },
+        "learning_rate_schedule": {
+          "shape": [],
+          "dtype": "<U8"
+        }
+      }
+    },
+    {
+      "mode": "concerto_rgb",
+      "path": "models/concerto_rgb.npz",
+      "sha256": "667ce910c08fa81c0e13890d2c8e6634d066620b345faedf4322ada723ea95c2",
+      "best_epoch": 153,
+      "completed_epochs": 183,
+      "max_epochs": 1000,
+      "patience": 30,
+      "learning_rate_schedule": "constant",
+      "arrays": {
+        "attention_input": {
+          "shape": [
+            896,
+            128
+          ],
+          "dtype": "float32"
+        },
+        "attention_bias": {
+          "shape": [
+            128
+          ],
+          "dtype": "float32"
+        },
+        "attention_output": {
+          "shape": [
+            128
+          ],
+          "dtype": "float32"
+        },
+        "classifier": {
+          "shape": [
+            896,
+            3
+          ],
+          "dtype": "float32"
+        },
+        "bias": {
+          "shape": [
+            3
+          ],
+          "dtype": "float32"
+        },
+        "history": {
+          "shape": [
+            183,
+            2
+          ],
+          "dtype": "float64"
+        },
+        "best_epoch": {
+          "shape": [],
+          "dtype": "int64"
+        },
+        "key": {
+          "shape": [],
+          "dtype": "<U64"
+        },
+        "max_epochs": {
+          "shape": [],
+          "dtype": "int64"
+        },
+        "patience": {
+          "shape": [],
+          "dtype": "int64"
+        },
+        "learning_rate_schedule": {
+          "shape": [],
+          "dtype": "<U8"
+        }
+      }
+    },
+    {
+      "mode": "dinov3_gray",
+      "path": "models/dinov3_gray.npz",
+      "sha256": "2839ef6ebc4364293643aef055936dee256a51a18f2862334cda56dcc08c15b6",
+      "best_epoch": 227,
+      "completed_epochs": 257,
+      "max_epochs": 1000,
+      "patience": 30,
+      "learning_rate_schedule": "constant",
+      "arrays": {
+        "attention_input": {
+          "shape": [
+            384,
+            128
+          ],
+          "dtype": "float32"
+        },
+        "attention_bias": {
+          "shape": [
+            128
+          ],
+          "dtype": "float32"
+        },
+        "attention_output": {
+          "shape": [
+            128
+          ],
+          "dtype": "float32"
+        },
+        "classifier": {
+          "shape": [
+            384,
+            3
+          ],
+          "dtype": "float32"
+        },
+        "bias": {
+          "shape": [
+            3
+          ],
+          "dtype": "float32"
+        },
+        "history": {
+          "shape": [
+            257,
+            2
+          ],
+          "dtype": "float64"
+        },
+        "best_epoch": {
+          "shape": [],
+          "dtype": "int64"
+        },
+        "key": {
+          "shape": [],
+          "dtype": "<U64"
+        },
+        "max_epochs": {
+          "shape": [],
+          "dtype": "int64"
+        },
+        "patience": {
+          "shape": [],
+          "dtype": "int64"
+        },
+        "learning_rate_schedule": {
+          "shape": [],
+          "dtype": "<U8"
+        }
+      }
+    },
+    {
+      "mode": "dinov3_harmonized",
+      "path": "models/dinov3_harmonized.npz",
+      "sha256": "8bb8bf056447f826d4bd97c2232da1e7b0c3148926a93b2bebf870c9f5c98af9",
+      "best_epoch": 342,
+      "completed_epochs": 372,
+      "max_epochs": 1000,
+      "patience": 30,
+      "learning_rate_schedule": "constant",
+      "arrays": {
+        "attention_input": {
+          "shape": [
+            384,
+            128
+          ],
+          "dtype": "float32"
+        },
+        "attention_bias": {
+          "shape": [
+            128
+          ],
+          "dtype": "float32"
+        },
+        "attention_output": {
+          "shape": [
+            128
+          ],
+          "dtype": "float32"
+        },
+        "classifier": {
+          "shape": [
+            384,
+            3
+          ],
+          "dtype": "float32"
+        },
+        "bias": {
+          "shape": [
+            3
+          ],
+          "dtype": "float32"
+        },
+        "history": {
+          "shape": [
+            372,
+            2
+          ],
+          "dtype": "float64"
+        },
+        "best_epoch": {
+          "shape": [],
+          "dtype": "int64"
+        },
+        "key": {
+          "shape": [],
+          "dtype": "<U64"
+        },
+        "max_epochs": {
+          "shape": [],
+          "dtype": "int64"
+        },
+        "patience": {
+          "shape": [],
+          "dtype": "int64"
+        },
+        "learning_rate_schedule": {
+          "shape": [],
+          "dtype": "<U8"
+        }
+      }
+    },
+    {
+      "mode": "dinov3_rgb",
+      "path": "models/dinov3_rgb.npz",
+      "sha256": "b9ace4c818fd3039bfd8a90c55f117aad9175f2bbb66da21cf29359305b095c5",
+      "best_epoch": 539,
+      "completed_epochs": 569,
+      "max_epochs": 1000,
+      "patience": 30,
+      "learning_rate_schedule": "constant",
+      "arrays": {
+        "attention_input": {
+          "shape": [
+            384,
+            128
+          ],
+          "dtype": "float32"
+        },
+        "attention_bias": {
+          "shape": [
+            128
+          ],
+          "dtype": "float32"
+        },
+        "attention_output": {
+          "shape": [
+            128
+          ],
+          "dtype": "float32"
+        },
+        "classifier": {
+          "shape": [
+            384,
+            3
+          ],
+          "dtype": "float32"
+        },
+        "bias": {
+          "shape": [
+            3
+          ],
+          "dtype": "float32"
+        },
+        "history": {
+          "shape": [
+            569,
+            2
+          ],
+          "dtype": "float64"
+        },
+        "best_epoch": {
+          "shape": [],
+          "dtype": "int64"
+        },
+        "key": {
+          "shape": [],
+          "dtype": "<U64"
+        },
+        "max_epochs": {
+          "shape": [],
+          "dtype": "int64"
+        },
+        "patience": {
+          "shape": [],
+          "dtype": "int64"
+        },
+        "learning_rate_schedule": {
+          "shape": [],
+          "dtype": "<U8"
+        }
+      }
+    }
+  ],
+  "test_prediction_rows": 768,
+  "test_metrics_rows": 30,
+  "pooled_metrics": [
+    {
+      "scope": "All scanners",
+      "mode": "dinov3_gray",
+      "specimens": "12",
+      "scans": "128",
+      "balanced_accuracy": "0.9826388888888888",
+      "ci95_low": "0.9652777777777778",
+      "ci95_high": "1.0",
+      "macro_f1": "0.9826388888888888",
+      "accuracy": "0.984375"
+    },
+    {
+      "scope": "All scanners",
+      "mode": "dinov3_rgb",
+      "specimens": "12",
+      "scans": "128",
+      "balanced_accuracy": "0.9444444444444445",
+      "ci95_low": "0.8993055555555555",
+      "ci95_high": "0.9895833333333334",
+      "macro_f1": "0.9411551181737517",
+      "accuracy": "0.9453125"
+    },
+    {
+      "scope": "All scanners",
+      "mode": "dinov3_harmonized",
+      "specimens": "12",
+      "scans": "128",
+      "balanced_accuracy": "0.9340277777777777",
+      "ci95_low": "0.8923611111111112",
+      "ci95_high": "0.9756944444444445",
+      "macro_f1": "0.9313655342920392",
+      "accuracy": "0.9375"
+    },
+    {
+      "scope": "All scanners",
+      "mode": "concerto_geometry",
+      "specimens": "12",
+      "scans": "128",
+      "balanced_accuracy": "0.5416666666666666",
+      "ci95_low": "0.4895833333333333",
+      "ci95_high": "0.5972222222222222",
+      "macro_f1": "0.5347213419123532",
+      "accuracy": "0.578125"
+    },
+    {
+      "scope": "All scanners",
+      "mode": "concerto_rgb",
+      "specimens": "12",
+      "scans": "128",
+      "balanced_accuracy": "0.9027777777777778",
+      "ci95_low": "0.8715277777777778",
+      "ci95_high": "0.9340277777777778",
+      "macro_f1": "0.8943469875444704",
+      "accuracy": "0.8984375"
+    },
+    {
+      "scope": "All scanners",
+      "mode": "concerto_harmonized",
+      "specimens": "12",
+      "scans": "128",
+      "balanced_accuracy": "0.8715277777777778",
+      "ci95_low": "0.8158854166666667",
+      "ci95_high": "0.9340277777777777",
+      "macro_f1": "0.8693351875925869",
+      "accuracy": "0.875"
+    }
+  ],
+  "missing_from_supplied_archive": [
+    "features/<mode>/settings.json and frozen feature bags",
+    "experiment-specific upstream encoder checkout/checkpoint hashes",
+    "package/environment exports",
+    "original execution command and Git commit"
+  ],
+  "limitations": [
+    "Historical absolute workstation paths in cohort files are preserved as provenance.",
+    "Open the saved HTML and CSV reports directly; the current --figures-only path needs missing feature settings/caches.",
+    "Archive integrity and saved arrays were checked; the models were not retrained or re-evaluated."
+  ],
+  "upstream_encoders": {
+    "documentation": "docs/frozen-models.md",
+    "dinov3": {
+      "paper": "https://arxiv.org/abs/2508.10104",
+      "github": "https://github.com/facebookresearch/dinov3",
+      "variant": "ViT-S/16"
+    },
+    "concerto": {
+      "paper": "https://arxiv.org/abs/2510.23607",
+      "github": "https://github.com/Pointcept/Concerto",
+      "checkpoints": "https://huggingface.co/Pointcept/Concerto",
+      "variant": "Small"
+    },
+    "note": "Pretrained encoders are obtained from their authors; exact historical checkout/environment records are experiment provenance."
+  },
+  "optional_regenerable_artifacts": [
+    "Computed frozen-feature bags/caches; they need not be uploaded with the run archive."
+  ],
+  "small_records_to_recover": [
+    "features/<mode>/settings.json for all six conditions",
+    "original environment package exports",
+    "upstream encoder checkout identifiers and checkpoint hashes"
+  ]
+}

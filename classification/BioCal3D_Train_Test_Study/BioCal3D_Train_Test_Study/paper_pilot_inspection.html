@@ -1,0 +1,146 @@
+<article>
+  <h2>Attention-mass contours</h2>
+  <div class="image-stack">
+    <img id="contourBase" alt="Original scan">
+    <img id="contours" alt="Boundaries of the 50% and 80% attention-mass regions">
+  </div>
+  <p class="compact"><span class="key" style="background:#1be4f5"></span>50% mass
+    · <span class="key" style="background:#ffca40"></span>80% mass</p>
+  <p id="attentionMass" class="compact"></p>
+  <p class="compact">The highest-weight patches or points enter first. Tied weights are kept together.</p>
+  <a id="attentionFigure">Download attention figure</a>
+</article>
+<article>
+  <h2>Signed evidence</h2>
+  <div class="image-stack">
+    <img id="evidenceBase" alt="Original scan">
+    <img id="evidence" alt="Signed local contribution to the class contrast">
+  </div>
+  <div class="gradient" aria-hidden="true"></div>
+  <div class="ticks"><span id="negativeLimit"></span><span>0</span><span id="positiveLimit"></span></div>
+  <label class="compact">Contrast <select id="contrast">
+    <option value="partial">Partial vs fully cleaned</option>
+    <option value="baseline">Baseline vs fully cleaned</option>
+  </select></label>
+  <p id="evidenceKey" class="compact"></p>
+  <p class="compact">Local logit contributions · colour scale set per map.</p>
+</article>
+<!-- SECTION -->
+<article id="nativeCard" hidden>
+  <h2>Concerto attention on sampled 3D points</h2>
+  <canvas id="nativeCanvas" width="720" height="410" tabindex="0"
+          aria-label="Rotatable Concerto point cloud. Use the arrow keys to rotate."></canvas>
+  <p class="compact"><span class="key" style="background:#1be4f5"></span>50% mass
+    · <span class="key" style="background:#ffca40"></span>50–80% mass
+    · <span class="key" style="background:#667781"></span>Remaining points</p>
+  <p class="compact">Drag or use the arrow keys to rotate. Scroll to zoom.</p>
+  <button id="nativeReset" type="button">Reset 3D view</button>
+</article>
+<p id="nativeHint" class="compact">Choose a Concerto input to open the rotatable 3D attention view.</p>
+<!-- SECTION -->
+<script>
+"use strict";
+
+const contourBase = el("contourBase");
+const evidenceBase = el("evidenceBase");
+contourBase.src = evidenceBase.src = data.image;
+el("attentionFigure").href = location.pathname.split("/").pop().replace(/\.html$/, "_attention.png");
+
+const nativeCanvas = el("nativeCanvas");
+const nativeContext = nativeCanvas.getContext("2d");
+const pointColours = ["#667781", "#ffca40", "#1be4f5"];
+let xyz, pointGroups;
+let yaw = 0, pitch = .36, zoom = 1, previous = null, frame = null;
+
+function drawNative() {
+  frame = null;
+  if (!xyz) return;
+  const cy = Math.cos(yaw), sy = Math.sin(yaw);
+  const cp = Math.cos(pitch), sp = Math.sin(pitch);
+  const scale = .43 * Math.min(nativeCanvas.width, nativeCanvas.height) * zoom;
+  const points = [];
+  for (let i = 0; i < pointGroups.length; i++) {
+    const x = xyz[3*i], y = xyz[3*i+1], z = xyz[3*i+2];
+    const horizontal = cy*x - sy*y;
+    const vertical = sy*x + cy*y;
+    points.push([horizontal, cp*vertical - sp*z, sp*vertical + cp*z, pointGroups[i]]);
+  }
+  points.sort((a, b) => a[2] - b[2]);
+  nativeContext.fillStyle = "#142631";
+  nativeContext.fillRect(0, 0, nativeCanvas.width, nativeCanvas.height);
+  for (const [x, y, , group] of points) {
+    const size = group ? 3 : 2;
+    nativeContext.fillStyle = pointColours[group];
+    nativeContext.fillRect(nativeCanvas.width/2 + scale*x - size/2,
+                           nativeCanvas.height/2 - scale*y - size/2, size, size);
+  }
+}
+
+function queueNative() {
+  if (frame === null) frame = requestAnimationFrame(drawNative);
+}
+
+function showEvidence() {
+  const view = data.inspection[el("mode").value];
+  const target = el("contrast").value;
+  const evidence = view.evidence[target];
+  el("evidence").src = evidence.image;
+  el("negativeLimit").textContent = "−" + evidence.limit.toPrecision(2);
+  el("positiveLimit").textContent = "+" + evidence.limit.toPrecision(2);
+  el("evidenceKey").textContent = "Red favours " + target + ". Blue favours fully cleaned.";
+}
+
+function showInspection() {
+  const view = data.inspection[el("mode").value];
+  el("contours").src = view.contours;
+  const [inner, outer] = view.mass.map(value => (100 * value).toFixed(1) + "%");
+  el("attentionMass").textContent = "Selected native attention mass · " + inner + " and " + outer;
+  showEvidence();
+  el("nativeCard").hidden = !view.native;
+  el("nativeHint").hidden = Boolean(view.native);
+  xyz = view.native ? decode(view.native.xyz) : null;
+  pointGroups = view.native ? Uint8Array.from(atob(view.native.groups), ch => ch.charCodeAt(0)) : null;
+  queueNative();
+}
+
+nativeCanvas.addEventListener("pointerdown", event => {
+  if (event.button !== 0) return;
+  nativeCanvas.setPointerCapture(event.pointerId);
+  previous = [event.clientX, event.clientY];
+  nativeCanvas.style.cursor = "grabbing";
+});
+nativeCanvas.addEventListener("pointermove", event => {
+  if (!previous) return;
+  yaw += (event.clientX - previous[0]) * .01;
+  pitch += (event.clientY - previous[1]) * .01;
+  previous = [event.clientX, event.clientY];
+  queueNative();
+});
+nativeCanvas.addEventListener("lostpointercapture", () => {
+  previous = null;
+  nativeCanvas.style.cursor = "grab";
+});
+nativeCanvas.addEventListener("wheel", event => {
+  event.preventDefault();
+  zoom = Math.min(4, Math.max(.4, zoom * Math.exp(-event.deltaY * .001)));
+  queueNative();
+}, {passive: false});
+nativeCanvas.addEventListener("keydown", event => {
+  const moves = {ArrowLeft:[-.14,0], ArrowRight:[.14,0], ArrowUp:[0,-.14], ArrowDown:[0,.14]};
+  const move = moves[event.key];
+  if (!move) return;
+  event.preventDefault();
+  yaw += move[0];
+  pitch += move[1];
+  queueNative();
+});
+el("nativeReset").addEventListener("click", () => {
+  yaw = 0;
+  pitch = .36;
+  zoom = 1;
+  queueNative();
+});
+el("contrast").addEventListener("change", showEvidence);
+el("mode").addEventListener("change", showInspection);
+showInspection();
+</script>

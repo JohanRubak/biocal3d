@@ -1,0 +1,19 @@
+{
+  "checkpoint_sha256": "08c60483bc63c04f533611e34bf70b120eedb7240f469bc16e9e20bf344b941d",
+  "repository_commit": "6876159a11b4df116f30f667f8c9888617df0751",
+  "torch": "2.7.1+cu126",
+  "numpy": "2.4.6",
+  "device": "cuda",
+  "bag_size": 512,
+  "code": {
+    "feature_cache.py": "3fcc064fa3cee6de0b77c2f68f54e30eb09e8a52ade7b3381cce97e7f401de0f",
+    "study_data.py": "916ffca5980710d5634860607e1807c765f59da11de2a31f805b66de526b43a8",
+    "images_2d.py": "d532c484bdd21a70e55465ce6abac265200a8941522cd4a60a42344bfe46b565",
+    "models_2d.py": "7175b4d8870b311276801bed83e131ac7defe37edc8633b67b20a0e8f7cd7ae4",
+    "concerto_backend.py": "20f0ae15c7f8443f01ae88a9ab494d0e2d848d2ce0ebda3f31fb38aa6fc17e79"
+  },
+  "encoder": "dinov3",
+  "variant": "gray",
+  "image_size": 448,
+  "field_mm": 16.0
+}

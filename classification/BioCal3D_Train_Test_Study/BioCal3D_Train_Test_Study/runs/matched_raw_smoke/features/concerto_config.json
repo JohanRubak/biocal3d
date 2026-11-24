@@ -1,0 +1,28 @@
+{
+  "encoder": "concerto",
+  "checkpoint_sha256": "251441d92ac7d9cff9e0c3ae22bdf2dc416d1c9dbb7a75f1922c08bfd1a18868",
+  "upstream_commit": "5b41117160cdd92c3538be1911277b17e7ef5871",
+  "device": "cuda",
+  "torch": "2.5.0+cu124",
+  "numpy": "1.26.4",
+  "adapter_hashes": {
+    "stage_ablation.py": "d01fc68162689de0c001f734e2a438544c93e0523efde7e1ec1f01e028703a93",
+    "study_data.py": "8b2dfb815d82c08d6e0ed29da471350d43f640a736637c1cb926e3ecb1712c65",
+    "images_2d.py": "f8d36f9ae5bafdac68e64ae2478cc714a0b688ae6bdeaa94069f05d759adf123",
+    "models_2d.py": "7175b4d8870b311276801bed83e131ac7defe37edc8633b67b20a0e8f7cd7ae4",
+    "concerto_backend.py": "20f0ae15c7f8443f01ae88a9ab494d0e2d848d2ce0ebda3f31fb38aa6fc17e79"
+  },
+  "serialization_seed": "stable and shared across inputs per scan",
+  "surface": {
+    "align_plane": true,
+    "scale_mm": 10.0,
+    "sampling_seed": 123,
+    "sampling": "surface",
+    "points": 8192,
+    "inputs": "geometry_rgb"
+  },
+  "voxel_mm": 0.1,
+  "attention_patch": 128,
+  "normals": "mesh normals in both conditions",
+  "pooling": "sampled surface mean + max"
+}

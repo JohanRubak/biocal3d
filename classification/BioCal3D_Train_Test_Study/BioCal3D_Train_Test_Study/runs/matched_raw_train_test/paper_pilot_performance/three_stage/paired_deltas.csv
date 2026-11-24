@@ -1,0 +1,25 @@
+﻿scope,classifier,family,contrast,comparison,reference,specimens,delta_balanced_accuracy,ci95_low,ci95_high
+All scanners,three-stage,dinov3,Raw colour − no colour,dinov3_rgb,dinov3_gray,12,-0.07291666666666674,-0.09730902777777777,-0.04861111111111116
+All scanners,three-stage,concerto,Raw colour − no colour,concerto_rgb,concerto_geometry,12,0.43055555555555547,0.3784722222222223,0.47925347222222187
+All scanners,mean-pooling,dinov3,Raw colour − no colour,dinov3_rgb,dinov3_gray,12,0.013888888888889062,-0.006944444444444531,0.03472222222222221
+All scanners,mean-pooling,concerto,Raw colour − no colour,concerto_rgb,concerto_geometry,12,0.34375,0.3159722222222221,0.375
+LABscanner,three-stage,dinov3,Raw colour − no colour,dinov3_rgb,dinov3_gray,12,-0.2222222222222221,-0.31944444444444453,-0.11111111111111116
+LABscanner,three-stage,concerto,Raw colour − no colour,concerto_rgb,concerto_geometry,12,0.13888888888888884,0.02777777777777779,0.25
+LABscanner,mean-pooling,dinov3,Raw colour − no colour,dinov3_rgb,dinov3_gray,12,0.08333333333333337,0.02777777777777779,0.13888888888888884
+LABscanner,mean-pooling,concerto,Raw colour − no colour,concerto_rgb,concerto_geometry,12,0.0,-0.05555555555555558,0.05555555555555558
+TRIOS3,three-stage,dinov3,Raw colour − no colour,dinov3_rgb,dinov3_gray,12,-0.04166666666666674,-0.08333333333333337,0.0
+TRIOS3,three-stage,concerto,Raw colour − no colour,concerto_rgb,concerto_geometry,12,0.5833333333333334,0.43020833333333336,0.7361111111111112
+TRIOS3,mean-pooling,dinov3,Raw colour − no colour,dinov3_rgb,dinov3_gray,12,-0.02777777777777779,-0.05555555555555547,0.0
+TRIOS3,mean-pooling,concerto,Raw colour − no colour,concerto_rgb,concerto_geometry,12,0.5416666666666666,0.47222222222222227,0.6111111111111112
+TRIOS5,three-stage,dinov3,Raw colour − no colour,dinov3_rgb,dinov3_gray,12,0.0,0.0,0.0
+TRIOS5,three-stage,concerto,Raw colour − no colour,concerto_rgb,concerto_geometry,12,0.43055555555555547,0.33333333333333337,0.5277777777777777
+TRIOS5,mean-pooling,dinov3,Raw colour − no colour,dinov3_rgb,dinov3_gray,12,0.0,0.0,0.0
+TRIOS5,mean-pooling,concerto,Raw colour − no colour,concerto_rgb,concerto_geometry,12,0.41666666666666674,0.3055555555555556,0.5277777777777777
+iTERO,three-stage,dinov3,Raw colour − no colour,dinov3_rgb,dinov3_gray,12,-0.0277777777777779,-0.05555555555555558,0.0
+iTERO,three-stage,concerto,Raw colour − no colour,concerto_rgb,concerto_geometry,12,0.5694444444444444,0.47222222222222227,0.6666666666666667
+iTERO,mean-pooling,dinov3,Raw colour − no colour,dinov3_rgb,dinov3_gray,12,0.0,0.0,0.0
+iTERO,mean-pooling,concerto,Raw colour − no colour,concerto_rgb,concerto_geometry,12,0.4166666666666666,0.2916666666666667,0.5416666666666665
+Mature only (all scanners),three-stage,dinov3,Raw colour − no colour,dinov3_rgb,dinov3_gray,8,-0.0625,-0.08333333333333337,-0.04166666666666663
+Mature only (all scanners),three-stage,concerto,Raw colour − no colour,concerto_rgb,concerto_geometry,8,0.4375,0.38541666666666674,0.4895833333333333
+Mature only (all scanners),mean-pooling,dinov3,Raw colour − no colour,dinov3_rgb,dinov3_gray,8,0.03125,0.01041666666666663,0.05208333333333337
+Mature only (all scanners),mean-pooling,concerto,Raw colour − no colour,concerto_rgb,concerto_geometry,8,0.33333333333333326,0.3125,0.35416666666666663

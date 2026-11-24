@@ -1,0 +1,321 @@
+{
+  "schema": 1,
+  "source_archive": "references.zip",
+  "source_archive_sha256": "7811fc88bc8abe10c4ccd0d5ee9c1fc8a6ce994f4d58f1870d762813fa9281cd",
+  "received": "2026-11-24",
+  "purpose": "Saved scanner-specific reference-circle fits for initial ROI extraction; not the later cross-scanner orientation correction.",
+  "references": [
+    {
+      "scanner": "iTERO",
+      "path": "iTERO/reference_roi.npz",
+      "sha256": "75e9f64b5cbcaa6fcb77107a27554c8b81443ad9c32efa0f63813ad02e0e4928",
+      "reference_sample_id": "BCG1T0-1",
+      "fields": {
+        "scanner": {
+          "shape": [],
+          "dtype": "<U5",
+          "value": "iTERO"
+        },
+        "center": {
+          "shape": [
+            3
+          ],
+          "dtype": "float64",
+          "value": [
+            -22.608394781098124,
+            -22.697340641419075,
+            9.693312129877922
+          ]
+        },
+        "normal": {
+          "shape": [
+            3
+          ],
+          "dtype": "float64",
+          "value": [
+            -0.09429015321718312,
+            -0.026404584592292668,
+            0.9951945362183159
+          ]
+        },
+        "u_axis": {
+          "shape": [
+            3
+          ],
+          "dtype": "float64",
+          "value": [
+            -0.0,
+            0.9996482099924369,
+            0.026522749837011673
+          ]
+        },
+        "v_axis": {
+          "shape": [
+            3
+          ],
+          "dtype": "float64",
+          "value": [
+            -0.9955447589165844,
+            0.0025008341458728493,
+            -0.09425698288346972
+          ]
+        },
+        "radius": {
+          "shape": [],
+          "dtype": "float64",
+          "value": 6.151578752981084
+        },
+        "roi_radius": {
+          "shape": [],
+          "dtype": "float64",
+          "value": 6.059305071686368
+        },
+        "z_offset": {
+          "shape": [],
+          "dtype": "float64",
+          "value": 0.0012281845464554753
+        },
+        "reference_sample_id": {
+          "shape": [],
+          "dtype": "<U8",
+          "value": "BCG1T0-1"
+        }
+      },
+      "original_source_path_recorded": true
+    },
+    {
+      "scanner": "LABscanner",
+      "path": "LABscanner/reference_roi.npz",
+      "sha256": "18182f5c7a8493c9971754f2ee9d575084cd80f98044dc7c1f09e89b1e9184c2",
+      "reference_sample_id": "BCG1T0-1",
+      "fields": {
+        "scanner": {
+          "shape": [],
+          "dtype": "<U10",
+          "value": "LABscanner"
+        },
+        "center": {
+          "shape": [
+            3
+          ],
+          "dtype": "float64",
+          "value": [
+            0.19070284457694192,
+            3.9568752485820524,
+            2.922851869173519
+          ]
+        },
+        "normal": {
+          "shape": [
+            3
+          ],
+          "dtype": "float64",
+          "value": [
+            -0.022734667261157054,
+            0.9993125109074618,
+            -0.029285498943138255
+          ]
+        },
+        "u_axis": {
+          "shape": [
+            3
+          ],
+          "dtype": "float64",
+          "value": [
+            0.0,
+            -0.02929307020435884,
+            -0.9995708659409809
+          ]
+        },
+        "v_axis": {
+          "shape": [
+            3
+          ],
+          "dtype": "float64",
+          "value": [
+            -0.9997415340499386,
+            -0.022724911041114827,
+            0.0006659682041538122
+          ]
+        },
+        "radius": {
+          "shape": [],
+          "dtype": "float64",
+          "value": 5.955329705049886
+        },
+        "roi_radius": {
+          "shape": [],
+          "dtype": "float64",
+          "value": 5.865999759474137
+        },
+        "z_offset": {
+          "shape": [],
+          "dtype": "float64",
+          "value": -0.0010311406700935794
+        },
+        "reference_sample_id": {
+          "shape": [],
+          "dtype": "<U8",
+          "value": "BCG1T0-1"
+        }
+      },
+      "original_source_path_recorded": true
+    },
+    {
+      "scanner": "TRIOS3",
+      "path": "TRIOS3/reference_roi.npz",
+      "sha256": "fd888e9ca6f3ec2129841c7f4349c54cebd6aee344d85e435214ae03b7769a5a",
+      "reference_sample_id": "BCG1T0-1",
+      "fields": {
+        "scanner": {
+          "shape": [],
+          "dtype": "<U6",
+          "value": "TRIOS3"
+        },
+        "center": {
+          "shape": [
+            3
+          ],
+          "dtype": "float64",
+          "value": [
+            0.14469846320813168,
+            15.507376553242098,
+            -0.9598563239006598
+          ]
+        },
+        "normal": {
+          "shape": [
+            3
+          ],
+          "dtype": "float64",
+          "value": [
+            0.23249166895186754,
+            0.9725838253652741,
+            0.005322265102875368
+          ]
+        },
+        "u_axis": {
+          "shape": [
+            3
+          ],
+          "dtype": "float64",
+          "value": [
+            0.0,
+            0.0054722125492601805,
+            -0.9999850273328175
+          ]
+        },
+        "v_axis": {
+          "shape": [
+            3
+          ],
+          "dtype": "float64",
+          "value": [
+            -0.9725983877572363,
+            0.23248818793148562,
+            0.0012722438284368531
+          ]
+        },
+        "radius": {
+          "shape": [],
+          "dtype": "float64",
+          "value": 6.127214553292545
+        },
+        "roi_radius": {
+          "shape": [],
+          "dtype": "float64",
+          "value": 6.035306334993156
+        },
+        "z_offset": {
+          "shape": [],
+          "dtype": "float64",
+          "value": -0.0018395942877125493
+        },
+        "reference_sample_id": {
+          "shape": [],
+          "dtype": "<U8",
+          "value": "BCG1T0-1"
+        }
+      },
+      "original_source_path_recorded": true
+    },
+    {
+      "scanner": "TRIOS5",
+      "path": "TRIOS5/reference_roi.npz",
+      "sha256": "de6091774713d92d59ac076299930575e7cd6694f5d2883d7ecd34a568c25273",
+      "reference_sample_id": "BCG1T0-1",
+      "fields": {
+        "scanner": {
+          "shape": [],
+          "dtype": "<U6",
+          "value": "TRIOS5"
+        },
+        "center": {
+          "shape": [
+            3
+          ],
+          "dtype": "float64",
+          "value": [
+            0.8009902765137829,
+            18.369718933344384,
+            1.9733639989501353
+          ]
+        },
+        "normal": {
+          "shape": [
+            3
+          ],
+          "dtype": "float64",
+          "value": [
+            -0.10727376989167108,
+            0.9852819624463238,
+            0.13308565952479523
+          ]
+        },
+        "u_axis": {
+          "shape": [
+            3
+          ],
+          "dtype": "float64",
+          "value": [
+            0.0,
+            0.13385808493660212,
+            -0.991000511148761
+          ]
+        },
+        "v_axis": {
+          "shape": [
+            3
+          ],
+          "dtype": "float64",
+          "value": [
+            -0.994229519926475,
+            -0.1063083607955006,
+            -0.014359461401628817
+          ]
+        },
+        "radius": {
+          "shape": [],
+          "dtype": "float64",
+          "value": 6.0061111987820865
+        },
+        "roi_radius": {
+          "shape": [],
+          "dtype": "float64",
+          "value": 5.916019530800355
+        },
+        "z_offset": {
+          "shape": [],
+          "dtype": "float64",
+          "value": -0.010099680170857118
+        },
+        "reference_sample_id": {
+          "shape": [],
+          "dtype": "<U8",
+          "value": "BCG1T0-1"
+        }
+      },
+      "original_source_path_recorded": true
+    }
+  ]
+}

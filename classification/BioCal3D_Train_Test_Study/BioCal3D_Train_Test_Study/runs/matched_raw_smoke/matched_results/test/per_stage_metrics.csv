@@ -1,0 +1,145 @@
+﻿scope,mode,stage,support,recall,precision,f1
+All scanners,dinov3_gray,baseline,4,1.0,1.0,1.0
+All scanners,dinov3_gray,partial,4,1.0,1.0,1.0
+All scanners,dinov3_gray,clean,4,1.0,1.0,1.0
+All scanners,dinov3_rgb,baseline,4,1.0,1.0,1.0
+All scanners,dinov3_rgb,partial,4,0.75,1.0,0.8571428571428571
+All scanners,dinov3_rgb,clean,4,1.0,0.8,0.8888888888888888
+All scanners,concerto_geometry,baseline,4,0.75,0.6,0.6666666666666666
+All scanners,concerto_geometry,partial,4,0.25,0.3333333333333333,0.2857142857142857
+All scanners,concerto_geometry,clean,4,0.5,0.5,0.5
+All scanners,concerto_rgb,baseline,4,1.0,0.8,0.8888888888888888
+All scanners,concerto_rgb,partial,4,0.25,1.0,0.4
+All scanners,concerto_rgb,clean,4,1.0,0.6666666666666666,0.8
+All scanners,gmm_gray,baseline,4,0.5,0.4,0.4444444444444444
+All scanners,gmm_gray,partial,4,0.75,0.6,0.6666666666666666
+All scanners,gmm_gray,clean,4,0.0,0.0,0.0
+All scanners,gmm_rgb,baseline,4,0.5,0.6666666666666666,0.5714285714285714
+All scanners,gmm_rgb,partial,4,0.75,0.75,0.75
+All scanners,gmm_rgb,clean,4,0.5,0.4,0.4444444444444444
+All scanners,boost_gray,baseline,4,0.75,1.0,0.8571428571428571
+All scanners,boost_gray,partial,4,0.75,0.75,0.75
+All scanners,boost_gray,clean,4,1.0,0.8,0.8888888888888888
+All scanners,boost_rgb,baseline,4,0.25,0.5,0.3333333333333333
+All scanners,boost_rgb,partial,4,0.75,0.6,0.6666666666666666
+All scanners,boost_rgb,clean,4,1.0,0.8,0.8888888888888888
+LABscanner,dinov3_gray,baseline,1,1.0,1.0,1.0
+LABscanner,dinov3_gray,partial,1,1.0,1.0,1.0
+LABscanner,dinov3_gray,clean,1,1.0,1.0,1.0
+LABscanner,dinov3_rgb,baseline,1,1.0,1.0,1.0
+LABscanner,dinov3_rgb,partial,1,0.0,0.0,0.0
+LABscanner,dinov3_rgb,clean,1,1.0,0.5,0.6666666666666666
+LABscanner,concerto_geometry,baseline,1,1.0,1.0,1.0
+LABscanner,concerto_geometry,partial,1,1.0,1.0,1.0
+LABscanner,concerto_geometry,clean,1,1.0,1.0,1.0
+LABscanner,concerto_rgb,baseline,1,1.0,0.5,0.6666666666666666
+LABscanner,concerto_rgb,partial,1,0.0,0.0,0.0
+LABscanner,concerto_rgb,clean,1,1.0,1.0,1.0
+LABscanner,gmm_gray,baseline,1,1.0,0.5,0.6666666666666666
+LABscanner,gmm_gray,partial,1,0.0,0.0,0.0
+LABscanner,gmm_gray,clean,1,0.0,0.0,0.0
+LABscanner,gmm_rgb,baseline,1,0.0,0.0,0.0
+LABscanner,gmm_rgb,partial,1,0.0,0.0,0.0
+LABscanner,gmm_rgb,clean,1,1.0,0.3333333333333333,0.5
+LABscanner,boost_gray,baseline,1,0.0,0.0,0.0
+LABscanner,boost_gray,partial,1,1.0,0.5,0.6666666666666666
+LABscanner,boost_gray,clean,1,1.0,1.0,1.0
+LABscanner,boost_rgb,baseline,1,0.0,0.0,0.0
+LABscanner,boost_rgb,partial,1,0.0,0.0,0.0
+LABscanner,boost_rgb,clean,1,1.0,0.5,0.6666666666666666
+TRIOS3,dinov3_gray,baseline,1,1.0,1.0,1.0
+TRIOS3,dinov3_gray,partial,1,1.0,1.0,1.0
+TRIOS3,dinov3_gray,clean,1,1.0,1.0,1.0
+TRIOS3,dinov3_rgb,baseline,1,1.0,1.0,1.0
+TRIOS3,dinov3_rgb,partial,1,1.0,1.0,1.0
+TRIOS3,dinov3_rgb,clean,1,1.0,1.0,1.0
+TRIOS3,concerto_geometry,baseline,1,0.0,0.0,0.0
+TRIOS3,concerto_geometry,partial,1,0.0,0.0,0.0
+TRIOS3,concerto_geometry,clean,1,0.0,0.0,0.0
+TRIOS3,concerto_rgb,baseline,1,1.0,1.0,1.0
+TRIOS3,concerto_rgb,partial,1,1.0,1.0,1.0
+TRIOS3,concerto_rgb,clean,1,1.0,1.0,1.0
+TRIOS3,gmm_gray,baseline,1,1.0,0.5,0.6666666666666666
+TRIOS3,gmm_gray,partial,1,1.0,1.0,1.0
+TRIOS3,gmm_gray,clean,1,0.0,0.0,0.0
+TRIOS3,gmm_rgb,baseline,1,1.0,0.5,0.6666666666666666
+TRIOS3,gmm_rgb,partial,1,1.0,1.0,1.0
+TRIOS3,gmm_rgb,clean,1,0.0,0.0,0.0
+TRIOS3,boost_gray,baseline,1,1.0,1.0,1.0
+TRIOS3,boost_gray,partial,1,1.0,1.0,1.0
+TRIOS3,boost_gray,clean,1,1.0,1.0,1.0
+TRIOS3,boost_rgb,baseline,1,1.0,1.0,1.0
+TRIOS3,boost_rgb,partial,1,1.0,1.0,1.0
+TRIOS3,boost_rgb,clean,1,1.0,1.0,1.0
+TRIOS5,dinov3_gray,baseline,1,1.0,1.0,1.0
+TRIOS5,dinov3_gray,partial,1,1.0,1.0,1.0
+TRIOS5,dinov3_gray,clean,1,1.0,1.0,1.0
+TRIOS5,dinov3_rgb,baseline,1,1.0,1.0,1.0
+TRIOS5,dinov3_rgb,partial,1,1.0,1.0,1.0
+TRIOS5,dinov3_rgb,clean,1,1.0,1.0,1.0
+TRIOS5,concerto_geometry,baseline,1,1.0,0.5,0.6666666666666666
+TRIOS5,concerto_geometry,partial,1,0.0,0.0,0.0
+TRIOS5,concerto_geometry,clean,1,1.0,1.0,1.0
+TRIOS5,concerto_rgb,baseline,1,1.0,1.0,1.0
+TRIOS5,concerto_rgb,partial,1,0.0,0.0,0.0
+TRIOS5,concerto_rgb,clean,1,1.0,0.5,0.6666666666666666
+TRIOS5,gmm_gray,baseline,1,0.0,0.0,0.0
+TRIOS5,gmm_gray,partial,1,1.0,1.0,1.0
+TRIOS5,gmm_gray,clean,1,0.0,0.0,0.0
+TRIOS5,gmm_rgb,baseline,1,1.0,1.0,1.0
+TRIOS5,gmm_rgb,partial,1,1.0,0.5,0.6666666666666666
+TRIOS5,gmm_rgb,clean,1,0.0,0.0,0.0
+TRIOS5,boost_gray,baseline,1,1.0,1.0,1.0
+TRIOS5,boost_gray,partial,1,1.0,1.0,1.0
+TRIOS5,boost_gray,clean,1,1.0,1.0,1.0
+TRIOS5,boost_rgb,baseline,1,0.0,0.0,0.0
+TRIOS5,boost_rgb,partial,1,1.0,0.5,0.6666666666666666
+TRIOS5,boost_rgb,clean,1,1.0,1.0,1.0
+iTERO,dinov3_gray,baseline,1,1.0,1.0,1.0
+iTERO,dinov3_gray,partial,1,1.0,1.0,1.0
+iTERO,dinov3_gray,clean,1,1.0,1.0,1.0
+iTERO,dinov3_rgb,baseline,1,1.0,1.0,1.0
+iTERO,dinov3_rgb,partial,1,1.0,1.0,1.0
+iTERO,dinov3_rgb,clean,1,1.0,1.0,1.0
+iTERO,concerto_geometry,baseline,1,1.0,0.5,0.6666666666666666
+iTERO,concerto_geometry,partial,1,0.0,0.0,0.0
+iTERO,concerto_geometry,clean,1,0.0,0.0,0.0
+iTERO,concerto_rgb,baseline,1,1.0,1.0,1.0
+iTERO,concerto_rgb,partial,1,0.0,0.0,0.0
+iTERO,concerto_rgb,clean,1,1.0,0.5,0.6666666666666666
+iTERO,gmm_gray,baseline,1,0.0,0.0,0.0
+iTERO,gmm_gray,partial,1,1.0,0.3333333333333333,0.5
+iTERO,gmm_gray,clean,1,0.0,0.0,0.0
+iTERO,gmm_rgb,baseline,1,0.0,0.0,0.0
+iTERO,gmm_rgb,partial,1,1.0,1.0,1.0
+iTERO,gmm_rgb,clean,1,1.0,0.5,0.6666666666666666
+iTERO,boost_gray,baseline,1,1.0,1.0,1.0
+iTERO,boost_gray,partial,1,0.0,0.0,0.0
+iTERO,boost_gray,clean,1,1.0,0.5,0.6666666666666666
+iTERO,boost_rgb,baseline,1,0.0,0.0,0.0
+iTERO,boost_rgb,partial,1,1.0,0.5,0.6666666666666666
+iTERO,boost_rgb,clean,1,1.0,1.0,1.0
+Mature only (all scanners),dinov3_gray,baseline,4,1.0,1.0,1.0
+Mature only (all scanners),dinov3_gray,partial,4,1.0,1.0,1.0
+Mature only (all scanners),dinov3_gray,clean,4,1.0,1.0,1.0
+Mature only (all scanners),dinov3_rgb,baseline,4,1.0,1.0,1.0
+Mature only (all scanners),dinov3_rgb,partial,4,0.75,1.0,0.8571428571428571
+Mature only (all scanners),dinov3_rgb,clean,4,1.0,0.8,0.8888888888888888
+Mature only (all scanners),concerto_geometry,baseline,4,0.75,0.6,0.6666666666666666
+Mature only (all scanners),concerto_geometry,partial,4,0.25,0.3333333333333333,0.2857142857142857
+Mature only (all scanners),concerto_geometry,clean,4,0.5,0.5,0.5
+Mature only (all scanners),concerto_rgb,baseline,4,1.0,0.8,0.8888888888888888
+Mature only (all scanners),concerto_rgb,partial,4,0.25,1.0,0.4
+Mature only (all scanners),concerto_rgb,clean,4,1.0,0.6666666666666666,0.8
+Mature only (all scanners),gmm_gray,baseline,4,0.5,0.4,0.4444444444444444
+Mature only (all scanners),gmm_gray,partial,4,0.75,0.6,0.6666666666666666
+Mature only (all scanners),gmm_gray,clean,4,0.0,0.0,0.0
+Mature only (all scanners),gmm_rgb,baseline,4,0.5,0.6666666666666666,0.5714285714285714
+Mature only (all scanners),gmm_rgb,partial,4,0.75,0.75,0.75
+Mature only (all scanners),gmm_rgb,clean,4,0.5,0.4,0.4444444444444444
+Mature only (all scanners),boost_gray,baseline,4,0.75,1.0,0.8571428571428571
+Mature only (all scanners),boost_gray,partial,4,0.75,0.75,0.75
+Mature only (all scanners),boost_gray,clean,4,1.0,0.8,0.8888888888888888
+Mature only (all scanners),boost_rgb,baseline,4,0.25,0.5,0.3333333333333333
+Mature only (all scanners),boost_rgb,partial,4,0.75,0.6,0.6666666666666666
+Mature only (all scanners),boost_rgb,clean,4,1.0,0.8,0.8888888888888888

@@ -6,9 +6,12 @@ input: edit original encoder inputs, re-encode, and measure the same head's resp
 import argparse
 import csv
 import html
+from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
 import re
+from tempfile import NamedTemporaryFile
 from types import SimpleNamespace
+import warnings
 
 import joblib
 import matplotlib
@@ -17,6 +20,8 @@ from matplotlib import pyplot as plt
 from matplotlib.colors import TwoSlopeNorm
 import numpy as np
 from PIL import Image
+from scipy.special import softmax
+from sklearn.exceptions import InconsistentVersionWarning
 
 from make_feature_pseudomasks import render
 from stage_ablation import MODES, STAGES, RESULT_SUBDIR, feature_path, read_json
@@ -113,18 +118,140 @@ def load_cache(run, row, mode):
             x = local; w = np.ones(len(x)); eligible = np.ones(len(x), bool)
             meta = {k: z[k] for k in ("xyz_scaled", "scale_mm", "rotation", "center_mm")}
             meta["xyz_mm"] = (meta["xyz_scaled"] * meta["scale_mm"]) @ meta["rotation"].T + meta["center_mm"]
-        full = z["pooled"].astype(np.float64)
+        pooled = z["pooled"]
+        full = pooled.astype(np.float64)
     if not np.allclose(pool(x, w, eligible), full, atol=2e-5, rtol=2e-5):
         raise ValueError("Local features do not reproduce the saved stage-classifier input")
-    return dict(x=x, w=w, eligible=eligible, pooled=full, meta=meta, config=config, cache_sha256=digest(file))
+    return dict(x=x, w=w, eligible=eligible, pooled=full, pooled_dtype=pooled.dtype,
+                meta=meta, config=config, cache_sha256=digest(file))
 
 
-def load_head(run, mode, source):
-    path = run / source / RESULT_SUBDIR / f"{mode}_all_development_head.joblib"
-    head = joblib.load(path)
+def head_file(run, mode, source):
+    return run / source / RESULT_SUBDIR / f"{mode}_all_development_head.joblib"
+
+
+def load_fitted_head(path):
+    try:
+        with warnings.catch_warnings():
+            warnings.simplefilter("error", InconsistentVersionWarning)
+            head = joblib.load(path)
+    except InconsistentVersionWarning as exc:
+        raise ValueError(
+            f"Stage head requires scikit-learn {exc.original_sklearn_version}, "
+            f"but this environment has {exc.current_sklearn_version}. "
+            "Run test_plaque_dependence.py export-head in the fitting environment, "
+            "then retry with the portable head."
+        ) from exc
     clf = head.named_steps["logisticregression"]
     if not np.array_equal(clf.classes_, np.arange(len(STAGES))):
         raise ValueError("Unexpected stage-head class order")
+    return head
+
+
+class PortableStageHead:
+    """Score a fitted StandardScaler and multinomial logistic regression."""
+
+    def __init__(self, mean, scale, coefficients, intercept, classes, cast_scaler_stats):
+        if (
+            mean.ndim != 1 or not mean.size or scale.shape != mean.shape
+            or coefficients.shape != (len(STAGES), mean.size)
+            or intercept.shape != (len(STAGES),)
+            or not np.array_equal(classes, np.arange(len(STAGES)))
+            or not all(np.isfinite(a).all() for a in (mean, scale, coefficients, intercept))
+            or np.any(scale <= 0)
+        ):
+            raise ValueError("Invalid portable stage-head parameters")
+        self.named_steps = {
+            "standardscaler": SimpleNamespace(mean_=mean, scale_=scale, transform=self.standardize),
+            "logisticregression": SimpleNamespace(
+                coef_=coefficients, intercept_=intercept, classes_=classes
+            ),
+        }
+        self.cast_scaler_stats = cast_scaler_stats
+
+    def standardize(self, features):
+        scaler = self.named_steps["standardscaler"]
+        standardized = np.array(features, copy=True)
+        if standardized.dtype not in (np.dtype("float32"), np.dtype("float64")):
+            standardized = standardized.astype(np.float64)
+        if self.cast_scaler_stats:
+            standardized -= scaler.mean_.astype(standardized.dtype, copy=False)
+            standardized /= scaler.scale_.astype(standardized.dtype, copy=False)
+        else:
+            standardized -= scaler.mean_
+            standardized /= scaler.scale_
+        return standardized
+
+    def decision_function(self, features):
+        clf = self.named_steps["logisticregression"]
+        return self.standardize(features) @ clf.coef_.T + clf.intercept_
+
+    def predict_proba(self, features):
+        return softmax(self.decision_function(features), axis=1)
+
+
+def export_head(run, mode, source):
+    path = head_file(run, mode, source)
+    source_hash = digest(path)
+    head = load_fitted_head(path)
+    if list(head.named_steps) != ["standardscaler", "logisticregression"]:
+        raise ValueError("Expected a StandardScaler followed by LogisticRegression")
+    scaler = head.named_steps["standardscaler"]
+    clf = head.named_steps["logisticregression"]
+    if not scaler.with_mean or not scaler.with_std:
+        raise ValueError("Portable stage heads require centering and scaling")
+    parameters = dict(
+        mean=scaler.mean_, scale=scaler.scale_, coefficients=clf.coef_,
+        intercept=clf.intercept_, classes=clf.classes_, cast_scaler_stats=True,
+    )
+    portable = PortableStageHead(**parameters)
+    offsets = np.random.default_rng(0).normal(size=(8, scaler.mean_.size))
+    probes = scaler.mean_ + scaler.scale_ * offsets
+    probes32 = probes.astype(np.float32)
+    # StandardScaler versions differ in when they cast statistics for float32 inputs.
+    if not np.array_equal(portable.standardize(probes32), scaler.transform(probes32)):
+        parameters["cast_scaler_stats"] = False
+        portable = PortableStageHead(**parameters)
+    for inputs in (probes, probes32):
+        if not (
+            np.allclose(portable.decision_function(inputs), head.decision_function(inputs),
+                        rtol=1e-7, atol=1e-8)
+            and np.allclose(portable.predict_proba(inputs), head.predict_proba(inputs),
+                            rtol=1e-7, atol=1e-8)
+        ):
+            raise ValueError("Portable scoring differs from the fitted stage head")
+    if digest(path) != source_hash:
+        raise ValueError("The fitted head changed during export. Retry the export.")
+    output = path.with_suffix(".npz")
+    with NamedTemporaryFile(dir=output.parent, suffix=".npz", delete=False) as stream:
+        temporary = Path(stream.name)
+        try:
+            np.savez_compressed(stream, **parameters, schema=1, joblib_sha256=source_hash)
+        except Exception:
+            stream.close()
+            temporary.unlink(missing_ok=True)
+            raise
+    try:
+        temporary.replace(output)
+    finally:
+        temporary.unlink(missing_ok=True)
+    return output
+
+
+def load_head(run, mode, source):
+    path = head_file(run, mode, source)
+    portable_path = path.with_suffix(".npz")
+    if portable_path.is_file():
+        with np.load(portable_path, allow_pickle=False) as arrays:
+            if arrays["schema"].item() != 1 or arrays["joblib_sha256"].item() != digest(path):
+                raise ValueError(f"Portable head is stale or incompatible. Re-export {mode}.")
+            fields = ("mean", "scale", "coefficients", "intercept", "classes")
+            head = PortableStageHead(
+                **{name: arrays[name] for name in fields},
+                cast_scaler_stats=bool(arrays["cast_scaler_stats"].item()),
+            )
+            return head, portable_path
+    head = load_fitted_head(path)
     return head, path
 
 
@@ -398,12 +525,16 @@ def make_reencoder(args, row, data, mode):
         image_dir = args.run / "renders" / row["partition"] / "images" / row["scanner"] / row["sample_name"]
         image = np.array(Image.open(image_dir / ("gray.png" if mode.endswith("gray") else "rgb.png")).convert("RGB"))
         mask = np.array(Image.open(image_dir / "valid_mask.png")) > 0
-        def encode(region=None, fill="median"):
+        def inspect_input(region=None, fill="median"):
             changed = image.copy()
             if region is not None:
                 color = np.median(image[mask],axis=0) if fill == "median" else np.array([127,127,127])
                 changed[region] = np.rint(color).astype(np.uint8)
-            return encoder.extract(changed, mask)[0]
+            return dict(image=changed, mask=mask.copy())
+        def encode(region=None, fill="median"):
+            edited=inspect_input(region,fill)
+            return encoder.extract(edited["image"], edited["mask"])[0]
+        encode.inspect_input=inspect_input
         return encode
     from concerto_backend import ConcertoEncoder
     copy = dict(row)
@@ -413,22 +544,142 @@ def make_reencoder(args, row, data, mode):
         raise ValueError("Source geometry changed")
     settings = config["surface"]
     surface = make_surface(copy, settings, "concerto")
-    if not np.allclose(surface["coord"], data["meta"]["xyz_scaled"], atol=1e-7, rtol=1e-6):
+    saved_coord = data["meta"]["xyz_scaled"]
+    if surface["coord"].shape != saved_coord.shape or not np.allclose(
+            surface["coord"], saved_coord, atol=1e-7, rtol=1e-6):
         raise ValueError("Recreated point order/coordinates differ from original features")
+    # Use the original float32 coordinates so roundoff cannot move a point across a voxel boundary.
+    coord_difference = float(np.max(np.abs(surface["coord"] - saved_coord)))
+    surface["coord"] = saved_coord
+    surface["grid_origin"] = saved_coord.min(axis=0)
     encoder = ConcertoEncoder(SimpleNamespace(repo=args.repo,checkpoint=args.checkpoint,
         grid_size=config["voxel_mm"] / settings["scale_mm"], attention_patch=config["attention_patch"]), args.device)
-    def encode(region=None, fill="median"):
+    cuda_devices = [torch.cuda.current_device()] if args.device == "cuda" else []
+    shuffle_modules = [name or "<model>" for name, module in encoder.model.named_modules()
+                       if getattr(module, "shuffle_orders", False)]
+    replay_state = None
+
+    def capture_rng():
+        return (torch.get_rng_state(), [torch.cuda.get_rng_state(device) for device in cuda_devices])
+
+    def seeded_rng(seed):
+        cpu_state = torch.Generator(device="cpu").manual_seed(seed).get_state()
+        gpu_states = [torch.Generator(device=f"cuda:{device}").manual_seed(seed).get_state()
+                      for device in cuda_devices]
+        return cpu_state, gpu_states
+
+    def lock_rng(state):
+        nonlocal replay_state
+        replay_state = state
+
+    def inspect_input(region=None, fill="median"):
         arrays = {k:surface[k].copy() for k in ("coord","color","normal","grid_origin")}
         if region is not None:
             if args.intervention == "remove-points":
                 for k in ("coord","color","normal"): arrays[k] = arrays[k][~region]
             else:
                 arrays["color"][region] = np.median(surface["color"],axis=0) if fill == "median" else 127/255
+        return arrays
+    def forward(arrays):
         tensors = {k:torch.from_numpy(v)[None] for k,v in arrays.items()}
         with torch.inference_mode(): local,_ = encoder(tensors, use_color=mode == "concerto_rgb")
         local = local[0].float().cpu().numpy()
-        return np.concatenate((local.mean(axis=0), local.max(axis=0)))
+        return local
+
+    def encode(region=None, fill="median", *, return_local=False):
+        arrays = inspect_input(region, fill)
+        if replay_state is None:
+            local = forward(arrays)
+        else:
+            with torch.random.fork_rng(devices=cuda_devices):
+                cpu_state, gpu_states = replay_state
+                torch.set_rng_state(cpu_state)
+                for device, state in zip(cuda_devices, gpu_states):
+                    torch.cuda.set_rng_state(state, device)
+                local = forward(arrays)
+        pooled = np.concatenate((local.mean(axis=0), local.max(axis=0)))
+        return (pooled, local) if return_local else pooled
+
+    def runtime_details():
+        packages = {}
+        for package in ("torch-scatter", "spconv", "spconv-cu124"):
+            try:
+                packages[package] = version(package)
+            except PackageNotFoundError:
+                continue
+        source = Path(__file__).resolve().parent
+        saved_hashes = config.get("adapter_hashes", {})
+        changed_adapters = [name for name in ("study_data.py", "concerto_backend.py")
+                            if name in saved_hashes and digest(source / name) != saved_hashes[name]]
+        return dict(device=args.device, torch=str(torch.__version__), numpy=np.__version__,
+                    cuda=torch.version.cuda, packages=packages, shuffle_order_modules=shuffle_modules,
+                    gpu=torch.cuda.get_device_name(cuda_devices[0]) if cuda_devices else None,
+                    changed_adapters=changed_adapters, rebuilt_coord_max_abs_difference=coord_difference)
+
+    encode.inspect_input=inspect_input
+    encode.capture_rng = capture_rng
+    encode.seeded_rng = seeded_rng
+    encode.lock_rng = lock_rng
+    encode.runtime_details = runtime_details
     return encode
+
+
+def verify_input_baseline(encode, head, data, target, against, report_path):
+    """Use a verified unedited pass, replaying its Torch RNG state for all Concerto edits."""
+    cached = data["pooled"].astype(data.get("pooled_dtype", data["pooled"].dtype), copy=False)
+    cached_margin = margin(head, cached, target, against)
+    cached_p = head.predict_proba(cached[None])[0]
+    rng_replay = hasattr(encode, "capture_rng")
+    report = dict(
+        cached_margin=cached_margin, cached_probabilities=cached_p.tolist(),
+        cached_predicted_stage=STAGES[int(cached_p.argmax())], target=STAGES[target],
+        against=STAGES[against], cache_sha256=data["cache_sha256"],
+        original_runtime={key: data["config"].get(key) for key in ("device", "torch", "numpy")},
+        tolerance=dict(feature_atol=1e-3, feature_rtol=1e-3, margin_atol=.02, probability_atol=2e-3),
+        attempts=[],
+    )
+    tolerance = report["tolerance"]
+    first_baseline = None
+    for _ in range(3 if rng_replay else 1):
+        state = encode.capture_rng() if rng_replay else None
+        baseline = encode()
+        finite = np.isfinite(baseline).all()
+        if baseline.shape != cached.shape or not finite:
+            raise ValueError("Unedited re-encoding produced a wrong-sized or non-finite feature vector")
+        baseline_margin = margin(head, baseline, target, against)
+        prob = head.predict_proba(baseline[None])[0]
+        outside = ~np.isclose(baseline, cached, atol=tolerance["feature_atol"], rtol=tolerance["feature_rtol"])
+        width = cached.size // 2
+        delta = np.abs(baseline.astype(np.float64) - cached)
+        if first_baseline is None:
+            first_baseline = baseline.copy()
+        checks = dict(features=not outside.any(), margin=abs(baseline_margin-cached_margin) <= tolerance["margin_atol"],
+                      probabilities=bool(np.allclose(prob, cached_p, atol=tolerance["probability_atol"])),
+                      predicted_stage=bool(prob.argmax() == cached_p.argmax()))
+        report["attempts"].append(dict(
+            checks=checks, margin=baseline_margin, probabilities=prob.tolist(),
+            predicted_stage=STAGES[int(prob.argmax())],
+            mean_features_outside_tolerance=int(outside[:width].sum()),
+            max_features_outside_tolerance=int(outside[width:].sum()),
+            feature_count=int(cached.size), pooled_max_abs_difference=float(delta.max()),
+            probability_max_abs_difference=float(np.max(np.abs(prob - cached_p))),
+            pooled_max_abs_difference_from_first_pass=float(np.max(np.abs(baseline.astype(np.float64) - first_baseline))),
+        ))
+        if all(checks.values()):
+            if rng_replay:
+                encode.lock_rng(state)
+            return baseline, baseline_margin, prob, report
+    if rng_replay:
+        report["replay_runtime"] = encode.runtime_details()
+    write_json(report_path, report)
+    first = report["attempts"][0]
+    failed = ", ".join(key for key, passed in first["checks"].items() if not passed)
+    stages = f"stage {first['predicted_stage']} vs cached {report['cached_predicted_stage']}"
+    raise ValueError(
+        f"Unedited re-encoding does not reproduce the saved baseline after {len(report['attempts'])} pass(es). "
+        f"First pass failed {failed} ({stages}, margin {first['margin']:+.4f} vs cached {cached_margin:+.4f}, "
+        f"max feature difference {first['pooled_max_abs_difference']:.4g}). Diagnostics: {report_path}"
+    )
 
 
 def input_occlusion(args, row, out):
@@ -441,13 +692,9 @@ def input_occlusion(args, row, out):
     data = load_cache(args.run,row,mode)
     original,valid,center,field = render(args.run,row)
     encode = make_reencoder(args,row,data,mode)
-    baseline = encode()
-    baseline_margin = margin(head,baseline,target,against)
-    cached_margin = margin(head,data["pooled"],target,against)
-    baseline_p = head.predict_proba(baseline[None])[0]
-    cache_p = head.predict_proba(data["pooled"][None])[0]
-    if not np.allclose(baseline,data["pooled"],atol=1e-3,rtol=1e-3) or abs(baseline_margin-cached_margin)>.02 or not np.allclose(baseline_p,cache_p,atol=2e-3):
-        raise ValueError(f"Baseline re-encoding differs from saved stage prediction (margin {baseline_margin:+.4f} versus {cached_margin:+.4f}); inspect environments/settings before perturbing inputs")
+    _, baseline_margin, baseline_p, verification = verify_input_baseline(
+        encode, head, data, target, against, out / "input_baseline_mismatch.json")
+    cached_margin = verification["cached_margin"]
     if args.encoder == "dinov3":
         yy,xx=np.mgrid[:valid.shape[0],:valid.shape[1]]
         tile=tile_ids(np.column_stack((xx.ravel(),yy.ravel())),valid.shape,args.grid).reshape(valid.shape)
@@ -497,7 +744,8 @@ def input_occlusion(args, row, out):
     example_fig.savefig(out / "input_top_regions.png",dpi=150,bbox_inches="tight");plt.close(example_fig)
     write_json(out / "input_baseline.json",dict(head_sha256=digest(head_path),
         feature_sha256=data["cache_sha256"],baseline_margin=baseline_margin,cached_margin=cached_margin,
-        baseline_probabilities=baseline_p.tolist(),cached_probabilities=cache_p.tolist()))
+        baseline_probabilities=baseline_p.tolist(),cached_probabilities=verification["cached_probabilities"],
+        baseline_verification=verification))
     return [dict(scan_id=row["scan_id"],physical_id=row["physical_id"],scanner=row["scanner"],mode=mode,
         recorded_stage=row["stage"],partition=row["partition"],target_stage=STAGES[target],comparison_stage=STAGES[against],
         margin=baseline_margin,predicted_stage=STAGES[int(baseline_p.argmax())],

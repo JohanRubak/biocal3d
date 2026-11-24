@@ -1,0 +1,108 @@
+{
+  "cached_margin": 11.62385368347168,
+  "cached_probabilities": [
+    7.021961209829897e-05,
+    0.9999208450317383,
+    8.949321454565506e-06
+  ],
+  "cached_predicted_stage": "partial",
+  "target": "partial",
+  "against": "clean",
+  "cache_sha256": "bdff4e19d7d3b3d837e766ec3f8fb1ce340f7a158ce37f64980d18a4454c3ac3",
+  "original_runtime": {
+    "device": "cuda",
+    "torch": "2.5.0+cu124",
+    "numpy": "1.26.4"
+  },
+  "tolerance": {
+    "feature_atol": 0.001,
+    "feature_rtol": 0.001,
+    "margin_atol": 0.02,
+    "probability_atol": 0.002
+  },
+  "attempts": [
+    {
+      "checks": {
+        "features": false,
+        "margin": false,
+        "probabilities": true,
+        "predicted_stage": true
+      },
+      "margin": 14.571758270263672,
+      "probabilities": [
+        1.5566971342195757e-05,
+        0.9999839067459106,
+        4.694169604135823e-07
+      ],
+      "predicted_stage": "partial",
+      "mean_features_outside_tolerance": 721,
+      "max_features_outside_tolerance": 818,
+      "feature_count": 1792,
+      "pooled_max_abs_difference": 0.11233925819396973,
+      "probability_max_abs_difference": 6.306171417236328e-05,
+      "pooled_max_abs_difference_from_first_pass": 0.0
+    },
+    {
+      "checks": {
+        "features": false,
+        "margin": false,
+        "probabilities": true,
+        "predicted_stage": true
+      },
+      "margin": 14.59601879119873,
+      "probabilities": [
+        1.4142515283310786e-05,
+        0.9999853372573853,
+        4.58166368844104e-07
+      ],
+      "predicted_stage": "partial",
+      "mean_features_outside_tolerance": 740,
+      "max_features_outside_tolerance": 844,
+      "feature_count": 1792,
+      "pooled_max_abs_difference": 0.16982531547546387,
+      "probability_max_abs_difference": 6.449222564697266e-05,
+      "pooled_max_abs_difference_from_first_pass": 0.08974919468164444
+    },
+    {
+      "checks": {
+        "features": false,
+        "margin": false,
+        "probabilities": true,
+        "predicted_stage": true
+      },
+      "margin": 13.043285369873047,
+      "probabilities": [
+        1.8605745935929008e-05,
+        0.9999792575836182,
+        2.164532588722068e-06
+      ],
+      "predicted_stage": "partial",
+      "mean_features_outside_tolerance": 710,
+      "max_features_outside_tolerance": 818,
+      "feature_count": 1792,
+      "pooled_max_abs_difference": 0.12428665161132812,
+      "probability_max_abs_difference": 5.841255187988281e-05,
+      "pooled_max_abs_difference_from_first_pass": 0.1012730598449707
+    }
+  ],
+  "replay_runtime": {
+    "device": "cuda",
+    "torch": "2.5.0+cu124",
+    "numpy": "1.26.4",
+    "cuda": "12.4",
+    "packages": {
+      "torch-scatter": "2.1.2+pt25cu124",
+      "spconv-cu124": "2.3.8"
+    },
+    "shuffle_order_modules": [
+      "<model>",
+      "enc.enc1.down",
+      "enc.enc2.down",
+      "enc.enc3.down",
+      "enc.enc4.down"
+    ],
+    "gpu": "NVIDIA RTX 2000 Ada Generation",
+    "changed_adapters": [],
+    "rebuilt_coord_max_abs_difference": 0.0
+  }
+}

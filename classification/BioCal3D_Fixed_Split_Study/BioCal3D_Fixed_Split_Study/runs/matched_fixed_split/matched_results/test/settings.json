@@ -1,0 +1,6 @@
+{
+  "partition": "test",
+  "cohort_sha256": "c0b1639df6ed95097738a9439275c0ef1bee0090df0a6486ef8edbaa1bd13a92",
+  "training_models_sha256": "28e2dcc883d1932925e204b8fd97efe714f7f88da094dcf7745b9e0ab413d066",
+  "scans": 128
+}
